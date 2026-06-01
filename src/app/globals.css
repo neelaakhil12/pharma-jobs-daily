@@ -1,26 +1,178 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-heading: var(--font-poppins);
+  --font-body: var(--font-inter);
+  
+  --color-primary: #16a34a;
+  --color-secondary: #f97316;
+  --color-accent: #8b5cf6;
+  --color-dark: #1e293b;
+  --color-bg-light: #f8fafc;
 }
 
 body {
-  background: var(--background);
+  background-color: #f8fafc;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(22, 163, 74, 0.06) 0px, transparent 50%),
+    radial-gradient(at 50% 0%, rgba(249, 115, 22, 0.06) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.06) 0px, transparent 50%),
+    radial-gradient(at 75% 75%, rgba(234, 179, 8, 0.05) 0px, transparent 50%);
+  background-attachment: fixed;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Custom Heading Font Helper */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-poppins), sans-serif;
+}
+
+/* Custom premium class names for our UI */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #16A34A 0%, #F97316 35%, #8B5CF6 70%, #EAB308 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-gradient-premium {
+  background: linear-gradient(135deg, #16A34A 0%, #F97316 35%, #8B5CF6 70%, #EAB308 100%);
+}
+
+.btn-gradient {
+  background: linear-gradient(to right, #16A34A, #F97316, #8B5CF6, #EAB308);
+  background-size: 200% auto;
+  transition: 0.5s;
+}
+.btn-gradient:hover {
+  background-position: right center;
+}
+
+/* Floating Animations for Hero sections */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-float-slow {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-medium {
+  animation: float 4s ease-in-out infinite 1s;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ==========================================
+   Splash Screen Keyframes & Utility Classes (Gun & Bullet Theme)
+   ========================================== */
+@keyframes splash-fadeout {
+  0% { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes circle-appear {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.1); opacity: 1; }
+  70% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes gun-appear {
+  0% { transform: translate3d(-100px, 0, 0) scale(0.8); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+}
+
+@keyframes gun-recoil {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  10% { transform: translate3d(-12px, 0, 0) rotate(-8deg); }
+  100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+}
+
+@keyframes bullet-fly {
+  0% { transform: translate3d(0, 0, 0) scaleX(0.5); opacity: 0; }
+  10% { transform: translate3d(5px, 0, 0) scaleX(1.8); opacity: 1; }
+  90% { transform: translate3d(var(--bullet-distance, 62px), 0, 0) scaleX(1); opacity: 1; } /* hits circle left edge */
+  95% { transform: translate3d(calc(var(--bullet-distance, 62px) + 4px), 0, 0) scaleX(0.2); opacity: 0.6; }
+  100% { transform: translate3d(calc(var(--bullet-distance, 62px) + 13px), 20px, 0) scaleX(0) rotate(15deg); opacity: 0; } /* falls off */
+}
+
+@keyframes impact-ripple {
+  0% { transform: scale(0.9); opacity: 0; border-width: 4px; }
+  1% { transform: scale(0.9); opacity: 0.8; border-width: 4px; }
+  100% { transform: scale(1.8); opacity: 0; border-width: 1px; }
+}
+
+@keyframes logo-reveal {
+  0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+  10% { transform: scale(0) rotate(-10deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes background-shake {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-2px, 1.5px); }
+  50% { transform: translate(1.5px, -1.5px); }
+  75% { transform: translate(-1.5px, 2px); }
+}
+
+.animate-splash-fadeout {
+  animation: splash-fadeout 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.animate-circle-appear {
+  animation: circle-appear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-gun-appear {
+  animation: gun-appear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-gun-recoil {
+  animation: gun-recoil 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.animate-bullet-fly {
+  animation: bullet-fly 0.5s cubic-bezier(0.25, 1, 0.3, 1) forwards;
+}
+
+.animate-impact-ripple {
+  animation: impact-ripple 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-logo-reveal {
+  animation: logo-reveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-shake {
+  animation: background-shake 0.15s linear 3;
 }

@@ -1,0 +1,245 @@
+{
+  "admin": {
+    "username": "admin",
+    "password": "password123"
+  },
+  "jobs": [
+    {
+      "id": "job-1",
+      "title": "Junior Research Fellow (JRF) - Pharmaceutics",
+      "company": "National Institute of Pharmaceutical Education and Research (NIPER)",
+      "category": "JRF & SRF Jobs",
+      "type": "Contract",
+      "qualification": "M.Pharm",
+      "location": "Hyderabad, Telangana",
+      "salary": "₹37,000 + HRA / month",
+      "experience": "Freshers / GPAT Qualified",
+      "postedDate": "2026-05-30",
+      "description": "Applications are invited from highly motivated and eligible candidates for a Junior Research Fellow (JRF) position in a DST-sponsored research project on advanced drug delivery systems.",
+      "responsibilities": [
+        "Formulate and evaluate nanoparticle-based drug delivery systems.",
+        "Perform in-vitro drug release studies and cell culture characterization.",
+        "Maintain laboratory records and prepare monthly project progress reports.",
+        "Draft scientific manuscripts and present research at national symposia."
+      ],
+      "requirements": [
+        "M.Pharm in Pharmaceutics or Pharmaceutical Chemistry with minimum 60% marks.",
+        "GPAT or GATE qualification is mandatory.",
+        "Basic understanding of chromatography and spectrophotometric techniques.",
+        "Excellent academic track record and writing skills."
+      ],
+      "benefits": [
+        "Opportunity to register for a Ph.D. program, subject to clearing admission tests.",
+        "Access to state-of-the-art research instrumentation and analytics labs.",
+        "Travel allowance to attend national conferences."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for JRF - Pharmaceutics"
+    },
+    {
+      "id": "job-2",
+      "title": "Drug Inspector (Group B Officer)",
+      "company": "Union Public Service Commission (UPSC)",
+      "category": "Government Pharma Jobs",
+      "type": "Full-time",
+      "qualification": "B.Pharm",
+      "location": "New Delhi / Pan India",
+      "salary": "₹47,600 - ₹1,51,100 (Pay Level 8)",
+      "experience": "1+ Years Experience",
+      "postedDate": "2026-05-29",
+      "description": "Union Public Service Commission invites online recruitment applications for direct recruitment of Drug Inspectors under the Ministry of Health and Family Welfare. Selected candidates will oversee pharmaceutical manufacturing compliance, licensing, and public safety regulations.",
+      "responsibilities": [
+        "Inspect pharmaceutical retail, wholesale outlets, and manufacturing facilities.",
+        "Collect drug samples for chemical analysis and quality compliance verification.",
+        "Investigate complaints regarding drug quality, licensing violations, and black market activities.",
+        "Represent the health department in legal proceedings against non-compliant entities."
+      ],
+      "requirements": [
+        "Degree in Pharmacy (B.Pharm) or Pharmaceutical Sciences from a recognized university.",
+        "Minimum 18 months of practical experience in the manufacture of active substances or testing of drugs.",
+        "Familiarity with the Drugs and Cosmetics Act, 1940 and Rules, 1945.",
+        "Ages between 21 and 30 years (relaxation applicable for government categories)."
+      ],
+      "benefits": [
+        "Central Government pension and medical allowances.",
+        "Residential accommodation or HRA support.",
+        "Highly prestigious administrative career with rapid promotional structures."
+      ],
+      "applyUrl": "https://upsc.gov.in"
+    },
+    {
+      "id": "job-3",
+      "title": "Staff Nurse (ICU & Critical Care)",
+      "company": "Apollo Hospitals",
+      "category": "Staff Nurse Jobs",
+      "type": "Full-time",
+      "qualification": "Staff Nurse",
+      "location": "Visakhapatnam, Andhra Pradesh",
+      "salary": "₹28,000 - ₹35,000 / month",
+      "experience": "2-4 Years Experience",
+      "postedDate": "2026-05-31",
+      "description": "Apollo Hospitals is hiring dedicated Staff Nurses for ICU, Emergency, and Critical Care units. Candidates will collaborate with physicians and healthcare teams to provide exceptional clinical support and patient care.",
+      "responsibilities": [
+        "Monitor patient vital signs and manage specialized ICU equipment (ventilators, monitors).",
+        "Administer intravenous medications, fluids, and blood products as prescribed.",
+        "Assist physicians in emergency clinical procedures and diagnostic testing.",
+        "Maintain accurate, real-time electronic health records (EHR) of ICU patients."
+      ],
+      "requirements": [
+        "B.Sc. Nursing or GNM (General Nursing and Midwifery) from a recognized institute.",
+        "Valid state nursing council registration certificate.",
+        "BLS (Basic Life Support) and ACLS certification is highly preferred.",
+        "Good communication skills and compassionate bedside manner."
+      ],
+      "benefits": [
+        "Comprehensive health insurance for employee and immediate family.",
+        "Overtime allowances and night shift premiums.",
+        "Regular continuous nursing education (CNE) training and career progression."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for ICU Staff Nurse"
+    },
+    {
+      "id": "job-4",
+      "title": "Medical Lab Technician",
+      "company": "Reddy Labs & Diagnostics",
+      "category": "Paramedical Jobs",
+      "type": "Full-time",
+      "qualification": "Diploma",
+      "location": "Vijayawada, Andhra Pradesh",
+      "salary": "₹18,000 - ₹24,000 / month",
+      "experience": "Freshers / Experienced",
+      "postedDate": "2026-05-28",
+      "description": "We are seeking a detail-oriented Medical Lab Technician to join our central diagnostic laboratory. The successful candidate will handle sample sorting, clinical pathology, biochemistry testing, and quality control operations.",
+      "responsibilities": [
+        "Collect, catalog, and prepare clinical samples (blood, urine, tissue) for analysis.",
+        "Operate automated biochemistry and hematology analyzers according to SOPs.",
+        "Calibrate diagnostic instruments and execute daily quality control checks.",
+        "Enter diagnostic test results into the laboratory information management system (LIMS)."
+      ],
+      "requirements": [
+        "DMLT (Diploma in Medical Lab Technology) or B.Sc. MLT from a state-recognized university.",
+        "Sound understanding of aseptic techniques and biosafety rules.",
+        "Basic computer skills for report entries.",
+        "Ability to work in rotational shifts."
+      ],
+      "benefits": [
+        "Statutory bonuses, PF, and ESI benefits.",
+        "Incentives for high-accuracy and timely testing metrics.",
+        "Annual health check-ups and career counseling programs."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for Lab Technician"
+    },
+    {
+      "id": "job-5",
+      "title": "Research Associate / Senior Research Fellow (SRF)",
+      "company": "Council of Scientific and Industrial Research (CSIR)",
+      "category": "JRF & SRF Jobs",
+      "type": "Contract",
+      "qualification": "SRF",
+      "location": "Pune, Maharashtra",
+      "salary": "₹42,000 + HRA / month",
+      "experience": "2+ Years Research Experience",
+      "postedDate": "2026-05-27",
+      "description": "Applications are invited for the position of Senior Research Fellow (SRF) in a high-priority antiviral drug discovery project. Candidates with direct wet-lab experience in organic synthesis or computational drug design will be preferred.",
+      "responsibilities": [
+        "Design and synthesize novel bio-active heterocyclic scaffolds.",
+        "Characterize synthesized compounds using 1H-NMR, 13C-NMR, and HRMS data.",
+        "Collaborate with biology groups to interpret molecular screening data.",
+        "Prepare quarterly milestone reports and presentation materials for scientific reviews."
+      ],
+      "requirements": [
+        "M.Pharm (Pharmaceutical Chemistry) or M.Sc. (Organic Chemistry) with at least 55% marks.",
+        "Minimum 2 years of proven research experience post-master degree (verified by papers/experience certificate).",
+        "Experience in handling air-sensitive reactions and purification techniques (flash chromatography).",
+        "Strong literature searching skills (Reaxys, SciFinder)."
+      ],
+      "benefits": [
+        "Opportunities to present findings at international conferences.",
+        "Work in a collaborative ecosystem with top molecular biology experts.",
+        "Standard contingency grants for research supplies."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for SRF - Antiviral Project"
+    },
+    {
+      "id": "job-6",
+      "title": "Quality Assurance Associate (IPQA)",
+      "company": "Aurobindo Pharma",
+      "category": "Private Pharma Jobs",
+      "type": "Full-time",
+      "qualification": "M.Pharm",
+      "location": "Vizag, Andhra Pradesh",
+      "salary": "₹3.5 - ₹5.0 Lakhs Per Annum",
+      "experience": "1-3 Years Experience",
+      "postedDate": "2026-05-30",
+      "description": "Aurobindo Pharma is looking for energetic Quality Assurance professionals for our formulations facility. The In-Process Quality Assurance (IPQA) associate will perform shop-floor compliance checks and document reviews.",
+      "responsibilities": [
+        "Conduct line clearance checks during dispensing, compounding, filling, and packaging operations.",
+        "Collect IPQA and composite validation samples during production batches.",
+        "Review Batch Manufacturing Records (BMR) and Batch Packaging Records (BPR) in real-time.",
+        "Report deviations, non-conformances, and initiate initial investigations."
+      ],
+      "requirements": [
+        "M.Pharm (Pharmaceutics/QA) or B.Pharm with consistent academic performance.",
+        "1 to 3 years of experience in formulations IPQA (oral solids or injectables).",
+        "Thorough understanding of cGMP, USFDA, and MHRA regulations.",
+        "Strong communication and reporting skills in English and Telugu."
+      ],
+      "benefits": [
+        "Free company transportation and subsidized cafeteria access.",
+        "Performance-linked yearly increments.",
+        "Comprehensive life and medical insurance coverages."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for IPQA Associate"
+    },
+    {
+      "id": "job-7",
+      "title": "Pharmacist (Outpatient Pharmacy)",
+      "company": "Max Healthcare",
+      "category": "Private Pharma Jobs",
+      "type": "Full-time",
+      "qualification": "D.Pharm",
+      "location": "Bengaluru, Karnataka",
+      "salary": "₹22,000 - ₹27,000 / month",
+      "experience": "Freshers / 1-2 Years Experience",
+      "postedDate": "2026-05-26",
+      "description": "Max Healthcare is recruiting registered pharmacists for hospital outpatient dispensing counters. The pharmacist will process doctor prescriptions, explain dosage regimens, and maintain inventory records.",
+      "responsibilities": [
+        "Dispense medications accurately according to patient prescriptions.",
+        "Counsel patients on correct medication dosages, administration, and potential side effects.",
+        "Perform inventory checks, monitor expiry dates, and place replenishment orders.",
+        "Handle billing systems and maintain narcotics/special records meticulously."
+      ],
+      "requirements": [
+        "D.Pharm (Diploma in Pharmacy) or B.Pharm from a PCI-approved college.",
+        "Registered Pharmacist with an active State Pharmacy Council license is mandatory.",
+        "Basic computer billing proficiency.",
+        "Courteous behavioral standard and patient-first attitude."
+      ],
+      "benefits": [
+        "Provident Fund (PF), Gratuity, and ESI medical benefits.",
+        "Uniforms provided and periodic product training programs.",
+        "Incentives on target prescription processing scales."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for Outpatient Pharmacist"
+    }
+  ],
+  "categories": [
+    "Pharma Job Updates",
+    "Government Pharma Jobs",
+    "Private Pharma Jobs",
+    "Staff Nurse Jobs",
+    "Paramedical Jobs",
+    "JRF & SRF Jobs"
+  ],
+  "qualifications": [
+    "B.Pharm",
+    "D.Pharm",
+    "M.Pharm",
+    "BSc",
+    "MSc",
+    "Diploma",
+    "PhD",
+    "JRF",
+    "SRF",
+    "Staff Nurse"
+  ]
+}
