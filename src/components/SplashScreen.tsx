@@ -38,7 +38,7 @@ export default function SplashScreen() {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-slate-50 select-none overflow-hidden ${
+      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-slate-50 select-none overflow-hidden ${
         isFading ? 'animate-splash-fadeout' : ''
       } ${shouldShake ? 'animate-shake' : ''}`}
     >
