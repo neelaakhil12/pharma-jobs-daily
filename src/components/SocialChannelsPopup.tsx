@@ -12,14 +12,6 @@ export default function SocialChannelsPopup() {
   const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
-    // Check if user already dismissed/joined
-    if (typeof window !== 'undefined') {
-      const dismissed = localStorage.getItem('pharma_jobs_social_dismissed');
-      if (dismissed === 'true') {
-        return;
-      }
-    }
-
     const handleSplashFinished = () => {
       setShouldRender(true);
       // Micro-delay to trigger entry transition animation
@@ -36,9 +28,6 @@ export default function SocialChannelsPopup() {
 
   const handleDismiss = () => {
     setIsOpen(false);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('pharma_jobs_social_dismissed', 'true');
-    }
     // Remove from DOM after transition completes
     setTimeout(() => {
       setShouldRender(false);
