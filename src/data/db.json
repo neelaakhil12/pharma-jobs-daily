@@ -5,221 +5,613 @@
   },
   "jobs": [
     {
-      "id": "job-1",
-      "title": "Junior Research Fellow (JRF) - Pharmaceutics",
-      "company": "National Institute of Pharmaceutical Education and Research (NIPER)",
-      "category": "JRF & SRF Jobs",
-      "type": "Contract",
-      "qualification": "M.Pharm",
-      "location": "Hyderabad, Telangana",
-      "salary": "₹37,000 + HRA / month",
-      "experience": "Freshers / GPAT Qualified",
-      "postedDate": "2026-05-30",
-      "description": "Applications are invited from highly motivated and eligible candidates for a Junior Research Fellow (JRF) position in a DST-sponsored research project on advanced drug delivery systems.",
+      "id": "job-g1",
+      "title": "Government Pharmacist (Railway Recruitment Board)",
+      "company": "Indian Railways (RRB)",
+      "category": "Government Pharma Jobs",
+      "type": "Full-time",
+      "qualification": "B.Pharm",
+      "location": "Secunderabad, Telangana",
+      "salary": "₹29,200 - ₹92,300 (Pay Level 5)",
+      "experience": "Freshers / Experienced",
+      "postedDate": "2026-06-05",
+      "description": "Indian Railways invites applications for the post of Pharmacist in Railway Hospitals. The pharmacist will manage dispensing and inventory of life-saving medical stock.",
       "responsibilities": [
-        "Formulate and evaluate nanoparticle-based drug delivery systems.",
-        "Perform in-vitro drug release studies and cell culture characterization.",
-        "Maintain laboratory records and prepare monthly project progress reports.",
-        "Draft scientific manuscripts and present research at national symposia."
+        "Dispense medications accurately to railway employees and pensioners.",
+        "Maintain narcotics logs, drug supplies, and check storage conditions.",
+        "Coordinate inventory audits and report shortfalls to the medical officer."
       ],
       "requirements": [
-        "M.Pharm in Pharmaceutics or Pharmaceutical Chemistry with minimum 60% marks.",
-        "GPAT or GATE qualification is mandatory.",
-        "Basic understanding of chromatography and spectrophotometric techniques.",
-        "Excellent academic track record and writing skills."
+        "B.Pharm or D.Pharm from a PCI-approved government institute.",
+        "Valid registration with State Pharmacy Council of India.",
+        "Age limit between 20 and 35 years."
       ],
       "benefits": [
-        "Opportunity to register for a Ph.D. program, subject to clearing admission tests.",
-        "Access to state-of-the-art research instrumentation and analytics labs.",
-        "Travel allowance to attend national conferences."
+        "Central government quarters and accommodation benefits.",
+        "Free medical passes and rail travel tickets.",
+        "Pension and provident fund statutory support."
       ],
-      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for JRF - Pharmaceutics"
+      "applyUrl": "https://rrbsecunderabad.gov.in"
     },
     {
-      "id": "job-2",
-      "title": "Drug Inspector (Group B Officer)",
+      "id": "job-g2",
+      "title": "Government Drug Inspector (Group A Officer)",
       "company": "Union Public Service Commission (UPSC)",
       "category": "Government Pharma Jobs",
       "type": "Full-time",
       "qualification": "B.Pharm",
       "location": "New Delhi / Pan India",
       "salary": "₹47,600 - ₹1,51,100 (Pay Level 8)",
-      "experience": "1+ Years Experience",
-      "postedDate": "2026-05-29",
-      "description": "Union Public Service Commission invites online recruitment applications for direct recruitment of Drug Inspectors under the Ministry of Health and Family Welfare. Selected candidates will oversee pharmaceutical manufacturing compliance, licensing, and public safety regulations.",
+      "experience": "18 Months Manufacturing Experience Required",
+      "postedDate": "2026-06-04",
+      "description": "UPSC is conducting recruitment for Drug Inspectors under the Central Drugs Standard Control Organisation (CDSCO). Selected officers will execute compliance audits and safety enforcement.",
       "responsibilities": [
-        "Inspect pharmaceutical retail, wholesale outlets, and manufacturing facilities.",
-        "Collect drug samples for chemical analysis and quality compliance verification.",
-        "Investigate complaints regarding drug quality, licensing violations, and black market activities.",
-        "Represent the health department in legal proceedings against non-compliant entities."
+        "Inspect pharmaceutical manufacturing units and wholesale distributors.",
+        "Collect suspected drug samples and transmit them to Central Laboratories for testing.",
+        "Investigate regulatory deviations, fake drugs, and represent CDSCO in judicial courts."
       ],
       "requirements": [
-        "Degree in Pharmacy (B.Pharm) or Pharmaceutical Sciences from a recognized university.",
-        "Minimum 18 months of practical experience in the manufacture of active substances or testing of drugs.",
-        "Familiarity with the Drugs and Cosmetics Act, 1940 and Rules, 1945.",
-        "Ages between 21 and 30 years (relaxation applicable for government categories)."
+        "Degree in Pharmacy or Pharmaceutical Sciences from a recognized university.",
+        "Minimum 18 months of practical experience in manufacturing of active substances.",
+        "Sound understanding of the Drugs and Cosmetics Act, 1940."
       ],
       "benefits": [
-        "Central Government pension and medical allowances.",
-        "Residential accommodation or HRA support.",
-        "Highly prestigious administrative career with rapid promotional structures."
+        "Central Government Grade-A officer rank and travel allowance.",
+        "HRA accommodation and medical privileges.",
+        "Rapid hierarchical promotion structures."
       ],
-      "applyUrl": "https://upsc.gov.in"
+      "applyUrl": "https://upsconline.nic.in"
     },
     {
-      "id": "job-3",
-      "title": "Staff Nurse (ICU & Critical Care)",
-      "company": "Apollo Hospitals",
-      "category": "Staff Nurse Jobs",
+      "id": "job-g3",
+      "title": "Government Staff Nurse (Group B)",
+      "company": "All India Institute of Medical Sciences (AIIMS)",
+      "category": "Government Pharma Jobs",
       "type": "Full-time",
       "qualification": "Staff Nurse",
-      "location": "Visakhapatnam, Andhra Pradesh",
-      "salary": "₹28,000 - ₹35,000 / month",
-      "experience": "2-4 Years Experience",
-      "postedDate": "2026-05-31",
-      "description": "Apollo Hospitals is hiring dedicated Staff Nurses for ICU, Emergency, and Critical Care units. Candidates will collaborate with physicians and healthcare teams to provide exceptional clinical support and patient care.",
+      "location": "Bibinagar, Telangana",
+      "salary": "₹44,900 - ₹1,42,400 (Pay Level 7)",
+      "experience": "Freshers / Experienced",
+      "postedDate": "2026-06-03",
+      "description": "AIIMS is hiring Nursing Officers (Staff Nurse) for critical care, ICU, and inpatient wards. The role provides direct clinical nursing support in state-of-the-art government clinics.",
       "responsibilities": [
-        "Monitor patient vital signs and manage specialized ICU equipment (ventilators, monitors).",
-        "Administer intravenous medications, fluids, and blood products as prescribed.",
-        "Assist physicians in emergency clinical procedures and diagnostic testing.",
-        "Maintain accurate, real-time electronic health records (EHR) of ICU patients."
+        "Administer clinical medication and intravenous fluids under doctor supervision.",
+        "Monitor ICU medical machinery and provide vital updates to medical teams.",
+        "Maintain patient sanitary records and clinical safety compliance."
       ],
       "requirements": [
-        "B.Sc. Nursing or GNM (General Nursing and Midwifery) from a recognized institute.",
+        "B.Sc. Nursing or GNM from a recognized nursing council.",
         "Valid state nursing council registration certificate.",
-        "BLS (Basic Life Support) and ACLS certification is highly preferred.",
-        "Good communication skills and compassionate bedside manner."
+        "Ages between 21 and 35 years."
       ],
       "benefits": [
-        "Comprehensive health insurance for employee and immediate family.",
-        "Overtime allowances and night shift premiums.",
-        "Regular continuous nursing education (CNE) training and career progression."
+        "Central Government DA, HRA, and medical schemes.",
+        "Shift premiums and night allowance benefits.",
+        "Yearly performance promotions."
       ],
-      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for ICU Staff Nurse"
+      "applyUrl": "https://aiims.edu"
     },
     {
-      "id": "job-4",
-      "title": "Medical Lab Technician",
-      "company": "Reddy Labs & Diagnostics",
-      "category": "Paramedical Jobs",
+      "id": "job-g4",
+      "title": "Government Medical Laboratory Technician",
+      "company": "National Health Mission (NHM)",
+      "category": "Government Pharma Jobs",
       "type": "Full-time",
       "qualification": "Diploma",
-      "location": "Vijayawada, Andhra Pradesh",
-      "salary": "₹18,000 - ₹24,000 / month",
-      "experience": "Freshers / Experienced",
-      "postedDate": "2026-05-28",
-      "description": "We are seeking a detail-oriented Medical Lab Technician to join our central diagnostic laboratory. The successful candidate will handle sample sorting, clinical pathology, biochemistry testing, and quality control operations.",
+      "location": "Guntur, Andhra Pradesh",
+      "salary": "₹22,000 - ₹28,000 / month",
+      "experience": "Freshers Welcome",
+      "postedDate": "2026-06-02",
+      "description": "The National Health Mission is recruiting Laboratory Technicians for rural and urban community health centers. Responsibilities include laboratory pathology assessments.",
       "responsibilities": [
-        "Collect, catalog, and prepare clinical samples (blood, urine, tissue) for analysis.",
-        "Operate automated biochemistry and hematology analyzers according to SOPs.",
-        "Calibrate diagnostic instruments and execute daily quality control checks.",
-        "Enter diagnostic test results into the laboratory information management system (LIMS)."
+        "Collect and process blood, plasma, and fluid samples for diagnostic tests.",
+        "Execute automated biochemistry analysis in compliance with laboratory protocols.",
+        "Maintain records of laboratory samples and diagnostic outputs."
       ],
       "requirements": [
-        "DMLT (Diploma in Medical Lab Technology) or B.Sc. MLT from a state-recognized university.",
-        "Sound understanding of aseptic techniques and biosafety rules.",
-        "Basic computer skills for report entries.",
-        "Ability to work in rotational shifts."
+        "DMLT (Diploma in Medical Lab Technology) or B.Sc. MLT.",
+        "Valid state registration certificate.",
+        "Strong understanding of laboratory safety guidelines."
       ],
       "benefits": [
-        "Statutory bonuses, PF, and ESI benefits.",
-        "Incentives for high-accuracy and timely testing metrics.",
-        "Annual health check-ups and career counseling programs."
+        "PF, ESI, and NHM regular increments.",
+        "Subsidized medical checks and uniforms.",
+        "Government service certificate points for permanent scales."
       ],
-      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for Lab Technician"
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for NHM Lab Tech"
     },
     {
-      "id": "job-5",
-      "title": "Research Associate / Senior Research Fellow (SRF)",
+      "id": "job-g5",
+      "title": "Senior Research Fellow (SRF) - Govt Project",
       "company": "Council of Scientific and Industrial Research (CSIR)",
-      "category": "JRF & SRF Jobs",
+      "category": "Government Pharma Jobs",
       "type": "Contract",
       "qualification": "SRF",
-      "location": "Pune, Maharashtra",
+      "location": "Hyderabad, Telangana",
       "salary": "₹42,000 + HRA / month",
       "experience": "2+ Years Research Experience",
-      "postedDate": "2026-05-27",
-      "description": "Applications are invited for the position of Senior Research Fellow (SRF) in a high-priority antiviral drug discovery project. Candidates with direct wet-lab experience in organic synthesis or computational drug design will be preferred.",
+      "postedDate": "2026-06-01",
+      "description": "CSIR is seeking a Senior Research Fellow for a government-sponsored pharmacology project. Candidates will synthesis target drug compounds.",
       "responsibilities": [
-        "Design and synthesize novel bio-active heterocyclic scaffolds.",
-        "Characterize synthesized compounds using 1H-NMR, 13C-NMR, and HRMS data.",
-        "Collaborate with biology groups to interpret molecular screening data.",
-        "Prepare quarterly milestone reports and presentation materials for scientific reviews."
+        "Lead molecular synthesis and characterization using 1H-NMR.",
+        "Compile project reports and coordinates with lead principal scientists.",
+        "Mentor JRF interns inside the laboratory environment."
       ],
       "requirements": [
-        "M.Pharm (Pharmaceutical Chemistry) or M.Sc. (Organic Chemistry) with at least 55% marks.",
-        "Minimum 2 years of proven research experience post-master degree (verified by papers/experience certificate).",
-        "Experience in handling air-sensitive reactions and purification techniques (flash chromatography).",
-        "Strong literature searching skills (Reaxys, SciFinder)."
+        "M.Pharm or M.Sc in Organic Chemistry.",
+        "2 years post-master laboratory research experience.",
+        "GPAT or CSIR-NET qualification is preferred."
       ],
       "benefits": [
-        "Opportunities to present findings at international conferences.",
-        "Work in a collaborative ecosystem with top molecular biology experts.",
-        "Standard contingency grants for research supplies."
+        "CSIR fellowship grants and HRA support.",
+        "Access to advanced molecular imaging and testing tools.",
+        "CSIR conference participation travel sponsorships."
       ],
-      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for SRF - Antiviral Project"
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for CSIR SRF"
     },
     {
-      "id": "job-6",
-      "title": "Quality Assurance Associate (IPQA)",
-      "company": "Aurobindo Pharma",
+      "id": "job-g6",
+      "title": "Junior Research Fellow (JRF) - Defense Life Sciences",
+      "company": "Defense Research and Development Organisation (DRDO)",
+      "category": "Government Pharma Jobs",
+      "type": "Contract",
+      "qualification": "JRF",
+      "location": "Bengaluru, Karnataka",
+      "salary": "₹37,000 + HRA / month",
+      "experience": "GPAT / NET Qualified",
+      "postedDate": "2026-05-31",
+      "description": "DRDO invites applications for a JRF position in defense pharmacology projects. Role involves testing bio-sensors and protective formulation designs.",
+      "responsibilities": [
+        "Execute bio-assays and dosage testing profiles.",
+        "Maintain laboratory registers and document research reports.",
+        "Draft scientific presentations for defense panels."
+      ],
+      "requirements": [
+        "M.Pharm or M.Sc in Biotechnology / Pharmacology.",
+        "Mandatory GPAT or CSIR-NET / GATE score.",
+        "Maximum age of 28 years (relaxation applicable)."
+      ],
+      "benefits": [
+        "DRDO research stipend and campus HRA support.",
+        "Opportunity for PhD registration with top national institutes.",
+        "Access to prestigious defense bio-labs."
+      ],
+      "applyUrl": "https://drdo.gov.in"
+    },
+    {
+      "id": "job-p1",
+      "title": "R&D Scientist - Formulations",
+      "company": "Sun Pharmaceutical Industries",
       "category": "Private Pharma Jobs",
       "type": "Full-time",
       "qualification": "M.Pharm",
-      "location": "Vizag, Andhra Pradesh",
-      "salary": "₹3.5 - ₹5.0 Lakhs Per Annum",
-      "experience": "1-3 Years Experience",
-      "postedDate": "2026-05-30",
-      "description": "Aurobindo Pharma is looking for energetic Quality Assurance professionals for our formulations facility. The In-Process Quality Assurance (IPQA) associate will perform shop-floor compliance checks and document reviews.",
+      "location": "Vadodara, Gujarat",
+      "salary": "₹4.5 - ₹6.5 Lakhs Per Annum",
+      "experience": "2-4 Years Experience",
+      "postedDate": "2026-06-02",
+      "description": "Sun Pharma is hiring researchers for Formulation Research & Development (F&R&D). Candidates will work on dosage form designs, stability studies, and lab scale trials.",
       "responsibilities": [
-        "Conduct line clearance checks during dispensing, compounding, filling, and packaging operations.",
-        "Collect IPQA and composite validation samples during production batches.",
-        "Review Batch Manufacturing Records (BMR) and Batch Packaging Records (BPR) in real-time.",
-        "Report deviations, non-conformances, and initiate initial investigations."
+        "Design and execute formulations for oral solids and liquid dosage forms.",
+        "Compile stability data and troubleshoot formulation failures.",
+        "Coordinate with the Tech Transfer team for scale-up operations."
       ],
       "requirements": [
-        "M.Pharm (Pharmaceutics/QA) or B.Pharm with consistent academic performance.",
-        "1 to 3 years of experience in formulations IPQA (oral solids or injectables).",
-        "Thorough understanding of cGMP, USFDA, and MHRA regulations.",
-        "Strong communication and reporting skills in English and Telugu."
+        "M.Pharm in Pharmaceutics with minimum 60% academic score.",
+        "Hands-on experience with tablet compression and coating machines.",
+        "Understanding of ICH guidelines for stability testing."
       ],
       "benefits": [
-        "Free company transportation and subsidized cafeteria access.",
-        "Performance-linked yearly increments.",
-        "Comprehensive life and medical insurance coverages."
+        "Subsidized transport and corporate health plans.",
+        "Access to advanced molecular characterization labs.",
+        "Performance-based yearly bonus."
       ],
-      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for IPQA Associate"
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for R&D Scientist"
     },
     {
-      "id": "job-7",
-      "title": "Pharmacist (Outpatient Pharmacy)",
-      "company": "Max Healthcare",
+      "id": "job-p2",
+      "title": "Quality Assurance (QA) Associate",
+      "company": "Aurobindo Pharma",
       "category": "Private Pharma Jobs",
       "type": "Full-time",
-      "qualification": "D.Pharm",
-      "location": "Bengaluru, Karnataka",
-      "salary": "₹22,000 - ₹27,000 / month",
-      "experience": "Freshers / 1-2 Years Experience",
-      "postedDate": "2026-05-26",
-      "description": "Max Healthcare is recruiting registered pharmacists for hospital outpatient dispensing counters. The pharmacist will process doctor prescriptions, explain dosage regimens, and maintain inventory records.",
+      "qualification": "B.Pharm",
+      "location": "Visakhapatnam, Andhra Pradesh",
+      "salary": "₹3.5 - ₹5.0 Lakhs Per Annum",
+      "experience": "1-3 Years Experience",
+      "postedDate": "2026-06-03",
+      "description": "We are seeking a detail-oriented Quality Assurance Associate to join our formulations unit. You will handle in-process quality audits (IPQA) and document reviews.",
       "responsibilities": [
-        "Dispense medications accurately according to patient prescriptions.",
-        "Counsel patients on correct medication dosages, administration, and potential side effects.",
-        "Perform inventory checks, monitor expiry dates, and place replenishment orders.",
-        "Handle billing systems and maintain narcotics/special records meticulously."
+        "Perform line clearance checks across compounding, packaging, and filling lines.",
+        "Review Batch Manufacturing Records (BMR) and Batch Packaging Records (BPR).",
+        "Report non-conformances and initiate initial deviation assessments."
       ],
       "requirements": [
-        "D.Pharm (Diploma in Pharmacy) or B.Pharm from a PCI-approved college.",
-        "Registered Pharmacist with an active State Pharmacy Council license is mandatory.",
-        "Basic computer billing proficiency.",
-        "Courteous behavioral standard and patient-first attitude."
+        "B.Pharm or M.Pharm degree from a PCI-approved college.",
+        "Familiarity with cGMP compliance norms and FDA guidelines.",
+        "Strong observation and communication skills."
       ],
       "benefits": [
-        "Provident Fund (PF), Gratuity, and ESI medical benefits.",
-        "Uniforms provided and periodic product training programs.",
-        "Incentives on target prescription processing scales."
+        "Subsidized meals and free company shuttle.",
+        "Continuous regulatory standards training.",
+        "Comprehensive health insurance coverage."
       ],
-      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for Outpatient Pharmacist"
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for QA Associate"
+    },
+    {
+      "id": "job-p3",
+      "title": "Quality Control (QC) Analyst",
+      "company": "Dr. Reddy's Laboratories",
+      "category": "Private Pharma Jobs",
+      "type": "Full-time",
+      "qualification": "MSc",
+      "location": "Hyderabad, Telangana",
+      "salary": "₹3.0 - ₹4.5 Lakhs Per Annum",
+      "experience": "1-3 Years Experience",
+      "postedDate": "2026-06-01",
+      "description": "Join our Quality Control team. The analyst will perform routine and non-routine analysis of active pharmaceutical ingredients (API) and raw materials.",
+      "responsibilities": [
+        "Conduct chemical analysis using HPLC, GC, and UV-Vis spectrophotometers.",
+        "Meticulously document analytical test data in accordance with GLP.",
+        "Maintain laboratory equipment calibrations."
+      ],
+      "requirements": [
+        "M.Sc. in Analytical Chemistry or organic chemistry.",
+        "1 to 3 years experience in a regulated QC laboratory.",
+        "Knowledge of Empower software is preferred."
+      ],
+      "benefits": [
+        "Subsidized canteen and health checks.",
+        "PF, ESI, and statutory bonuses.",
+        "Regular professional development modules."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for QC Analyst"
+    },
+    {
+      "id": "job-p4",
+      "title": "Tech Transfer (TT) Executive",
+      "company": "Lupin Pharmaceuticals",
+      "category": "Private Pharma Jobs",
+      "type": "Full-time",
+      "qualification": "M.Pharm",
+      "location": "Pune, Maharashtra",
+      "salary": "₹5.0 - ₹7.0 Lakhs Per Annum",
+      "experience": "3-5 Years Experience",
+      "postedDate": "2026-05-31",
+      "description": "Seeking a Tech Transfer specialist to manage scale-ups and technology transmissions from lab-scale to commercial manufacturing sites.",
+      "responsibilities": [
+        "Prepare Technology Transfer Protocols and reports (TTP & TTR).",
+        "Coordinate with R&D and Manufacturing teams for trial batches.",
+        "Troubleshoot manufacturing anomalies during scale-up runs."
+      ],
+      "requirements": [
+        "M.Pharm in Pharmaceutics or Industrial Pharmacy.",
+        "Minimum 3 years experience in commercial tech transfer.",
+        "Strong understanding of process validation principles."
+      ],
+      "benefits": [
+        "Performance incentives and annual increments.",
+        "Family health insurance support.",
+        "Relocation assistance package."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for TT Executive"
+    },
+    {
+      "id": "job-p5",
+      "title": "Regulatory Affairs (RA) Associate",
+      "company": "Cipla",
+      "category": "Private Pharma Jobs",
+      "type": "Full-time",
+      "qualification": "M.Pharm",
+      "location": "Mumbai, Maharashtra",
+      "salary": "₹4.0 - ₹5.8 Lakhs Per Annum",
+      "experience": "2-4 Years Experience",
+      "postedDate": "2026-06-04",
+      "description": "Cipla is looking for Regulatory Affairs executives to compile and submit dossiers for US, EU, and emerging markets.",
+      "responsibilities": [
+        "Compile and review CMC data for eCTD submissions.",
+        "Address queries from regulatory agencies (FDA, EMA) within timelines.",
+        "Track regulatory updates and coordinate with production teams for compliance data."
+      ],
+      "requirements": [
+        "M.Pharm or M.Sc. in Life Sciences.",
+        "2+ years experience in global dossier submissions.",
+        "Detail-oriented with strong documentation skills."
+      ],
+      "benefits": [
+        "Hybrid working flexibility.",
+        "Excellent corporate health benefits.",
+        "Annual performance bonuses."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for RA Associate"
+    },
+    {
+      "id": "job-p6",
+      "title": "Production Chemist - Formulations",
+      "company": "Hetero Labs Limited",
+      "category": "Private Pharma Jobs",
+      "type": "Full-time",
+      "qualification": "B.Pharm",
+      "location": "Jadcherla, Telangana",
+      "salary": "₹2.8 - ₹4.0 Lakhs Per Annum",
+      "experience": "1-3 Years Experience",
+      "postedDate": "2026-06-02",
+      "description": "Production Chemist needed for tablet and capsule manufacturing blocks. Responsibility includes executing shop floor operations in shift cycles.",
+      "responsibilities": [
+        "Supervise granules mixing, compressing, and coating processes.",
+        "Ensure compliance with Batch Manufacturing Record instructions.",
+        "Maintain cleanrooms and equipment sanitizations in line with SOPs."
+      ],
+      "requirements": [
+        "B.Pharm or Diploma in Chemical Engineering.",
+        "Willingness to work in rotating night shifts.",
+        "Basic operational knowledge of tablet compression machines."
+      ],
+      "benefits": [
+        "Subsidized lodging and food facility.",
+        "Shift allowances and night premiums.",
+        "Statutory bonuses and insurance."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for Production Chemist"
+    },
+    {
+      "id": "job-p7",
+      "title": "Warehouse Supervisor",
+      "company": "Divi's Laboratories",
+      "category": "Private Pharma Jobs",
+      "type": "Full-time",
+      "qualification": "BSc",
+      "location": "Nalgonda, Telangana",
+      "salary": "₹2.5 - ₹3.6 Lakhs Per Annum",
+      "experience": "1-3 Years Experience",
+      "postedDate": "2026-05-30",
+      "description": "Divi's Labs is hiring a Warehouse Supervisor to handle raw materials receiving, storage compliance, and inventory management.",
+      "responsibilities": [
+        "Execute receiving inspections and storage entries.",
+        "Coordinate inventory checks and dispatch dispensing requests.",
+        "Ensure temperature and humidity records match GMP rules."
+      ],
+      "requirements": [
+        "B.Sc. in Chemistry or commerce graduate with warehouse experience.",
+        "Familiarity with ERP / SAP warehouse modules is a plus.",
+        "Physical stamina and attention to detail."
+      ],
+      "benefits": [
+        "Subsidized cafeteria and bus service.",
+        "Provident Fund and regular yearly increments.",
+        "Overtime compensation scale."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for Warehouse Supervisor"
+    },
+    {
+      "id": "job-p8",
+      "title": "Packing Operator / Officer",
+      "company": "Biocon",
+      "category": "Private Pharma Jobs",
+      "type": "Full-time",
+      "qualification": "Diploma",
+      "location": "Bengaluru, Karnataka",
+      "salary": "₹2.4 - ₹3.5 Lakhs Per Annum",
+      "experience": "1-3 Years Experience",
+      "postedDate": "2026-05-29",
+      "description": "Biocon is seeking blister and bottle packing line operators. Candidates will oversee automated packing lines and maintain quality logs.",
+      "responsibilities": [
+        "Operate blister packing and carton printing systems.",
+        "Verify online product descriptions, batch numbers, and expiries.",
+        "Perform line cleaning and documentation entries."
+      ],
+      "requirements": [
+        "Diploma or B.Sc. with practical packing operations training.",
+        "Knowledge of operating blister machines.",
+        "Attentive to detail and shift work comfort."
+      ],
+      "benefits": [
+        "Corporate transit support.",
+        "Health insurance and gratuity benefits.",
+        "Subsidized high-quality cafeteria."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for Packing Operator"
+    },
+    {
+      "id": "job-p9",
+      "title": "Pharmacovigilance (PV) Associate",
+      "company": "Cognizant Healthcare",
+      "category": "Private Pharma Jobs",
+      "type": "Full-time",
+      "qualification": "B.Pharm",
+      "location": "Hyderabad, Telangana",
+      "salary": "₹3.8 - ₹5.2 Lakhs Per Annum",
+      "experience": "Freshers / 1-2 Years Experience",
+      "postedDate": "2026-06-03",
+      "description": "Cognizant is recruiting PV Associates to perform adverse event reporting, case translations, and clinical data entries.",
+      "responsibilities": [
+        "Analyze individual adverse drug reaction cases.",
+        "Perform medical coding and data entries in PV databases.",
+        "Prepare periodic safety update reports (PSUR) for review."
+      ],
+      "requirements": [
+        "B.Pharm, M.Pharm, or PharmD degree.",
+        "Strong understanding of medical terminologies.",
+        "Analytical mind with good written English skills."
+      ],
+      "benefits": [
+        "Hybrid work schedule.",
+        "Comprehensive family health insurance.",
+        "Lucrative career growth path."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for PV Associate"
+    },
+    {
+      "id": "job-p10",
+      "title": "Medical Coding Specialist",
+      "company": "Apex Healthcare Solutions",
+      "category": "Private Pharma Jobs",
+      "type": "Full-time",
+      "qualification": "BSc",
+      "location": "Chennai, Tamil Nadu",
+      "salary": "₹3.0 - ₹4.5 Lakhs Per Annum",
+      "experience": "Freshers / Experienced",
+      "postedDate": "2026-06-01",
+      "description": "Medical Coder needed to assign appropriate ICD-10, CPT, and HCPCS codes to patient clinical documents.",
+      "responsibilities": [
+        "Review medical charts and convert diagnoses/treatments into standardized codes.",
+        "Maintain 98%+ coding accuracy and compliance with guidelines.",
+        "Participate in weekly coding audits."
+      ],
+      "requirements": [
+        "Graduation in Life Sciences (B.Sc, B.Pharm, Biotech).",
+        "CPC (Certified Professional Coder) certification is a strong advantage.",
+        "Excellent understanding of human anatomy and physiology."
+      ],
+      "benefits": [
+        "Coding certification sponsorship incentives.",
+        "Performance bonuses and PF / ESI support.",
+        "Regular training and medical updates."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for Medical Coder"
+    },
+    {
+      "id": "job-p11",
+      "title": "Internship - Quality Assurance & QC",
+      "company": "Granules India Limited",
+      "category": "Private Pharma Jobs",
+      "type": "Internship",
+      "qualification": "B.Pharm",
+      "location": "Gagillapur, Telangana",
+      "salary": "₹15,000 / month stipend",
+      "experience": "Freshers (2025/2026 Passouts)",
+      "postedDate": "2026-06-04",
+      "description": "Granules India offers a 6-month internship program for pharmacy graduates. Interns will rotate between the QA documentation and QC analytical blocks.",
+      "responsibilities": [
+        "Assist in maintaining laboratory records and documentation registers.",
+        "Observe wet chemistry tests under senior guidance.",
+        "Support archiving and line inspections tasks."
+      ],
+      "requirements": [
+        "B.Pharm or M.Sc Chemistry student in final semester.",
+        "Enthusiasm to learn and strictly follow cGMP guidelines.",
+        "Active communication skills."
+      ],
+      "benefits": [
+        "Internship completion certificate.",
+        "Subsidized lunch at plant cafeteria.",
+        "Potential pre-placement interview (PPO) offer."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for Internship"
+    },
+    {
+      "id": "job-p12",
+      "title": "Executive Assistant & Other Admin Jobs",
+      "company": "Zydus Cadila",
+      "category": "Private Pharma Jobs",
+      "type": "Full-time",
+      "qualification": "BSc",
+      "location": "Ahmedabad, Gujarat",
+      "salary": "₹3.0 - ₹4.2 Lakhs Per Annum",
+      "experience": "1-3 Years Experience",
+      "postedDate": "2026-05-28",
+      "description": "Hiring an administrative assistant for our corporate manufacturing team. Role handles coordination, scheduling, and miscellaneous administrative support.",
+      "responsibilities": [
+        "Schedule internal alignment meetings and prepare minutes.",
+        "Compile monthly production spreadsheets and reports.",
+        "Maintain document controls for corporate SOP registries."
+      ],
+      "requirements": [
+        "Bachelor degree with high computing literacy (MS Office).",
+        "Experience in administrative operations within any pharmaceutical setup.",
+        "Strong written and verbal English skills."
+      ],
+      "benefits": [
+        "Annual performance bonuses.",
+        "Statutory retirement funds and insurance.",
+        "Subsidized corporate canteen access."
+      ],
+      "applyUrl": "mailto:ifactstelugu@gmail.com?subject=Application for Zydus Admin"
+    },
+    {
+      "id": "job-o1",
+      "title": "Automation & Maintenance Engineer",
+      "company": "Lupin Pharmaceuticals",
+      "category": "Other Jobs",
+      "type": "Full-time",
+      "qualification": "B.Tech / B.E",
+      "location": "Pune, Maharashtra",
+      "salary": "Not Required",
+      "experience": "2-5 Years Experience",
+      "postedDate": "2026-06-05",
+      "description": "Lupin is seeking an Automation & Maintenance Engineer to oversee instrumentation, machinery calibrations, and HVAC systems in our manufacturing blocks.",
+      "responsibilities": [
+        "Oversee daily calibration schedules for manufacturing instrumentation.",
+        "Troubleshoot PLC/SCADA failures on production machinery.",
+        "Execute preventive maintenance tasks in compliance with GMP guidelines."
+      ],
+      "requirements": [
+        "B.Tech/B.E in Instrumentation, Electrical, or Mechanical Engineering.",
+        "Minimum 2 years experience in a sterile manufacturing plant.",
+        "Familiarity with PLC systems (Siemens/Allen Bradley)."
+      ],
+      "benefits": [
+        "Competitive corporate pay and annual bonus.",
+        "Comprehensive medical insurance coverage.",
+        "Professional instrumentation certifications support."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for Automation Engineer"
+    },
+    {
+      "id": "job-o2",
+      "title": "Chemical Process Engineer",
+      "company": "Dr. Reddy's Laboratories",
+      "category": "Other Jobs",
+      "type": "N/A",
+      "qualification": "B.Tech Chemical",
+      "location": "Visakhapatnam, Andhra Pradesh",
+      "salary": "₹6.0 - ₹8.5 Lakhs Per Annum",
+      "experience": "3-6 Years Experience",
+      "postedDate": "2026-06-04",
+      "description": "Dr. Reddy's is seeking a Process Engineer to drive scale-up processes, chemical optimization, and process validation checks for active pharmaceutical ingredients (API) synthesis.",
+      "responsibilities": [
+        "Optimize chemical synthesis scaling from laboratory to commercial reactors.",
+        "Design process flow diagrams and piping instrumentation updates.",
+        "Validate thermal safety checks and solvent recovery operations."
+      ],
+      "requirements": [
+        "B.Tech/B.E in Chemical Engineering from a recognized university.",
+        "3+ years process engineering experience in API setups.",
+        "Excellent data compilation and chemical troubleshooting skills."
+      ],
+      "benefits": [
+        "PF, gratuity, and performance bonus structures.",
+        "Subsidized transportation and canteen access.",
+        "Advanced safety training modules."
+      ],
+      "applyUrl": "mailto:ifactselugu@gmail.com?subject=Application for Chemical Process Engineer"
+    },
+    {
+      "id": "job-o3",
+      "title": "Calibration & Instrumentation Specialist",
+      "company": "Sun Pharmaceutical Industries",
+      "category": "Other Jobs",
+      "type": "Contract",
+      "qualification": "Diploma / B.E",
+      "location": "Vadodara, Gujarat",
+      "salary": "₹4.0 - ₹5.5 Lakhs Per Annum",
+      "experience": "1-3 Years Experience",
+      "postedDate": "2026-06-03",
+      "description": "Sun Pharma is recruiting a specialist to manage high-precision sensor calibrations, pressure valves, and thermal controller systems in analytical labs.",
+      "responsibilities": [
+        "Calibrate HPLC, GC, and temperature sensors on schedule.",
+        "Document calibration logs for FDA audit reference.",
+        "Troubleshoot instrumentation drifts and align laboratory parameters."
+      ],
+      "requirements": [
+        "Diploma or Degree in Instrumentation Engineering.",
+        "1-3 years experience in instrumentation or calibration.",
+        "Understanding of FDA documentation requirements."
+      ],
+      "benefits": [
+        "Rotational shift allowances.",
+        "Company transportation facility.",
+        "Subsidized healthcare checkups."
+      ],
+      "applyUrl": "mailto:ifactstelugu@gmail.com?subject=Application for Instrumentation Specialist"
     }
   ],
   "categories": [
@@ -228,7 +620,8 @@
     "Private Pharma Jobs",
     "Staff Nurse Jobs",
     "Paramedical Jobs",
-    "JRF & SRF Jobs"
+    "JRF & SRF Jobs",
+    "Other Jobs"
   ],
   "qualifications": [
     "B.Pharm",

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Search, MapPin, SlidersHorizontal, RefreshCw, Briefcase, GraduationCap } from 'lucide-react';
 import JobCard from '@/components/JobCard';
 import { Job } from '@/lib/db';
@@ -9,6 +9,7 @@ import { Job } from '@/lib/db';
 export default function JobsClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const pathname = usePathname();
 
   // Load initial query states from URL
   const initialSearch = searchParams.get('search') || '';
@@ -25,8 +26,8 @@ export default function JobsClient() {
   const [qualification, setQualification] = useState(initialQualification);
   const [type, setType] = useState(initialType);
   
-  // Tab sector state (All, Government, Private)
-  const [sectorTab, setSectorTab] = useState<'All' | 'Government' | 'Private'>('All');
+  // Tab sector state (All, Government, Private, Other)
+  const [sectorTab, setSectorTab] = useState<'All' | 'Government' | 'Private' | 'Other'>('All');
 
   // Static options (matching seed data and tags)
   const categoryOptions = [
@@ -36,7 +37,8 @@ export default function JobsClient() {
     'Private Pharma Jobs',
     'Staff Nurse Jobs',
     'Paramedical Jobs',
-    'JRF & SRF Jobs'
+    'JRF & SRF Jobs',
+    'Other Jobs'
   ];
 
   const qualificationOptions = [
@@ -61,6 +63,8 @@ export default function JobsClient() {
         params.append('category', 'Government Pharma Jobs');
       } else if (sectorTab === 'Private') {
         params.append('category', 'Private Pharma Jobs');
+      } else if (sectorTab === 'Other') {
+        params.append('category', 'Other Jobs');
       }
 
       if (qualification !== 'All') params.append('qualification', qualification);
@@ -90,8 +94,8 @@ export default function JobsClient() {
     if (type !== 'All') params.append('type', type);
     
     const newQuery = params.toString();
-    router.replace(newQuery ? `/jobs?${newQuery}` : '/jobs');
-  }, [search, location, category, qualification, type, sectorTab]);
+    router.replace(newQuery ? `${pathname}?${newQuery}` : pathname);
+  }, [search, location, category, qualification, type, sectorTab, pathname]);
 
   const handleReset = () => {
     setSearch('');
@@ -115,83 +119,9 @@ export default function JobsClient() {
       </div>
 
       {/* 2. Top Interactive Search Filters */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Filters Pane (Desktop Sidebar) */}
-        <aside className="lg:col-span-3 bg-white p-4 sm:p-6 rounded-3xl border border-slate-100 shadow-md space-y-6">
-          <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-            <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-2">
-              <SlidersHorizontal className="w-4.5 h-4.5 text-[#16A34A]" />
-              Filter Board
-            </h3>
-            <button
-              onClick={handleReset}
-              className="text-[11px] font-bold text-orange-500 hover:text-orange-600 transition-colors flex items-center gap-1 cursor-pointer"
-            >
-              <RefreshCw className="w-3 h-3" /> Reset
-            </button>
-          </div>
-
-          {/* Qualification Filter */}
-          <div className="space-y-2.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-              <GraduationCap className="w-4 h-4 text-purple-500" />
-              Qualification
-            </label>
-            <div className="flex flex-wrap gap-1.5">
-              {qualificationOptions.map((q) => (
-                <button
-                  key={q}
-                  onClick={() => setQualification(q)}
-                  className={`text-[11px] px-3 py-1.5 rounded-xl font-bold border transition-all cursor-pointer ${
-                    qualification === q
-                      ? 'bg-purple-100 text-purple-700 border-purple-300'
-                      : 'bg-slate-50 text-slate-600 border-slate-200/60 hover:border-slate-300'
-                  }`}
-                >
-                  {q}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Job Category Dropdown */}
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-              <Briefcase className="w-4 h-4 text-green-600" />
-              Job Category
-            </label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-[#16A34A]"
-            >
-              {categoryOptions.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt === 'All' ? 'All Sectors' : opt}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Job Type Dropdown */}
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Job Type</label>
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-[#16A34A]"
-            >
-              {typeOptions.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt === 'All' ? 'All Types' : opt}
-                </option>
-              ))}
-            </select>
-          </div>
-        </aside>
-
-        {/* Right Listings Area */}
-        <div className="lg:col-span-9 space-y-6">
+      <div className="space-y-6">
+        {/* Listings Area */}
+        <div className="space-y-6">
           {/* Top Bar: Live Keyword Input & Location */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-white border border-slate-100 shadow-md rounded-2xl">
             <div className="flex items-center gap-2 px-3 border border-slate-200 rounded-xl bg-slate-50/50">
@@ -216,13 +146,14 @@ export default function JobsClient() {
             </div>
           </div>
 
-          {/* Sector Tabs (All / Government Jobs / Private Jobs) */}
+          {/* Sector Tabs (All / Government Jobs / Private Jobs / Other Jobs) */}
           <div className="flex border-b border-slate-200 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] whitespace-nowrap">
-            {(['All', 'Government', 'Private'] as const).map((tab) => {
+            {(['All', 'Government', 'Private', 'Other'] as const).map((tab) => {
               const active = sectorTab === tab;
               return (
                 <button
                   key={tab}
+                  type="button"
                   onClick={() => {
                     setSectorTab(tab);
                     setCategory('All'); // Reset specific subcategory to avoid conflict
@@ -267,16 +198,16 @@ export default function JobsClient() {
           ) : (
             /* Empty State */
             <div className="p-16 text-center border border-slate-100 bg-white shadow-md rounded-3xl space-y-4">
-              <div className="w-16 h-16 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center mx-auto shadow-sm">
+              <div className="w-16 h-16 rounded-full bg-green-50 text-[#16A34A] flex items-center justify-center mx-auto shadow-sm">
                 <Search className="w-7 h-7" />
               </div>
               <h3 className="font-extrabold text-lg text-slate-800">No Job Postings Found</h3>
-              <p className="text-slate-450 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
+              <p className="text-slate-455 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
                 We couldn't find any vacancies matching your active filter criteria. Try resetting or adjusting the qualifications and keyword searches.
               </p>
               <button
                 onClick={handleReset}
-                className="px-6 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#F97316] text-xs font-bold text-white rounded-xl shadow-md cursor-pointer"
+                className="px-6 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#10B981] text-xs font-bold text-white rounded-xl shadow-md cursor-pointer"
               >
                 Clear All Active Filters
               </button>

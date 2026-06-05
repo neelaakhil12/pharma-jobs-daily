@@ -58,7 +58,8 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
     'Private Pharma Jobs',
     'Staff Nurse Jobs',
     'Paramedical Jobs',
-    'JRF & SRF Jobs'
+    'JRF & SRF Jobs',
+    'Other Jobs'
   ];
 
   const qualifications = [
@@ -224,13 +225,13 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <button
             onClick={handleOpenAdd}
-            className="flex-grow sm:flex-grow-0 px-5 py-3 bg-gradient-to-r from-[#16A34A] to-[#F97316] text-xs font-bold text-white rounded-xl shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
+            className="flex-grow sm:flex-grow-0 px-5 py-3 bg-gradient-to-r from-[#16A34A] to-[#10B981] text-xs font-bold text-white rounded-xl shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
           >
             <Plus className="w-4.5 h-4.5" /> Publish New Vacancy
           </button>
           <button
             onClick={handleLogout}
-            className="p-3 border border-slate-200 hover:border-orange-300 hover:bg-orange-50 text-slate-500 hover:text-orange-500 rounded-xl cursor-pointer"
+            className="p-3 border border-slate-200 hover:border-green-300 hover:bg-green-50 text-slate-500 hover:text-green-500 rounded-xl cursor-pointer"
             title="Log Out Session"
           >
             <LogOut className="w-5 h-5" />
@@ -242,8 +243,8 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {[
           { label: 'Active Jobs', value: totalOpen, icon: FolderOpen, color: 'text-green-600 bg-green-50' },
-          { label: 'Government Positions', value: govOpen, icon: ShieldCheck, color: 'text-orange-500 bg-orange-50' },
-          { label: 'Private Industries', value: pvtOpen, icon: Building, color: 'text-purple-500 bg-purple-50' },
+          { label: 'Government Positions', value: govOpen, icon: ShieldCheck, color: 'text-emerald-600 bg-emerald-50' },
+          { label: 'Private Industries', value: pvtOpen, icon: Building, color: 'text-teal-600 bg-teal-50' },
           { label: 'Nursing Vacancies', value: nurseOpen, icon: Sparkles, color: 'text-green-600 bg-green-50' }
         ].map((met, i) => {
           const Icon = met.icon;
@@ -313,7 +314,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                         </button>
                         <button
                           onClick={() => handleDelete(job.id)}
-                          className="p-2 border border-slate-200 hover:border-orange-350 hover:bg-orange-50 text-slate-500 hover:text-orange-500 rounded-lg cursor-pointer"
+                          className="p-2 border border-slate-200 hover:border-green-300 hover:bg-green-50 text-slate-500 hover:text-green-650 rounded-lg cursor-pointer"
                           title="Remove Posting"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -480,7 +481,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500 block">Requirements (One per line)</label>
+                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 block">Requirements (One per line)</label>
                   <textarea
                     rows={4}
                     placeholder="GPAT Qualified&#10;Consistent academic marks"
@@ -490,7 +491,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-purple-600 block">Benefits (One per line)</label>
+                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-teal-650 block">Benefits (One per line)</label>
                   <textarea
                     rows={4}
                     placeholder="PF & ESI statutory bonus&#10;Rotational shifts incentives"
@@ -529,7 +530,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                 type="submit"
                 onClick={handleAddSubmit}
                 disabled={submitting}
-                className="px-5 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#F97316] text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-1.5"
+                className="px-5 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#10B981] text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-1.5"
               >
                 {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 Publish Notice
@@ -546,7 +547,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 shrink-0">
               <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-2">
-                <Edit className="w-5 h-5 text-[#F97316]" />
+                <Edit className="w-5 h-5 text-[#16A34A]" />
                 Modify Published Vacancy
               </h3>
               <button onClick={() => setShowEditModal(false)} className="text-slate-450 hover:text-slate-650 cursor-pointer">
@@ -678,7 +679,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500 block">Requirements (One per line)</label>
+                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 block">Requirements (One per line)</label>
                   <textarea
                     rows={4}
                     value={form.requirementsRaw}
@@ -687,7 +688,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-purple-600 block">Benefits (One per line)</label>
+                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-teal-655 block">Benefits (One per line)</label>
                   <textarea
                     rows={4}
                     value={form.benefitsRaw}
@@ -724,7 +725,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                 type="submit"
                 onClick={handleEditSubmit}
                 disabled={submitting}
-                className="px-5 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#F97316] text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-1.5"
+                className="px-5 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#10B981] text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-1.5"
               >
                 {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 Save Modifications

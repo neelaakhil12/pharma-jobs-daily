@@ -46,7 +46,7 @@ export default function QuickApplyForm({ jobTitle, applyUrl }: QuickApplyFormPro
         <div className="pt-2">
           <a
             href={applyUrl}
-            className="inline-block text-xs font-bold px-6 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#F97316] text-white rounded-xl shadow-md"
+            className="inline-block text-xs font-bold px-6 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#10B981] text-white rounded-xl shadow-md"
           >
             Direct Recruiter Apply Link
           </a>
@@ -134,7 +134,7 @@ export default function QuickApplyForm({ jobTitle, applyUrl }: QuickApplyFormPro
             </div>
             <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-[#16A34A] to-[#F97316] transition-all duration-100"
+                className="h-full bg-gradient-to-r from-[#16A34A] to-[#10B981] transition-all duration-100"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -142,7 +142,7 @@ export default function QuickApplyForm({ jobTitle, applyUrl }: QuickApplyFormPro
         ) : (
           <button
             type="submit"
-            className="w-full py-3 bg-gradient-to-r from-[#16A34A] to-[#F97316] hover:bg-right bg-[size:200%_auto] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-green-500/10 hover:shadow-orange-500/20 active:scale-99 transition-all duration-300 cursor-pointer"
+            className="w-full py-3 bg-gradient-to-r from-[#16A34A] to-[#10B981] hover:bg-right bg-[size:200%_auto] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-green-500/10 hover:shadow-green-500/20 active:scale-99 transition-all duration-300 cursor-pointer"
           >
             <Send className="w-4.5 h-4.5" />
             Send Application Profile

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Send, MessageCircle, Globe, Share2, CheckCircle2 } from 'lucide-react';
+import { Mail, MapPin, Send, MessageCircle, Globe, Share2, CheckCircle2 } from 'lucide-react';
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
@@ -23,7 +23,7 @@ export default function ContactPage() {
   return (
     <div className="bg-[#F8FAFC] min-h-screen overflow-x-hidden">
       {/* 1. Header Banner */}
-      <section className="relative overflow-hidden py-16 bg-gradient-to-r from-green-50/40 via-orange-50/40 to-purple-50/40 border-b border-slate-100">
+      <section className="relative overflow-hidden py-16 bg-gradient-to-r from-green-50/40 via-emerald-50/40 to-teal-50/40 border-b border-slate-100">
         <div className="absolute top-0 right-0 w-80 h-80 bg-[#16A34A]/5 rounded-full blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4" data-aos="fade-down">
           <span className="text-xs font-extrabold text-[#16A34A] uppercase tracking-widest bg-green-100 px-3.5 py-1.5 rounded-full border border-green-200/40">
@@ -54,21 +54,7 @@ export default function ContactPage() {
             </div>
 
             <div className="space-y-4">
-              {/* Phone Channel */}
-              <a
-                href="tel:8919278961"
-                className="flex items-center gap-4 p-4.5 sm:p-5 bg-white border border-slate-100 hover:border-orange-300 shadow-md rounded-2xl transition-all duration-300 transform hover:-translate-y-1 block"
-              >
-                <div className="p-3 bg-orange-50 text-[#F97316] rounded-xl shrink-0">
-                  <Phone className="w-6 h-6" />
-                </div>
-                <div>
-                  <span className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">Call Helpdesk</span>
-                  <span className="block text-sm font-extrabold text-slate-700 hover:text-orange-500 transition-colors">+91 89192 78961</span>
-                </div>
-              </a>
 
-              {/* WhatsApp Channel */}
               <a
                 href="https://wa.me/918919278961"
                 target="_blank"
@@ -87,14 +73,14 @@ export default function ContactPage() {
               {/* Email Channel */}
               <a
                 href="mailto:ifactstelugu@gmail.com"
-                className="flex items-center gap-4 p-4.5 sm:p-5 bg-white border border-slate-100 hover:border-purple-300 shadow-md rounded-2xl transition-all duration-300 transform hover:-translate-y-1 block"
+                className="flex items-center gap-4 p-4.5 sm:p-5 bg-white border border-slate-100 hover:border-emerald-300 shadow-md rounded-2xl transition-all duration-300 transform hover:-translate-y-1 block"
               >
-                <div className="p-3 bg-purple-50 text-[#8B5CF6] rounded-xl shrink-0">
+                <div className="p-3 bg-emerald-50 text-[#059669] rounded-xl shrink-0">
                   <Mail className="w-6 h-6" />
                 </div>
                 <div>
                   <span className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">Email Inquiry</span>
-                  <span className="block text-xs sm:text-sm font-extrabold text-slate-700 hover:text-[#8B5CF6] transition-colors break-all">ifactstelugu@gmail.com</span>
+                  <span className="block text-xs sm:text-sm font-extrabold text-slate-700 hover:text-[#059669] transition-colors break-all">ifactstelugu@gmail.com</span>
                 </div>
               </a>
             </div>
@@ -134,7 +120,7 @@ export default function ContactPage() {
                   </p>
                   <button
                     onClick={() => setSuccess(false)}
-                    className="px-6 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#F97316] text-white text-xs font-bold rounded-xl shadow-md cursor-pointer"
+                    className="px-6 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#10B981] text-white text-xs font-bold rounded-xl shadow-md cursor-pointer"
                   >
                     Send Another Message
                   </button>
@@ -198,7 +184,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3.5 bg-gradient-to-r from-[#16A34A] to-[#F97316] hover:bg-right bg-[size:200%_auto] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-green-500/10 active:scale-99 transition-all duration-300 cursor-pointer"
+                    className="w-full py-3.5 bg-gradient-to-r from-[#16A34A] to-[#10B981] hover:bg-right bg-[size:200%_auto] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-green-500/10 active:scale-99 transition-all duration-300 cursor-pointer"
                   >
                     {loading ? (
                       <>Transmitting message...</>
@@ -220,8 +206,8 @@ export default function ContactPage() {
       {/* 3. Google Maps Decorative Section */}
       <section className="px-4 sm:px-6 lg:px-8 py-10 max-w-7xl mx-auto" data-aos="zoom-in">
         <div className="bg-white border border-slate-100 rounded-3xl overflow-hidden p-3 shadow-md">
-          <div className="w-full h-80 rounded-2xl bg-gradient-to-tr from-green-50 via-orange-50 to-purple-50 flex flex-col items-center justify-center text-center p-6 border border-dashed border-slate-200">
-            <MapPin className="w-10 h-10 text-orange-500 animate-bounce mb-3" />
+          <div className="w-full h-80 rounded-2xl bg-gradient-to-tr from-green-50 via-emerald-50 to-teal-50 flex flex-col items-center justify-center text-center p-6 border border-dashed border-slate-200">
+            <MapPin className="w-10 h-10 text-[#16A34A] animate-bounce mb-3" />
             <h3 className="font-extrabold text-slate-800 text-sm sm:text-base">Headquarters Placement Map</h3>
             <p className="text-slate-450 text-xs mt-1 max-w-sm">
               Visakhapatnam & Hyderabad offices. Open for personal inquiries by appointment only.

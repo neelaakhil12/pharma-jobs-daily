@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import AOSProvider from '@/components/AOSProvider';
 import WhatsAppWidget from '@/components/WhatsAppWidget';
 import SplashScreen from '@/components/SplashScreen';
+import SocialChannelsPopup from '@/components/SocialChannelsPopup';
 
 const poppins = Poppins({
   variable: '--font-poppins',
@@ -55,6 +56,7 @@ export default function RootLayout({
     >
       <body className="flex flex-col min-h-screen bg-[#F8FAFC]">
         <SplashScreen />
+        <SocialChannelsPopup />
         <AOSProvider>
           <Navbar />
           <main className="flex-grow pb-20 md:pb-0">{children}</main>

@@ -50,9 +50,9 @@ export default function Testimonials() {
   };
 
   const gradients = [
-    'from-green-500 to-emerald-600',
-    'from-orange-500 to-amber-600',
-    'from-purple-500 to-indigo-600'
+    'from-green-600 to-emerald-500',
+    'from-emerald-600 to-teal-500',
+    'from-teal-600 to-green-500'
   ];
 
   return (

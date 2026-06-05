@@ -14,15 +14,15 @@ export default function JobCard({ job }: JobCardProps) {
     switch (category) {
       case 'Government Pharma Jobs':
         return {
-          border: 'border-l-4 border-l-[#F97316]',
-          badgeBg: 'bg-orange-50 text-[#F97316] border-orange-200/50',
-          dot: 'bg-[#F97316]'
+          border: 'border-l-4 border-l-[#059669]',
+          badgeBg: 'bg-emerald-50 text-[#059669] border-emerald-200/50',
+          dot: 'bg-[#059669]'
         };
       case 'JRF & SRF Jobs':
         return {
-          border: 'border-l-4 border-l-[#8B5CF6]',
-          badgeBg: 'bg-purple-50 text-[#8B5CF6] border-purple-200/50',
-          dot: 'bg-[#8B5CF6]'
+          border: 'border-l-4 border-l-[#0d9488]',
+          badgeBg: 'bg-teal-50 text-[#0d9488] border-teal-200/50',
+          dot: 'bg-[#0d9488]'
         };
       default:
         return {
@@ -68,21 +68,14 @@ export default function JobCard({ job }: JobCardProps) {
         {/* Metadata Grid */}
         <div className="grid grid-cols-1 min-[380px]:grid-cols-2 gap-3 pt-2 text-xs font-medium text-slate-600">
           <div className="flex items-center gap-2 text-slate-500">
-            <GraduationCap className="w-4 h-4 text-purple-500 shrink-0" />
+            <GraduationCap className="w-4 h-4 text-emerald-500 shrink-0" />
             <span className="truncate">{job.qualification} Required</span>
           </div>
           <div className="flex items-center gap-2 text-slate-500">
-            <MapPin className="w-4 h-4 text-orange-500 shrink-0" />
+            <MapPin className="w-4 h-4 text-green-600 shrink-0" />
             <span className="truncate">{job.location}</span>
           </div>
-          <div className="flex items-center gap-2 text-slate-500">
-            <Briefcase className="w-4 h-4 text-green-600 shrink-0" />
-            <span>{job.type}</span>
-          </div>
-          <div className="flex items-center gap-2 text-slate-500">
-            <IndianRupee className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span className="truncate font-semibold">{job.salary}</span>
-          </div>
+
         </div>
 
         {/* Simple inline description snippet */}
@@ -101,7 +94,7 @@ export default function JobCard({ job }: JobCardProps) {
         </Link>
         <Link
           href={`/jobs/${job.id}`}
-          className="px-4.5 py-2 text-center text-[11px] font-extrabold text-white bg-gradient-to-r from-[#16A34A] via-[#F97316] to-[#8B5CF6] hover:bg-right bg-[size:200%_auto] rounded-xl shadow-md hover:shadow-orange-500/10 transition-all duration-300 transform hover:-translate-y-0.5"
+          className="px-4.5 py-2 text-center text-[11px] font-extrabold text-white bg-gradient-to-r from-[#16A34A] via-[#10B981] to-[#059669] hover:bg-right bg-[size:200%_auto] rounded-xl shadow-md hover:shadow-green-500/10 transition-all duration-300 transform hover:-translate-y-0.5"
         >
           Apply Now
         </Link>
