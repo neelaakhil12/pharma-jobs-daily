@@ -12,18 +12,17 @@ export default function SocialChannelsPopup() {
   const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
-    const handleSplashFinished = () => {
+    // Graceful 1.5s delay before displaying the subscription modal
+    const timer = setTimeout(() => {
       setShouldRender(true);
       // Micro-delay to trigger entry transition animation
-      setTimeout(() => {
+      const animTimer = setTimeout(() => {
         setIsOpen(true);
       }, 100);
-    };
+      return () => clearTimeout(animTimer);
+    }, 1500);
 
-    window.addEventListener('splashScreenFinished', handleSplashFinished);
-    return () => {
-      window.removeEventListener('splashScreenFinished', handleSplashFinished);
-    };
+    return () => clearTimeout(timer);
   }, []);
 
   const handleDismiss = () => {
