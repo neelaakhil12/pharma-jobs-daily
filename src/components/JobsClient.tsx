@@ -84,7 +84,9 @@ export default function JobsClient() {
 
   // Sync state to API query on filters modifications
   useEffect(() => {
-    fetchJobs();
+    const timer = setTimeout(() => {
+      fetchJobs();
+    }, 0);
     
     // Sync URL queries elegantly without full refresh
     const params = new URLSearchParams();
@@ -95,6 +97,8 @@ export default function JobsClient() {
     
     const newQuery = params.toString();
     router.replace(newQuery ? `${pathname}?${newQuery}` : pathname);
+
+    return () => clearTimeout(timer);
   }, [search, location, category, qualification, type, sectorTab, pathname]);
 
   const handleReset = () => {
@@ -160,7 +164,7 @@ export default function JobsClient() {
                   }}
                   className={`px-3.5 sm:px-6 py-3 font-bold text-xs sm:text-sm tracking-wide transition-all border-b-2 uppercase cursor-pointer shrink-0 ${
                     active
-                      ? 'border-[#16A34A] text-[#16A34A]'
+                      ? 'border-primary text-primary'
                       : 'border-transparent text-slate-500 hover:text-slate-700'
                   }`}
                 >
@@ -198,16 +202,16 @@ export default function JobsClient() {
           ) : (
             /* Empty State */
             <div className="p-16 text-center border border-slate-100 bg-white shadow-md rounded-3xl space-y-4">
-              <div className="w-16 h-16 rounded-full bg-green-50 text-[#16A34A] flex items-center justify-center mx-auto shadow-sm">
+              <div className="w-16 h-16 rounded-full bg-primary-light text-primary flex items-center justify-center mx-auto shadow-sm">
                 <Search className="w-7 h-7" />
               </div>
               <h3 className="font-extrabold text-lg text-slate-800">No Job Postings Found</h3>
               <p className="text-slate-455 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
-                We couldn't find any vacancies matching your active filter criteria. Try resetting or adjusting the qualifications and keyword searches.
+                We could not find any vacancies matching your active filter criteria. Try resetting or adjusting the qualifications and keyword searches.
               </p>
               <button
                 onClick={handleReset}
-                className="px-6 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#10B981] text-xs font-bold text-white rounded-xl shadow-md cursor-pointer"
+                className="px-6 py-2.5 bg-gradient-to-r from-primary to-accent-sky text-xs font-bold text-white rounded-xl shadow-md cursor-pointer"
               >
                 Clear All Active Filters
               </button>

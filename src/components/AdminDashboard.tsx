@@ -215,7 +215,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pb-6 border-b border-slate-200">
         <div className="space-y-1">
           <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2.5">
-            <ShieldCheck className="w-8 h-8 text-[#16A34A] shrink-0" />
+            <ShieldCheck className="w-8 h-8 text-primary shrink-0" />
             Administrative Portal
           </h1>
           <p className="text-slate-500 text-xs sm:text-sm font-medium">
@@ -225,13 +225,13 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <button
             onClick={handleOpenAdd}
-            className="flex-grow sm:flex-grow-0 px-5 py-3 bg-gradient-to-r from-[#16A34A] to-[#10B981] text-xs font-bold text-white rounded-xl shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
+            className="flex-grow sm:flex-grow-0 px-5 py-3 bg-gradient-to-r from-primary to-accent-sky text-xs font-bold text-white rounded-xl shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
           >
             <Plus className="w-4.5 h-4.5" /> Publish New Vacancy
           </button>
           <button
             onClick={handleLogout}
-            className="p-3 border border-slate-200 hover:border-green-300 hover:bg-green-50 text-slate-500 hover:text-green-500 rounded-xl cursor-pointer"
+            className="p-3 border border-slate-200 hover:border-primary/30 hover:bg-primary-light text-slate-500 hover:text-primary rounded-xl cursor-pointer"
             title="Log Out Session"
           >
             <LogOut className="w-5 h-5" />
@@ -242,10 +242,10 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
       {/* Metrics widgets */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: 'Active Jobs', value: totalOpen, icon: FolderOpen, color: 'text-green-600 bg-green-50' },
-          { label: 'Government Positions', value: govOpen, icon: ShieldCheck, color: 'text-emerald-600 bg-emerald-50' },
-          { label: 'Private Industries', value: pvtOpen, icon: Building, color: 'text-teal-600 bg-teal-50' },
-          { label: 'Nursing Vacancies', value: nurseOpen, icon: Sparkles, color: 'text-green-600 bg-green-50' }
+          { label: 'Active Jobs', value: totalOpen, icon: FolderOpen, color: 'text-primary bg-primary-light' },
+          { label: 'Government Positions', value: govOpen, icon: ShieldCheck, color: 'text-secondary bg-secondary/10' },
+          { label: 'Private Industries', value: pvtOpen, icon: Building, color: 'text-accent-sky bg-accent-sky/10' },
+          { label: 'Nursing Vacancies', value: nurseOpen, icon: Sparkles, color: 'text-amber-600 bg-amber-50' }
         ].map((met, i) => {
           const Icon = met.icon;
           return (
@@ -266,7 +266,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
       <div className="bg-white border border-slate-100 shadow-md rounded-3xl overflow-hidden">
         <div className="p-6 border-b border-slate-100 flex justify-between items-center gap-4 bg-slate-50/50">
           <h3 className="font-extrabold text-slate-800 text-sm">Active Job Publications Database</h3>
-          <span className="text-xs font-bold text-[#16A34A] bg-green-50 border border-green-100 rounded-full px-3 py-1">
+          <span className="text-xs font-bold text-primary bg-primary-light border border-primary/20 rounded-full px-3 py-1">
             {jobs.length} Positions Active
           </span>
         </div>
@@ -295,7 +295,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                       <span className="inline-block text-[10px] font-bold px-2 py-0.5 bg-slate-50 border border-slate-200 text-slate-600 rounded">
                         {job.qualification}
                       </span>
-                      <div className="text-[10px] font-bold text-[#16A34A]">{job.category}</div>
+                      <div className="text-[10px] font-bold text-primary">{job.category}</div>
                     </td>
                     {/* Location & Posted date */}
                     <td className="p-5 space-y-0.5">
@@ -307,14 +307,14 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                       <div className="inline-flex items-center gap-2">
                         <button
                           onClick={() => handleOpenEdit(job)}
-                          className="p-2 border border-slate-200 hover:border-[#16A34A] hover:bg-green-50 text-slate-500 hover:text-[#16A34A] rounded-lg cursor-pointer"
+                          className="p-2 border border-slate-200 hover:border-primary hover:bg-primary-light text-slate-500 hover:text-primary rounded-lg cursor-pointer"
                           title="Edit Posting"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDelete(job.id)}
-                          className="p-2 border border-slate-200 hover:border-green-300 hover:bg-green-50 text-slate-500 hover:text-green-650 rounded-lg cursor-pointer"
+                          className="p-2 border border-slate-200 hover:border-red-300 hover:bg-red-50 text-slate-500 hover:text-red-600 rounded-lg cursor-pointer"
                           title="Remove Posting"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -342,7 +342,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 shrink-0">
               <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-2">
-                <Plus className="w-5 h-5 text-[#16A34A]" />
+                <Plus className="w-5 h-5 text-primary" />
                 Publish Daily Vacancy
               </h3>
               <button onClick={() => setShowAddModal(false)} className="text-slate-450 hover:text-slate-650 cursor-pointer">
@@ -362,7 +362,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                     placeholder="e.g. Drug Inspector, Pharmacist"
                     value={form.title}
                     onChange={(e) => setForm({ ...form, title: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                   />
                 </div>
                 <div className="space-y-1">
@@ -373,7 +373,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                     placeholder="e.g. Cipla, Apollo Hospitals"
                     value={form.company}
                     onChange={(e) => setForm({ ...form, company: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                   />
                 </div>
               </div>
@@ -385,7 +385,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   <select
                     value={form.category}
                     onChange={(e) => setForm({ ...form, category: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-655 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-655 focus:outline-none focus:border-primary"
                   >
                     {categories.map((c) => (
                       <option key={c} value={c}>{c}</option>
@@ -397,7 +397,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   <select
                     value={form.type}
                     onChange={(e) => setForm({ ...form, type: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-655 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-655 focus:outline-none focus:border-primary"
                   >
                     {jobTypes.map((t) => (
                       <option key={t} value={t}>{t}</option>
@@ -409,7 +409,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   <select
                     value={form.qualification}
                     onChange={(e) => setForm({ ...form, qualification: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-655 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-655 focus:outline-none focus:border-primary"
                   >
                     {qualifications.map((q) => (
                       <option key={q} value={q}>{q}</option>
@@ -428,7 +428,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                     placeholder="e.g. Hyderabad, Telangana"
                     value={form.location}
                     onChange={(e) => setForm({ ...form, location: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                   />
                 </div>
                 <div className="space-y-1">
@@ -439,7 +439,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                     placeholder="e.g. ₹28,000 - ₹35,000 / month"
                     value={form.salary}
                     onChange={(e) => setForm({ ...form, salary: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                   />
                 </div>
                 <div className="space-y-1">
@@ -450,7 +450,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                     placeholder="e.g. Freshers, 1-3 years"
                     value={form.experience}
                     onChange={(e) => setForm({ ...form, experience: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                   />
                 </div>
               </div>
@@ -464,40 +464,40 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   placeholder="Provide deep description of the vacancy role..."
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A] resize-none"
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary resize-none"
                 />
               </div>
 
               {/* Arrays parsing blocks (multi-line textarea helper) */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-100 pt-4">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-green-600 block">Responsibilities (One per line)</label>
+                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-primary block">Responsibilities (One per line)</label>
                   <textarea
                     rows={4}
                     placeholder="Perform shop-floor checks&#10;Verify line clearances"
                     value={form.responsibilitiesRaw}
                     onChange={(e) => setForm({ ...form, responsibilitiesRaw: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-[#16A34A] resize-none"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 block">Requirements (One per line)</label>
+                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-accent-sky block">Requirements (One per line)</label>
                   <textarea
                     rows={4}
                     placeholder="GPAT Qualified&#10;Consistent academic marks"
                     value={form.requirementsRaw}
                     onChange={(e) => setForm({ ...form, requirementsRaw: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-[#16A34A] resize-none"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-teal-650 block">Benefits (One per line)</label>
+                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-secondary block">Benefits (One per line)</label>
                   <textarea
                     rows={4}
                     placeholder="PF & ESI statutory bonus&#10;Rotational shifts incentives"
                     value={form.benefitsRaw}
                     onChange={(e) => setForm({ ...form, benefitsRaw: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-[#16A34A] resize-none"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none"
                   />
                 </div>
               </div>
@@ -511,7 +511,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   placeholder="e.g. mailto:ifactstelugu@gmail.com"
                   value={form.applyUrl}
                   onChange={(e) => setForm({ ...form, applyUrl: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                 />
               </div>
 
@@ -530,7 +530,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                 type="submit"
                 onClick={handleAddSubmit}
                 disabled={submitting}
-                className="px-5 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#10B981] text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-1.5"
+                className="px-5 py-2.5 bg-gradient-to-r from-primary to-accent-sky text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-1.5"
               >
                 {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 Publish Notice
@@ -547,7 +547,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 shrink-0">
               <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-2">
-                <Edit className="w-5 h-5 text-[#16A34A]" />
+                <Edit className="w-5 h-5 text-primary" />
                 Modify Published Vacancy
               </h3>
               <button onClick={() => setShowEditModal(false)} className="text-slate-450 hover:text-slate-650 cursor-pointer">
@@ -566,7 +566,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                     required
                     value={form.title}
                     onChange={(e) => setForm({ ...form, title: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                   />
                 </div>
                 <div className="space-y-1">
@@ -576,7 +576,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                     required
                     value={form.company}
                     onChange={(e) => setForm({ ...form, company: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                   />
                 </div>
               </div>
@@ -588,7 +588,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   <select
                     value={form.category}
                     onChange={(e) => setForm({ ...form, category: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-655 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-655 focus:outline-none focus:border-primary"
                   >
                     {categories.map((c) => (
                       <option key={c} value={c}>{c}</option>
@@ -600,7 +600,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   <select
                     value={form.type}
                     onChange={(e) => setForm({ ...form, type: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-655 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-655 focus:outline-none focus:border-primary"
                   >
                     {jobTypes.map((t) => (
                       <option key={t} value={t}>{t}</option>
@@ -612,7 +612,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   <select
                     value={form.qualification}
                     onChange={(e) => setForm({ ...form, qualification: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-655 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-655 focus:outline-none focus:border-primary"
                   >
                     {qualifications.map((q) => (
                       <option key={q} value={q}>{q}</option>
@@ -630,7 +630,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                     required
                     value={form.location}
                     onChange={(e) => setForm({ ...form, location: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                   />
                 </div>
                 <div className="space-y-1">
@@ -640,7 +640,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                     required
                     value={form.salary}
                     onChange={(e) => setForm({ ...form, salary: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                   />
                 </div>
                 <div className="space-y-1">
@@ -650,7 +650,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                     required
                     value={form.experience}
                     onChange={(e) => setForm({ ...form, experience: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                   />
                 </div>
               </div>
@@ -663,37 +663,37 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   required
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A] resize-none"
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary resize-none"
                 />
               </div>
 
               {/* Arrays parsing blocks (multi-line textarea helper) */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-100 pt-4">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-green-600 block">Responsibilities (One per line)</label>
+                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-primary block">Responsibilities (One per line)</label>
                   <textarea
                     rows={4}
                     value={form.responsibilitiesRaw}
                     onChange={(e) => setForm({ ...form, responsibilitiesRaw: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-[#16A34A] resize-none"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 block">Requirements (One per line)</label>
+                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-accent-sky block">Requirements (One per line)</label>
                   <textarea
                     rows={4}
                     value={form.requirementsRaw}
                     onChange={(e) => setForm({ ...form, requirementsRaw: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-[#16A34A] resize-none"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-teal-655 block">Benefits (One per line)</label>
+                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-secondary block">Benefits (One per line)</label>
                   <textarea
                     rows={4}
                     value={form.benefitsRaw}
                     onChange={(e) => setForm({ ...form, benefitsRaw: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-[#16A34A] resize-none"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none"
                   />
                 </div>
               </div>
@@ -706,7 +706,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   required
                   value={form.applyUrl}
                   onChange={(e) => setForm({ ...form, applyUrl: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                 />
               </div>
 
@@ -725,7 +725,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                 type="submit"
                 onClick={handleEditSubmit}
                 disabled={submitting}
-                className="px-5 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#10B981] text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-1.5"
+                className="px-5 py-2.5 bg-gradient-to-r from-primary to-accent-sky text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-1.5"
               >
                 {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 Save Modifications

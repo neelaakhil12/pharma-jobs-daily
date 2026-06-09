@@ -5,7 +5,6 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AOSProvider from '@/components/AOSProvider';
 import WhatsAppWidget from '@/components/WhatsAppWidget';
-import SplashScreen from '@/components/SplashScreen';
 import SocialChannelsPopup from '@/components/SocialChannelsPopup';
 
 const poppins = Poppins({
@@ -55,7 +54,6 @@ export default function RootLayout({
       className={`${poppins.variable} ${inter.variable} h-full scroll-smooth antialiased`}
     >
       <body className="flex flex-col min-h-screen bg-[#F8FAFC]">
-        <SplashScreen />
         <SocialChannelsPopup />
         <AOSProvider>
           <Navbar />

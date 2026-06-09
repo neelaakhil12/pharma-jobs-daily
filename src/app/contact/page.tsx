@@ -23,10 +23,10 @@ export default function ContactPage() {
   return (
     <div className="bg-[#F8FAFC] min-h-screen overflow-x-hidden">
       {/* 1. Header Banner */}
-      <section className="relative overflow-hidden py-16 bg-gradient-to-r from-green-50/40 via-emerald-50/40 to-teal-50/40 border-b border-slate-100">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-[#16A34A]/5 rounded-full blur-3xl pointer-events-none" />
+      <section className="relative overflow-hidden py-16 bg-gradient-to-r from-primary-light/40 via-accent-sky/10 to-blue-50/30 border-b border-slate-100">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4" data-aos="fade-down">
-          <span className="text-xs font-extrabold text-[#16A34A] uppercase tracking-widest bg-green-100 px-3.5 py-1.5 rounded-full border border-green-200/40">
+          <span className="text-xs font-extrabold text-primary uppercase tracking-widest bg-primary-light px-3.5 py-1.5 rounded-full border border-primary/20">
             Get In Touch
           </span>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-800 tracking-tight">
@@ -59,28 +59,28 @@ export default function ContactPage() {
                 href="https://wa.me/918919278961"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4.5 sm:p-5 bg-white border border-slate-100 hover:border-green-300 shadow-md rounded-2xl transition-all duration-300 transform hover:-translate-y-1 block"
+                className="flex items-center gap-4 p-4.5 sm:p-5 bg-white border border-slate-100 hover:border-primary/30 shadow-md rounded-2xl transition-all duration-300 transform hover:-translate-y-1 block"
               >
-                <div className="p-3 bg-green-50 text-[#16A34A] rounded-xl shrink-0">
+                <div className="p-3 bg-primary-light text-primary rounded-xl shrink-0">
                   <MessageCircle className="w-6 h-6 animate-pulse" />
                 </div>
                 <div>
                   <span className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">WhatsApp Support</span>
-                  <span className="block text-sm font-extrabold text-slate-700 hover:text-[#16A34A] transition-colors">Start Instant Chat</span>
+                  <span className="block text-sm font-extrabold text-slate-700 hover:text-primary transition-colors">Start Instant Chat</span>
                 </div>
               </a>
 
               {/* Email Channel */}
               <a
                 href="mailto:ifactstelugu@gmail.com"
-                className="flex items-center gap-4 p-4.5 sm:p-5 bg-white border border-slate-100 hover:border-emerald-300 shadow-md rounded-2xl transition-all duration-300 transform hover:-translate-y-1 block"
+                className="flex items-center gap-4 p-4.5 sm:p-5 bg-white border border-slate-100 hover:border-accent-sky/40 shadow-md rounded-2xl transition-all duration-300 transform hover:-translate-y-1 block"
               >
-                <div className="p-3 bg-emerald-50 text-[#059669] rounded-xl shrink-0">
+                <div className="p-3 bg-accent-sky/10 text-accent-sky rounded-xl shrink-0">
                   <Mail className="w-6 h-6" />
                 </div>
                 <div>
                   <span className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">Email Inquiry</span>
-                  <span className="block text-xs sm:text-sm font-extrabold text-slate-700 hover:text-[#059669] transition-colors break-all">ifactstelugu@gmail.com</span>
+                  <span className="block text-xs sm:text-sm font-extrabold text-slate-700 hover:text-accent-sky transition-colors break-all">ifactstelugu@gmail.com</span>
                 </div>
               </a>
             </div>
@@ -88,7 +88,7 @@ export default function ContactPage() {
             {/* Social media connections */}
             <div className="p-5 sm:p-6 bg-white border border-slate-100 shadow-md rounded-3xl space-y-4">
               <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-2">
-                <Globe className="w-4.5 h-4.5 text-[#16A34A]" />
+                <Globe className="w-4.5 h-4.5 text-primary" />
                 Online Community Links
               </h3>
               <div className="flex flex-wrap gap-2 sm:gap-3">
@@ -96,7 +96,7 @@ export default function ContactPage() {
                   <button
                     key={i}
                     type="button"
-                    className="text-xs px-3.5 py-2 bg-slate-50 border border-slate-200 hover:border-[#16A34A] hover:text-[#16A34A] text-slate-650 font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
+                    className="text-xs px-3.5 py-2 bg-slate-50 border border-slate-200 hover:border-primary hover:text-primary text-slate-655 font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
                   >
                     {social}
                   </button>
@@ -111,7 +111,7 @@ export default function ContactPage() {
               
               {success ? (
                 <div className="p-8 text-center space-y-4 animate-zoom-in">
-                  <div className="w-16 h-16 bg-green-50 text-[#16A34A] rounded-full flex items-center justify-center mx-auto">
+                  <div className="w-16 h-16 bg-primary-light text-primary rounded-full flex items-center justify-center mx-auto">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <h3 className="font-extrabold text-lg text-slate-800">Message Dispatched Successfully!</h3>
@@ -120,7 +120,7 @@ export default function ContactPage() {
                   </p>
                   <button
                     onClick={() => setSuccess(false)}
-                    className="px-6 py-2.5 bg-gradient-to-r from-[#16A34A] to-[#10B981] text-white text-xs font-bold rounded-xl shadow-md cursor-pointer"
+                    className="px-6 py-2.5 bg-gradient-to-r from-primary to-accent-sky text-white text-xs font-bold rounded-xl shadow-md cursor-pointer"
                   >
                     Send Another Message
                   </button>
@@ -141,7 +141,7 @@ export default function ContactPage() {
                         placeholder="John Doe"
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -152,7 +152,7 @@ export default function ContactPage() {
                         placeholder="john@example.com"
                         value={form.email}
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                       />
                     </div>
                   </div>
@@ -165,7 +165,7 @@ export default function ContactPage() {
                       placeholder="e.g. Recruitments publishing, verification details..."
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A]"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                     />
                   </div>
 
@@ -177,14 +177,14 @@ export default function ContactPage() {
                       placeholder="Describe the nature of your query in detail..."
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-[#16A34A] resize-none"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3.5 bg-gradient-to-r from-[#16A34A] to-[#10B981] hover:bg-right bg-[size:200%_auto] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-green-500/10 active:scale-99 transition-all duration-300 cursor-pointer"
+                    className="w-full py-3.5 bg-gradient-to-r from-primary to-accent-sky hover:bg-right bg-[size:200%_auto] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 active:scale-99 transition-all duration-300 cursor-pointer"
                   >
                     {loading ? (
                       <>Transmitting message...</>
@@ -206,8 +206,8 @@ export default function ContactPage() {
       {/* 3. Google Maps Decorative Section */}
       <section className="px-4 sm:px-6 lg:px-8 py-10 max-w-7xl mx-auto" data-aos="zoom-in">
         <div className="bg-white border border-slate-100 rounded-3xl overflow-hidden p-3 shadow-md">
-          <div className="w-full h-80 rounded-2xl bg-gradient-to-tr from-green-50 via-emerald-50 to-teal-50 flex flex-col items-center justify-center text-center p-6 border border-dashed border-slate-200">
-            <MapPin className="w-10 h-10 text-[#16A34A] animate-bounce mb-3" />
+          <div className="w-full h-80 rounded-2xl bg-gradient-to-tr from-primary-light via-accent-sky/10 to-blue-50 flex flex-col items-center justify-center text-center p-6 border border-dashed border-slate-200">
+            <MapPin className="w-10 h-10 text-primary animate-bounce mb-3" />
             <h3 className="font-extrabold text-slate-800 text-sm sm:text-base">Headquarters Placement Map</h3>
             <p className="text-slate-450 text-xs mt-1 max-w-sm">
               Visakhapatnam & Hyderabad offices. Open for personal inquiries by appointment only.

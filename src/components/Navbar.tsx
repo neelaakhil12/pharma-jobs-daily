@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Home, Search, Mail, Briefcase } from 'lucide-react';
+import { Menu, X, Home, Search, Mail } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -12,7 +12,9 @@ export default function Navbar() {
 
   // Close menu on route change
   useEffect(() => {
-    setMobileOpen(false);
+    setTimeout(() => {
+      setMobileOpen(false);
+    }, 0);
   }, [pathname]);
 
   // Prevent body scroll when menu is open
@@ -29,7 +31,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-sm transition-all duration-300">
+      <nav className="sticky top-0 z-50 bg-[#00469b] border-b border-white/10 shadow-md transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-2.5">
 
@@ -37,7 +39,7 @@ export default function Navbar() {
             <Link href="/" className="flex items-center group">
               <div className="relative w-40 h-13 sm:w-48 sm:h-16 md:w-56 md:h-18 group-hover:scale-103 transition-transform duration-300">
                 <Image
-                  src="/logo-v3.png"
+                  src="/logo-v5.png"
                   alt="Pharma Jobs Daily Logo"
                   fill
                   className="object-contain object-left"
@@ -55,12 +57,12 @@ export default function Navbar() {
                     key={link.path}
                     href={link.path}
                     className={`text-sm font-medium tracking-wide transition-colors duration-200 relative py-1 ${
-                      isActive ? 'text-[#16A34A] font-semibold' : 'text-gray-600 hover:text-[#059669]'
+                      isActive ? 'text-accent font-extrabold' : 'text-white/80 hover:text-white'
                     }`}
                   >
                     {link.name}
                     {isActive && (
-                      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#16A34A] to-[#10B981] rounded-full" />
+                      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-accent rounded-full" />
                     )}
                   </Link>
                 );
@@ -75,7 +77,7 @@ export default function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Join WhatsApp Channel"
-                className="p-2.5 text-white bg-[#25D366] hover:bg-[#20ba59] rounded-xl shadow-md hover:shadow-emerald-500/20 transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center cursor-pointer"
+                className="p-2.5 text-white bg-[#25D366] hover:bg-[#20ba59] rounded-xl shadow-md hover:shadow-[#25D366]/20 transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center cursor-pointer"
               >
                 <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.968C16.69 1.97 14.221.945 11.6.943c-5.445 0-9.87 4.372-9.874 9.802-.001 1.758.465 3.479 1.346 5.025l-.995 3.637 3.737-.978zm11.567-5.56c-.32-.16-1.89-.93-2.185-1.04-.294-.11-.51-.16-.723.16-.214.32-.83.104-1.016.32-.186.216-.373.24-.693.08-.32-.16-1.353-.5-2.577-1.6-.952-.85-1.593-1.9-1.78-2.22-.187-.32-.02-.49.14-.65.144-.14.32-.37.48-.56.16-.19.214-.32.32-.53.11-.21.055-.4-.027-.56-.083-.16-.723-1.74-.992-2.39-.262-.64-.528-.55-.723-.55-.19 0-.408-.01-.625-.01-.217 0-.57.08-.87.408-.3.32-1.148 1.12-1.148 2.73s1.175 3.17 1.34 3.39c.163.22 2.31 3.53 5.596 4.95" />
@@ -109,13 +111,13 @@ export default function Navbar() {
 
             {/* Mobile Hamburger Button */}
             <button
-              className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl border border-slate-200 bg-slate-50 hover:bg-green-50 hover:border-green-300 transition-all duration-200 focus:outline-none"
+              className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl border border-white/20 bg-white/10 hover:bg-white/25 hover:border-white/40 transition-all duration-200 focus:outline-none"
               onClick={() => setMobileOpen((prev) => !prev)}
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             >
               {mobileOpen
-                ? <X className="w-5 h-5 text-[#16A34A]" />
-                : <Menu className="w-5 h-5 text-slate-700" />
+                ? <X className="w-5 h-5 text-white" />
+                : <Menu className="w-5 h-5 text-white" />
               }
             </button>
 
@@ -128,7 +130,7 @@ export default function Navbar() {
             mobileOpen ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
-          <div className="bg-white border-t border-slate-100 px-4 py-4 space-y-1">
+          <div className="bg-[#00469b] border-t border-white/10 px-4 py-4 space-y-1">
             {navLinks.map((link) => {
               const isActive = pathname === link.path;
               const Icon = link.icon;
@@ -138,14 +140,14 @@ export default function Navbar() {
                   href={link.path}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
                     isActive
-                      ? 'bg-green-50 text-[#16A34A] border border-green-200'
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-[#059669]'
+                      ? 'bg-white/10 text-accent border border-white/10'
+                      : 'text-white/80 hover:bg-white/5 hover:text-white'
                   }`}
                 >
-                  <Icon className={`w-4.5 h-4.5 shrink-0 ${isActive ? 'text-[#16A34A]' : 'text-slate-400'}`} />
+                  <Icon className={`w-4.5 h-4.5 shrink-0 ${isActive ? 'text-accent' : 'text-white/40'}`} />
                   {link.name}
                   {isActive && (
-                    <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#16A34A]" />
+                    <span className="ml-auto w-1.5 h-1.5 rounded-full bg-accent" />
                   )}
                 </Link>
               );
@@ -158,7 +160,7 @@ export default function Navbar() {
                 href="https://whatsapp.com/channel/0029Va54XvB0G0Xg3b8hXj0s"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center gap-1.5 py-2.5 rounded-2xl bg-emerald-50 border border-emerald-100 hover:bg-emerald-100/60 transition-all text-[10px] font-bold text-emerald-700 cursor-pointer"
+                className="flex flex-col items-center justify-center gap-1.5 py-2.5 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/20 hover:bg-[#25D366]/20 transition-all text-[10px] font-bold text-[#20ba59] cursor-pointer"
               >
                 <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.968C16.69 1.97 14.221.945 11.6.943c-5.445 0-9.87 4.372-9.874 9.802-.001 1.758.465 3.479 1.346 5.025l-.995 3.637 3.737-.978zm11.567-5.56c-.32-.16-1.89-.93-2.185-1.04-.294-.11-.51-.16-.723.16-.214.32-.83.104-1.016.32-.186.216-.373.24-.693.08-.32-.16-1.353-.5-2.577-1.6-.952-.85-1.593-1.9-1.78-2.22-.187-.32-.02-.49.14-.65.144-.14.32-.37.48-.56.16-.19.214-.32.32-.53.11-.21.055-.4-.027-.56-.083-.16-.723-1.74-.992-2.39-.262-.64-.528-.55-.723-.55-.19 0-.408-.01-.625-.01-.217 0-.57.08-.87.408-.3.32-1.148 1.12-1.148 2.73s1.175 3.17 1.34 3.39c.163.22 2.31 3.53 5.596 4.95" />

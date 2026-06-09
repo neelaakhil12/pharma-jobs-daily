@@ -4,10 +4,10 @@ import { useState, useEffect, useRef } from 'react';
 import { FileCheck, Users, Building, Award } from 'lucide-react';
 
 const stats = [
-  { label: 'Total Jobs Posted', value: 15000, suffix: '+', icon: FileCheck, col: 'from-green-600 to-emerald-500' },
-  { label: 'Active Job Seekers', value: 50000, suffix: '+', icon: Users, col: 'from-emerald-600 to-teal-500' },
-  { label: 'Recruitment Partners', value: 320, suffix: '+', icon: Building, col: 'from-teal-600 to-green-500' },
-  { label: 'Years of Trusted Service', value: 6, suffix: '+ Years', icon: Award, col: 'from-green-500 to-emerald-600' },
+  { label: 'Total Jobs Posted', value: 15000, suffix: '+', icon: FileCheck, col: 'from-primary to-accent-sky' },
+  { label: 'Active Job Seekers', value: 50000, suffix: '+', icon: Users, col: 'from-secondary to-primary' },
+  { label: 'Recruitment Partners', value: 320, suffix: '+', icon: Building, col: 'from-accent-sky to-primary' },
+  { label: 'Years of Trusted Service', value: 6, suffix: '+ Years', icon: Award, col: 'from-accent to-amber-500' },
 ];
 
 function AnimatedCounter({ target, suffix, duration = 2000 }: { target: number; suffix: string; duration?: number }) {

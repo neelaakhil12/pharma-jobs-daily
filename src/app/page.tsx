@@ -25,7 +25,7 @@ export default async function HomePage() {
       {/* 3. All Jobs Board */}
       <section className="py-16 lg:py-24 bg-[#F8FAFC] border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center space-y-3" data-aos="fade-up">
-          <span className="text-xs font-extrabold text-[#16A34A] uppercase tracking-widest bg-green-50 px-3.5 py-1.5 rounded-full border border-green-100">
+          <span className="text-xs font-extrabold text-primary uppercase tracking-widest bg-primary-light px-3.5 py-1.5 rounded-full border border-primary/20">
             Live Job Board
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">
@@ -50,9 +50,9 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             {/* Visual Brand Statement */}
             <div className="lg:col-span-5 relative" data-aos="fade-right">
-              <div className="absolute top-0 left-0 w-24 h-24 bg-gradient-to-tr from-green-300 to-emerald-300 rounded-full blur-2xl opacity-30 -z-10" />
+              <div className="absolute top-0 left-0 w-24 h-24 bg-gradient-to-tr from-primary/30 to-accent-sky/20 rounded-full blur-2xl opacity-30 -z-10" />
               <div className="p-6 sm:p-8 border border-slate-100 shadow-2xl rounded-3xl glass-panel relative">
-                <div className="absolute -top-6 -right-6 p-4 bg-gradient-to-r from-[#16A34A] to-[#10B981] rounded-2xl text-white shadow-lg animate-bounce">
+                <div className="absolute -top-6 -right-6 p-4 bg-gradient-to-r from-primary to-accent-sky rounded-2xl text-white shadow-lg animate-bounce">
                   <Award className="w-6 h-6" />
                 </div>
                 <h3 className="text-2xl font-extrabold text-slate-800 leading-tight mb-4">
@@ -62,7 +62,7 @@ export default async function HomePage() {
                   &quot;Pharma Jobs Daily was born out of a single vision: to build a seamless path between hard-working healthcare practitioners and prime career placements without bureaucratic delays.&quot;
                 </blockquote>
                 <div className="flex gap-3 items-center">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#16A34A] to-[#10B981] flex items-center justify-center font-bold text-white text-xs">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-accent-sky flex items-center justify-center font-bold text-white text-xs">
                     PJD
                   </div>
                   <div>
@@ -78,7 +78,7 @@ export default async function HomePage() {
             {/* Why Features Column */}
             <div className="lg:col-span-7 space-y-10" data-aos="fade-left">
               <div className="space-y-3">
-                <span className="text-xs font-extrabold text-[#059669] uppercase tracking-widest">
+                <span className="text-xs font-extrabold text-primary uppercase tracking-widest">
                   Our Advantages
                 </span>
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-850 tracking-tight leading-tight">
@@ -92,19 +92,19 @@ export default async function HomePage() {
                     title: '100% Handpicked & Verified Jobs',
                     desc: 'Every pharmaceutical, staff nurse, and researcher opening posted is reviewed by experts to prevent misleading advertisements.',
                     icon: ShieldCheck,
-                    col: 'bg-green-50 text-[#16A34A]'
+                    col: 'bg-primary-light text-primary'
                   },
                   {
                     title: 'Immediate Daily Vacancy Bulletins',
                     desc: 'We publish alerts on active private lab jobs, government examinations, and college walk-in interviews immediately upon announcement.',
                     icon: Zap,
-                    col: 'bg-emerald-50 text-[#059669]'
+                    col: 'bg-accent-sky/10 text-accent-sky'
                   },
                   {
                     title: 'Zero Redirection, Direct Apply Contacts',
                     desc: 'Apply directly via email, WhatsApp, or official links. No paid agent redirections, no middleman interference, absolutely free.',
                     icon: FileCheck,
-                    col: 'bg-teal-50 text-[#0d9488]'
+                    col: 'bg-secondary/15 text-secondary'
                   }
                 ].map((feat, idx) => {
                   const Icon = feat.icon;
@@ -133,7 +133,7 @@ export default async function HomePage() {
       <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
         <div
           data-aos="zoom-in"
-          className="bg-gradient-to-tr from-[#16A34A]/95 via-[#10B981]/95 to-[#059669]/95 p-6 sm:p-12 md:p-16 rounded-3xl text-white shadow-2xl relative overflow-hidden"
+          className="bg-gradient-to-tr from-primary/95 via-secondary/95 to-accent-sky/95 p-6 sm:p-12 md:p-16 rounded-3xl text-white shadow-2xl relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-2xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-2xl pointer-events-none" />

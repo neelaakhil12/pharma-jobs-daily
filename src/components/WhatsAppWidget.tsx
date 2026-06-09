@@ -1,7 +1,5 @@
 'use client';
 
-import { MessageSquareText } from 'lucide-react';
-
 export default function WhatsAppWidget() {
   const phoneNumber = '918919278961';
   const message = 'Hello! I am visiting the Pharma Jobs Daily website and would like to get updates about latest job vacancies.';
@@ -12,11 +10,11 @@ export default function WhatsAppWidget() {
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-20 md:bottom-6 right-6 z-40 flex items-center justify-center p-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 group cursor-pointer"
+      className="fixed bottom-20 md:bottom-6 right-6 z-40 flex items-center justify-center p-4 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 group cursor-pointer"
       title="Chat on WhatsApp"
     >
       {/* Ripple/Pulse Effect */}
-      <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-40 animate-ping -z-10 group-hover:animate-none" />
+      <span className="absolute inline-flex h-full w-full rounded-full bg-[#25D366] opacity-40 animate-ping -z-10 group-hover:animate-none" />
       
       {/* WhatsApp Icon */}
       <svg

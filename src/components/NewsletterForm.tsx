@@ -22,7 +22,7 @@ export default function NewsletterForm() {
 
   if (success) {
     return (
-      <div className="p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-center text-xs font-bold text-green-300 animate-zoom-in max-w-lg mx-auto">
+      <div className="p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-center text-xs font-bold text-accent animate-zoom-in max-w-lg mx-auto">
         ✓ Subscription active! You will now receive daily job alerts.
       </div>
     );

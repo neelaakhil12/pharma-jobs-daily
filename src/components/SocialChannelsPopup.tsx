@@ -57,7 +57,7 @@ export default function SocialChannelsPopup() {
         }`}
       >
         {/* Top Gradient Header Graphic */}
-        <div className="relative h-36 bg-gradient-to-r from-emerald-500 via-teal-600 to-green-600 flex items-center justify-center overflow-hidden">
+        <div className="relative h-36 bg-gradient-to-r from-primary via-secondary to-accent-sky flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
           
           {/* Animated background ripples */}
@@ -69,7 +69,7 @@ export default function SocialChannelsPopup() {
               <Bell className="w-6 h-6 text-white" />
             </div>
             <h3 className="text-xl font-bold tracking-wide">Never Miss a Job Update!</h3>
-            <p className="text-xs text-emerald-100 max-w-xs leading-normal">
+            <p className="text-xs text-blue-100 max-w-xs leading-normal">
               Get handpicked pharma, nurse, and paramedical vacancies instantly.
             </p>
           </div>
@@ -88,7 +88,7 @@ export default function SocialChannelsPopup() {
         <div className="p-6 sm:p-8 space-y-6">
           <div className="text-center space-y-2">
             <h4 className="text-slate-800 font-extrabold text-lg flex items-center justify-center gap-2">
-              <Users className="w-5 h-5 text-emerald-600" />
+              <Users className="w-5 h-5 text-primary" />
               Join Our Premium Communities
             </h4>
             <p className="text-slate-500 text-xs sm:text-sm max-w-xs mx-auto leading-relaxed">
@@ -104,20 +104,20 @@ export default function SocialChannelsPopup() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleDismiss}
-              className="flex items-center justify-between p-4 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-100 hover:border-emerald-300 rounded-2xl transition-all duration-300 group shadow-sm hover:shadow-md cursor-pointer hover:-translate-y-0.5"
+              className="flex items-center justify-between p-4 bg-primary-light hover:bg-primary-light/80 border border-primary/20 hover:border-primary/45 rounded-2xl transition-all duration-300 group shadow-sm hover:shadow-md cursor-pointer hover:-translate-y-0.5"
             >
               <div className="flex items-center gap-3.5">
-                <div className="p-2.5 bg-[#25D366] text-white rounded-xl shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform duration-300">
+                <div className="p-2.5 bg-[#25D366] text-white rounded-xl shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300">
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.968C16.69 1.97 14.221.945 11.6.943c-5.445 0-9.87 4.372-9.874 9.802-.001 1.758.465 3.479 1.346 5.025l-.995 3.637 3.737-.978zm11.567-5.56c-.32-.16-1.89-.93-2.185-1.04-.294-.11-.51-.16-.723.16-.214.32-.83.104-1.016.32-.186.216-.373.24-.693.08-.32-.16-1.353-.5-2.577-1.6-.952-.85-1.593-1.9-1.78-2.22-.187-.32-.02-.49.14-.65.144-.14.32-.37.48-.56.16-.19.214-.32.32-.53.11-.21.055-.4-.027-.56-.083-.16-.723-1.74-.992-2.39-.262-.64-.528-.55-.723-.55-.19 0-.408-.01-.625-.01-.217 0-.57.08-.87.408-.3.32-1.148 1.12-1.148 2.73s1.175 3.17 1.34 3.39c.163.22 2.31 3.53 5.596 4.95 2.778 1.2 3.344 1.01 4.545.89 1.2-.12 2.57-.74 2.93-1.46.36-.72.36-1.34.25-1.46-.11-.12-.43-.28-.75-.44z" />
                   </svg>
                 </div>
                 <div>
-                  <span className="block text-slate-800 font-extrabold text-sm group-hover:text-emerald-600 transition-colors">WhatsApp Channel</span>
+                  <span className="block text-slate-800 font-extrabold text-sm group-hover:text-primary transition-colors">WhatsApp Channel</span>
                   <span className="block text-[11px] text-slate-500 font-medium">Join for instant alerts</span>
                 </div>
               </div>
-              <ExternalLink className="w-4 h-4 text-emerald-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" />
+              <ExternalLink className="w-4 h-4 text-primary/70 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
             </a>
 
             {/* Telegram */}

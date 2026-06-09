@@ -64,22 +64,22 @@ export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-[#F8FAFC] py-20 lg:py-28 border-b border-gray-100">
       {/* Dynamic colorful decorative background grids (no blue/navy) */}
-      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-green-300/20 via-emerald-300/10 to-transparent blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-emerald-300/20 via-green-300/10 to-transparent blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-primary/10 via-accent-sky/5 to-transparent blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-accent-sky/10 via-primary/5 to-transparent blur-3xl pointer-events-none" />
 
       {/* Floating Animated Geometric Healthcare Capsules */}
-      <div className="absolute hidden xl:block top-1/4 right-12 w-16 h-28 bg-gradient-to-br from-[#16A34A]/10 to-emerald-300/20 rounded-full blur-[1px] border border-[#16A34A]/20 animate-float-slow" />
-      <div className="absolute hidden xl:block bottom-1/4 left-12 w-20 h-10 bg-gradient-to-r from-[#10B981]/10 to-emerald-300/20 rounded-full blur-[1px] border border-[#10B981]/20 animate-float-medium" />
-      <div className="absolute hidden xl:block top-1/3 left-1/4 w-12 h-12 bg-gradient-to-tr from-[#059669]/10 to-emerald-300/20 rounded-full blur-[1px] border border-[#059669]/20 animate-pulse" />
+      <div className="absolute hidden xl:block top-1/4 right-12 w-16 h-28 bg-gradient-to-br from-primary/10 to-accent-sky/20 rounded-full blur-[1px] border border-primary/20 animate-float-slow" />
+      <div className="absolute hidden xl:block bottom-1/4 left-12 w-20 h-10 bg-gradient-to-r from-accent-sky/10 to-primary/20 rounded-full blur-[1px] border border-accent-sky/20 animate-float-medium" />
+      <div className="absolute hidden xl:block top-1/3 left-1/4 w-12 h-12 bg-gradient-to-tr from-secondary/10 to-accent-sky/20 rounded-full blur-[1px] border border-secondary/20 animate-pulse" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
           {/* Text & Search Box Area */}
           <div className="lg:col-span-7 space-y-8" data-aos="fade-right">
             {/* Experience highlight badge */}
-            <div className="max-w-full inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200/50 rounded-2xl">
-              <Award className="w-4.5 h-4.5 text-[#16A34A] shrink-0 animate-bounce" />
-              <span className="text-[10px] min-[360px]:text-xs font-bold text-[#16A34A] uppercase tracking-wider">
+            <div className="max-w-full inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-primary-light to-blue-50 border border-primary/20 rounded-2xl">
+              <Award className="w-4.5 h-4.5 text-primary shrink-0 animate-bounce" />
+              <span className="text-[10px] min-[360px]:text-xs font-bold text-primary uppercase tracking-wider">
                 6+ Years of Trusted Recruitment Updates
               </span>
             </div>
@@ -88,8 +88,8 @@ export default function Hero() {
               <h1 className="text-2xl min-[360px]:text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-tight">
                 Discover Daily Verified <br />
                 <span className="relative inline-block mt-1 sm:mt-2 max-w-full">
-                  <span className="absolute -inset-1 bg-gradient-to-r from-green-100 to-emerald-100 rounded-lg blur-xs -z-10 hidden sm:block" />
-                  <span className="bg-gradient-to-r from-[#16A34A] via-[#059669] to-[#10B981] bg-clip-text text-transparent transition-all duration-500 leading-normal block sm:inline">
+                  <span className="absolute -inset-1 bg-gradient-to-r from-primary-light to-blue-100 rounded-lg blur-xs -z-10 hidden sm:block" />
+                  <span className="bg-gradient-to-r from-primary via-secondary to-accent-sky bg-clip-text text-transparent transition-all duration-500 leading-normal block sm:inline">
                     {rotatingTexts[textIndex]}
                   </span>
                 </span>
@@ -102,7 +102,7 @@ export default function Hero() {
             {/* Dynamic Search Box */}
             <form
               onSubmit={handleSearch}
-              className="p-2 sm:p-3 bg-white shadow-xl shadow-green-900/5 border border-slate-100 rounded-2xl sm:rounded-3xl max-w-2xl flex flex-col sm:flex-row gap-3 items-stretch sm:items-center"
+              className="p-2 sm:p-3 bg-white shadow-xl shadow-blue-900/5 border border-slate-100 rounded-2xl sm:rounded-3xl max-w-2xl flex flex-col sm:flex-row gap-3 items-stretch sm:items-center"
             >
               <div className="flex-grow flex items-center gap-3 px-3">
                 <Search className="w-5 h-5 text-slate-400 shrink-0" />
@@ -116,7 +116,7 @@ export default function Hero() {
               </div>
               <button
                 type="submit"
-                className="px-8 py-4 sm:py-3.5 bg-gradient-to-r from-[#16A34A] to-[#10B981] text-sm font-bold text-white rounded-xl sm:rounded-2xl shadow-md shadow-green-500/10 hover:shadow-green-500/20 hover:scale-101 active:scale-99 transition-all duration-300"
+                className="px-8 py-4 sm:py-3.5 bg-gradient-to-r from-primary to-accent-sky text-sm font-bold text-white rounded-xl sm:rounded-2xl shadow-md shadow-blue-500/10 hover:shadow-blue-500/20 hover:scale-101 active:scale-99 transition-all duration-300"
               >
                 Search Vacancies
               </button>
@@ -133,7 +133,7 @@ export default function Hero() {
                     setSearchTerm(tag);
                     router.push(`/jobs?search=${encodeURIComponent(tag)}`);
                   }}
-                  className="text-xs px-3.5 py-1.5 bg-white border border-slate-200 hover:border-[#16A34A] hover:text-[#16A34A] text-slate-650 font-bold rounded-full transition-all cursor-pointer"
+                  className="text-xs px-3.5 py-1.5 bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-650 font-bold rounded-full transition-all cursor-pointer"
                 >
                   {tag}
                 </button>
@@ -149,7 +149,7 @@ export default function Hero() {
             onMouseLeave={() => setIsPaused(false)}
           >
             {/* Background glowing rings */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#16A34A]/5 to-[#10B981]/5 rounded-3xl blur-2xl -z-10" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-accent-sky/5 rounded-3xl blur-2xl -z-10" />
 
             {/* Main Carousel Wrapper Card */}
             <div className="relative overflow-hidden rounded-3xl border border-slate-100 shadow-2xl glass-panel h-[360px] sm:h-[400px] flex flex-col justify-between p-0">
@@ -191,7 +191,7 @@ export default function Hero() {
                         setActiveSlide(idx);
                       }}
                       className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                        idx === activeSlide ? 'w-6 bg-[#16A34A]' : 'w-2 bg-slate-200 hover:bg-slate-350'
+                        idx === activeSlide ? 'w-6 bg-primary' : 'w-2 bg-slate-200 hover:bg-slate-350'
                       }`}
                       aria-label={`Go to slide ${idx + 1}`}
                     />

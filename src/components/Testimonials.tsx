@@ -15,7 +15,9 @@ export default function Testimonials() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    setTimeout(() => {
+      setMounted(true);
+    }, 0);
   }, []);
 
   const testifiers: Testifier[] = [
@@ -50,16 +52,16 @@ export default function Testimonials() {
   };
 
   const gradients = [
-    'from-green-600 to-emerald-500',
-    'from-emerald-600 to-teal-500',
-    'from-teal-600 to-green-500'
+    'from-primary to-accent-sky',
+    'from-secondary to-primary',
+    'from-accent-sky to-primary-hover'
   ];
 
   return (
     <section className="py-20 lg:py-28 bg-[#F8FAFC] border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-16" data-aos="fade-up">
-          <span className="text-xs font-extrabold text-[#16A34A] uppercase tracking-widest bg-green-50 px-3.5 py-1.5 rounded-full border border-green-100">
+          <span className="text-xs font-extrabold text-primary uppercase tracking-widest bg-primary-light px-3.5 py-1.5 rounded-full border border-primary/20">
             Testimonials
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">
@@ -87,7 +89,7 @@ export default function Testimonials() {
                 <Quote className="w-10 h-10 text-slate-100 absolute top-4 right-4 -z-0" />
                 <div className="space-y-4 relative z-10">
                   <p className="text-xs sm:text-sm leading-relaxed text-slate-500 italic">
-                    "{t.quote}"
+                    &ldquo;{t.quote}&rdquo;
                   </p>
                 </div>
                 <div className="flex gap-3 items-center pt-6 border-t border-slate-50 mt-6 relative z-10">

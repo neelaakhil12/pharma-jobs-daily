@@ -41,13 +41,13 @@ export default function ShareButton({ title, description }: ShareButtonProps) {
       onClick={handleShare}
       className={`px-6 py-3 border rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer ${
         copied
-          ? 'bg-green-50 border-green-300 text-green-700 shadow-sm'
+          ? 'bg-primary-light border-primary/30 text-primary shadow-sm'
           : 'bg-white border-slate-250 hover:border-slate-400 hover:bg-slate-50 text-slate-700'
       }`}
     >
       {copied ? (
         <>
-          <Check className="w-4 h-4 text-green-600 animate-bounce" /> URL Copied!
+          <Check className="w-4 h-4 text-primary animate-bounce" /> URL Copied!
         </>
       ) : (
         <>
