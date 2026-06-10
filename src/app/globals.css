@@ -20,6 +20,11 @@
   --color-bg-light: #f8fafc;
 }
 
+html {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   background-color: #f8fafc;
   background-image: 
@@ -30,6 +35,7 @@ body {
   background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-inter), sans-serif;
+  max-width: 100%;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }

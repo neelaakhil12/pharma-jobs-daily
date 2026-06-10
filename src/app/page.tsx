@@ -1,6 +1,5 @@
 import Hero from '@/components/Hero';
 import StatsSection from '@/components/StatsSection';
-import NewsletterForm from '@/components/NewsletterForm';
 import Testimonials from '@/components/Testimonials';
 import JobsClient from '@/components/JobsClient';
 import { Suspense } from 'react';
@@ -25,11 +24,11 @@ export default async function HomePage() {
       {/* 3. All Jobs Board */}
       <section className="py-16 lg:py-24 bg-[#F8FAFC] border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center space-y-3" data-aos="fade-up">
-          <span className="text-xs font-extrabold text-primary uppercase tracking-widest bg-primary-light px-3.5 py-1.5 rounded-full border border-primary/20">
+          <span className="inline-block text-xs font-extrabold text-primary uppercase tracking-widest bg-primary-light px-3.5 py-1.5 rounded-full border border-primary/20">
             Live Job Board
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">
-            Daily Verified Vacancies
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mt-3">
+            Daily Vacancies
           </h2>
           <p className="text-slate-500 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
             Handpicked career alerts uploaded directly by our recruiters. Search, filter by qualification, category, or location and apply directly.
@@ -129,29 +128,6 @@ export default async function HomePage() {
       {/* 5. Testimonials Section */}
       <Testimonials />
 
-      {/* 6. Newsletter Section */}
-      <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
-        <div
-          data-aos="zoom-in"
-          className="bg-gradient-to-tr from-primary/95 via-secondary/95 to-accent-sky/95 p-6 sm:p-12 md:p-16 rounded-3xl text-white shadow-2xl relative overflow-hidden"
-        >
-          <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-2xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-2xl pointer-events-none" />
-
-          <div className="relative z-10 max-w-3xl mx-auto text-center space-y-6">
-            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
-              Get Handpicked Jobs Delivered Instantly
-            </h2>
-            <p className="text-white/80 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
-              No spams, no advertisements. Just handpicked daily summaries of pharmaceutical, staff nurse, JRF, SRF and hospital vacancies directly in your inbox.
-            </p>
-            <NewsletterForm />
-            <p className="text-[10px] text-white/50">
-              *By subscribing, you agree to our standard terms and consent to receive daily career notifications.
-            </p>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

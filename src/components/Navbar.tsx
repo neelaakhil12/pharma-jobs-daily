@@ -39,7 +39,7 @@ export default function Navbar() {
             <Link href="/" className="flex items-center group">
               <div className="relative w-40 h-13 sm:w-48 sm:h-16 md:w-56 md:h-18 group-hover:scale-103 transition-transform duration-300">
                 <Image
-                  src="/logo-v5.png"
+                  src="/logo-v6.png"
                   alt="Pharma Jobs Daily Logo"
                   fill
                   className="object-contain object-left"

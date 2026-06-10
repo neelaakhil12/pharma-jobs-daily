@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, MapPin, Heart, Send } from 'lucide-react';
+import { Mail, MapPin, Heart } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -13,14 +13,14 @@ export default function Footer() {
       <div className="h-1.5 w-full bg-gradient-to-r from-primary via-accent-sky to-secondary" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {/* Column 1: About & Mission */}
           <div className="space-y-6">
             {/* Logo Branding - Image Only */}
             <Link href="/" className="flex items-center group">
               <div className="relative w-36 h-12 group-hover:scale-103 transition-transform duration-300">
                 <Image
-                  src="/logo-v5.png"
+                  src="/logo-v6.png"
                   alt="Pharma Jobs Daily Logo"
                   fill
                   className="object-contain object-left"
@@ -93,42 +93,26 @@ export default function Footer() {
                 <MapPin className="w-5 h-5 text-accent-sky shrink-0 mt-0.5" />
                 <div>
                   <span className="block text-xs text-neutral-500">Headquarters</span>
-                  <span className="text-white font-medium block">Andhra Pradesh, India</span>
+                  <span className="text-white font-medium block">Telangana, India</span>
                 </div>
               </li>
             </ul>
           </div>
 
-          {/* Column 4: Newsletter */}
-          <div className="space-y-6">
-            <h3 className="text-lg font-bold text-white relative inline-block">
-              Instant Alerts
-              <span className="absolute bottom-0 left-0 w-8 h-0.5 bg-primary rounded" />
-            </h3>
-            <p className="text-sm leading-relaxed text-neutral-400">
-              Subscribe to get immediate daily healthcare, nurse, and pharma vacancy notifications directly.
-            </p>
-            <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="Enter email address"
-                required
-                className="w-full px-4 py-2.5 bg-neutral-900 border border-neutral-850 rounded-xl text-sm text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary placeholder-neutral-500 transition-colors"
-              />
-              <button
-                type="submit"
-                aria-label="Subscribe"
-                className="p-3 bg-gradient-to-tr from-primary to-accent-sky rounded-xl text-white shadow-lg hover:shadow-blue-500/20 transition-all duration-300 transform hover:-translate-y-0.5"
-              >
-                <Send className="w-4 h-4" />
-              </button>
-            </form>
-          </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-neutral-900 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-500">
-          <p>© {currentYear} Pharma Jobs Daily. All Rights Reserved. Designed for premium healthcare recruitment.</p>
-          <p className="flex items-center gap-1">
+        <div className="mt-16 pt-8 border-t border-neutral-900 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-neutral-500">
+          <div className="flex flex-col gap-2 text-center md:text-left">
+            <p>© {currentYear} Pharma Jobs Daily. All Rights Reserved. Designed for premium healthcare recruitment.</p>
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start mt-1 text-neutral-400">
+              <Link href="/disclaimer" className="hover:text-accent-sky transition-colors">Disclaimer</Link>
+              <span className="text-neutral-800">•</span>
+              <Link href="/privacy-policy" className="hover:text-accent-sky transition-colors">Privacy Policy</Link>
+              <span className="text-neutral-800">•</span>
+              <Link href="/terms-and-conditions" className="hover:text-accent-sky transition-colors">Terms & Conditions</Link>
+            </div>
+          </div>
+          <p className="flex items-center gap-1 shrink-0">
             Made with <Heart className="w-3 h-3 text-accent-sky fill-accent-sky" /> for Pharma & Nursing Career Growth.
           </p>
         </div>

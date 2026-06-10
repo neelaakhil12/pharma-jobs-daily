@@ -1,21 +1,13 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getJobById } from '@/lib/db';
-import QuickApplyForm from '@/components/QuickApplyForm';
 import ShareButton from '@/components/ShareButton';
 import {
-  MapPin,
-  Calendar,
-  Briefcase,
   GraduationCap,
-  IndianRupee,
   ShieldCheck,
   CheckCircle2,
   AlertTriangle,
   ArrowLeft,
-  Share2,
-  Phone,
-  Mail,
   Award,
   Sparkles
 } from 'lucide-react';
@@ -54,38 +46,7 @@ export default async function JobDetailPage({ params }: PageProps) {
           </Link>
         </div>
 
-        {/* 1. Main Header Grid Card */}
-        <div
-          data-aos="fade-up"
-          className="bg-gradient-to-tr from-white via-primary-light/20 to-accent-sky/10 rounded-3xl p-8 border border-white shadow-md mb-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative overflow-hidden"
-        >
-          {/* Accent colored bottom highlight line */}
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent-sky to-secondary" />
-          <div className="lg:col-span-8 space-y-4">
-            <span className="text-[11px] font-extrabold px-3 py-1 bg-primary-light text-primary border border-primary/20 rounded-full tracking-wide uppercase">
-              {job.category}
-            </span>
-            <div className="space-y-1">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight leading-tight">
-                {job.title}
-              </h1>
-              <p className="text-base font-bold text-primary">{job.company}</p>
-            </div>
-            <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-500">
-              <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-primary" /> {job.location}</span>
-              <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4 text-accent-sky" /> Posted on {formattedDate}</span>
-            </div>
-          </div>
-          <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end items-stretch lg:items-end w-full">
-            <a
-              href={job.applyUrl}
-              className="px-6 py-3 text-center text-xs font-extrabold text-white bg-gradient-to-r from-primary to-accent-sky hover:bg-right bg-[size:200%_auto] rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
-            >
-              Apply Now
-            </a>
-            <ShareButton title={job.title} description={job.description} />
-          </div>
-        </div>
+
 
         {/* 2. Detailed Body Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -156,6 +117,37 @@ export default async function JobDetailPage({ params }: PageProps) {
                 </ul>
               </div>
             )}
+
+            {/* Official Application Portal Preview */}
+            <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-md space-y-6">
+              <h2 className="text-lg font-bold text-slate-855 border-b border-slate-100 pb-3 flex items-center gap-2">
+                <span className="w-1.5 h-6 rounded-full bg-primary shrink-0" />
+                Official Application Portal Preview
+              </h2>
+              <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
+                Below is a preview of the official GSK job details page. Click the button below to open the page and apply.
+              </p>
+              <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm bg-slate-50 max-w-[280px] sm:max-w-[320px] mx-auto">
+                <img
+                  src="/image-copy-3.png"
+                  alt="Official Application Portal Preview"
+                  className="w-full h-auto mx-auto object-contain"
+                />
+              </div>
+              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+                <a
+                  href="https://gsk.wd5.myworkdayjobs.com/en-US/GSKCareers/job/Statistics-Intern_442465"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 py-3.5 text-center text-sm font-extrabold text-white bg-gradient-to-r from-primary via-accent-sky to-secondary hover:bg-right bg-[size:200%_auto] rounded-2xl shadow-lg hover:shadow-blue-500/20 transition-all duration-300 transform hover:-translate-y-0.5 w-full sm:w-auto flex-1 max-w-[200px]"
+                >
+                  Apply Now
+                </a>
+                <div className="w-full sm:w-auto flex-1 max-w-[200px] relative">
+                  <ShareButton title={job.title} description={job.description} />
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Sidebar Area (Right) */}
@@ -191,9 +183,6 @@ export default async function JobDetailPage({ params }: PageProps) {
                 </div>
               </div>
             </div>
-
-            {/* Quick Application Client Form */}
-            <QuickApplyForm jobTitle={job.title} applyUrl={job.applyUrl} />
 
             {/* Fraud safety advisory */}
             <div className="bg-primary-light/50 border border-primary/20 rounded-3xl p-6 space-y-3.5 shadow-sm">

@@ -1,12 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { FileCheck, Users, Building, Award } from 'lucide-react';
+import { FileCheck, Users, Award } from 'lucide-react';
 
 const stats = [
   { label: 'Total Jobs Posted', value: 15000, suffix: '+', icon: FileCheck, col: 'from-primary to-accent-sky' },
   { label: 'Active Job Seekers', value: 50000, suffix: '+', icon: Users, col: 'from-secondary to-primary' },
-  { label: 'Recruitment Partners', value: 320, suffix: '+', icon: Building, col: 'from-accent-sky to-primary' },
   { label: 'Years of Trusted Service', value: 6, suffix: '+ Years', icon: Award, col: 'from-accent to-amber-500' },
 ];
 
@@ -79,7 +78,7 @@ export default function StatsSection() {
   return (
     <section className="py-12 bg-white relative z-20 -mt-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="bg-white rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 p-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 divide-y sm:divide-y-0 lg:divide-x divide-slate-100">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 divide-y sm:divide-y-0 lg:divide-x divide-slate-100">
           {stats.map((stat, i) => {
             const Icon = stat.icon;
             return (

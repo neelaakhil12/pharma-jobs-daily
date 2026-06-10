@@ -203,21 +203,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* 3. Google Maps Decorative Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-10 max-w-7xl mx-auto" data-aos="zoom-in">
-        <div className="bg-white border border-slate-100 rounded-3xl overflow-hidden p-3 shadow-md">
-          <div className="w-full h-80 rounded-2xl bg-gradient-to-tr from-primary-light via-accent-sky/10 to-blue-50 flex flex-col items-center justify-center text-center p-6 border border-dashed border-slate-200">
-            <MapPin className="w-10 h-10 text-primary animate-bounce mb-3" />
-            <h3 className="font-extrabold text-slate-800 text-sm sm:text-base">Headquarters Placement Map</h3>
-            <p className="text-slate-450 text-xs mt-1 max-w-sm">
-              Visakhapatnam & Hyderabad offices. Open for personal inquiries by appointment only.
-            </p>
-            <span className="mt-4 text-[10px] bg-slate-100 text-slate-500 px-3 py-1 rounded-full font-bold border">
-              G-MAP INTEGRATION ACTIVE
-            </span>
-          </div>
-        </div>
-      </section>
+
     </div>
   );
 }
