@@ -49,7 +49,8 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
     responsibilitiesRaw: '',
     requirementsRaw: '',
     benefitsRaw: '',
-    applyUrl: ''
+    applyUrl: '',
+    imageUrl: ''
   });
 
   const categories = [
@@ -83,7 +84,8 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
       responsibilitiesRaw: '',
       requirementsRaw: '',
       benefitsRaw: '',
-      applyUrl: ''
+      applyUrl: '',
+      imageUrl: ''
     });
     setShowAddModal(true);
   };
@@ -104,7 +106,8 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
       responsibilitiesRaw: job.responsibilities ? job.responsibilities.join('\n') : '',
       requirementsRaw: job.requirements ? job.requirements.join('\n') : '',
       benefitsRaw: job.benefits ? job.benefits.join('\n') : '',
-      applyUrl: job.applyUrl
+      applyUrl: job.applyUrl,
+      imageUrl: job.imageUrl || ''
     });
     setShowEditModal(true);
   };
@@ -515,6 +518,18 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                 />
               </div>
 
+              {/* Job Image URL (optional) */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Job Image URL <span className="text-slate-300 font-normal normal-case">(optional — shown on job detail page)</span></label>
+                <input
+                  type="text"
+                  placeholder="e.g. https://example.com/job-image.png"
+                  value={form.imageUrl}
+                  onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
+                />
+              </div>
+
             </form>
 
             {/* Modal Footer Controls */}
@@ -706,6 +721,18 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                   required
                   value={form.applyUrl}
                   onChange={(e) => setForm({ ...form, applyUrl: e.target.value })}
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
+                />
+              </div>
+
+              {/* Job Image URL (optional) */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Job Image URL <span className="text-slate-300 font-normal normal-case">(optional — shown on job detail page)</span></label>
+                <input
+                  type="text"
+                  placeholder="e.g. https://example.com/job-image.png"
+                  value={form.imageUrl}
+                  onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
                   className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                 />
               </div>

@@ -177,7 +177,7 @@ export default function Hero() {
             {/* Micro Tags */}
             <div className="flex flex-wrap gap-2.5 items-center">
               <span className="text-xs font-semibold text-slate-500">Popular:</span>
-              {['R&D', 'QA', 'QC', 'TT', 'RA', 'Production', 'Warehouse', 'Packing', 'Pharmacovigilance', 'medical coding', 'Internship', 'Other jobs'].map((tag) => (
+              {['R&D', 'QA', 'QC', 'TT', 'RA', 'Production', 'Warehouse', 'Packing', 'Pharmacovigilance', 'medical coding', 'Engineering', 'Internship', 'Other jobs'].map((tag) => (
                 <button
                   key={tag}
                   type="button"

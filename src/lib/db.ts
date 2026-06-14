@@ -18,6 +18,7 @@ export interface Job {
   requirements: string[];
   benefits: string[];
   applyUrl: string;
+  imageUrl?: string;
 }
 
 export interface DbSchema {

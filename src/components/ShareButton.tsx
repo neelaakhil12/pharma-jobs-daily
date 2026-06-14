@@ -1,14 +1,19 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Share2, Copy } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 
 interface ShareButtonProps {
   title: string;
   description: string;
+  applyUrl?: string;
+  company?: string;
+  location?: string;
+  salary?: string;
+  experience?: string;
 }
 
-export default function ShareButton({ title, description }: ShareButtonProps) {
+export default function ShareButton({ title, description, applyUrl, company, location, salary, experience }: ShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [instacopied, setInstacopied] = useState(false);
@@ -27,15 +32,41 @@ export default function ShareButton({ title, description }: ShareButtonProps) {
     };
   }, []);
 
-  const getShareUrl = () => {
+  const getPageUrl = () => {
     return typeof window !== 'undefined' ? window.location.href : '';
   };
 
-  const shareText = `Check out this job opportunity: "${title}" at Pharma Jobs Daily!`;
+  // Format WhatsApp/Telegram message: job details + apply link
+  const getJobShareMessage = () => {
+    const pageUrl = getPageUrl();
+    // Short description (first 120 chars)
+    const shortDesc = description ? description.slice(0, 120) + (description.length > 120 ? '...' : '') : '';
+
+    const lines = [
+      `🔔 *Job Alert — ${title}*`,
+      ``,
+      company ? `🏢 *Company:* ${company}` : null,
+      location ? `📍 *Location:* ${location}` : null,
+      experience ? `🧑‍💼 *Experience:* ${experience}` : null,
+      salary ? `💰 *Salary:* ${salary}` : null,
+      ``,
+      shortDesc ? `📝 ${shortDesc}` : null,
+      ``,
+      `🔗 *View Full Details:*`,
+      pageUrl,
+      ``,
+      applyUrl && applyUrl !== pageUrl ? `✅ *Apply Directly:* ${applyUrl}` : null,
+      ``,
+      `📲 *Pharma Jobs Daily* — Daily Pharma & Healthcare Vacancies`,
+      `Share this opportunity with your friends! 🌟`,
+    ].filter(Boolean).join('\n');
+
+    return lines;
+  };
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(getShareUrl());
+      await navigator.clipboard.writeText(getPageUrl());
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -45,7 +76,7 @@ export default function ShareButton({ title, description }: ShareButtonProps) {
 
   const handleInstagramShare = async () => {
     try {
-      await navigator.clipboard.writeText(getShareUrl());
+      await navigator.clipboard.writeText(getJobShareMessage());
       setInstacopied(true);
       setTimeout(() => setInstacopied(false), 3000);
     } catch (err) {
@@ -63,7 +94,7 @@ export default function ShareButton({ title, description }: ShareButtonProps) {
         </svg>
       ),
       action: () => {
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + '\n' + getShareUrl())}`, '_blank');
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(getJobShareMessage())}`, '_blank');
       }
     },
     {
@@ -75,7 +106,7 @@ export default function ShareButton({ title, description }: ShareButtonProps) {
         </svg>
       ),
       action: () => {
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(getShareUrl())}&text=${encodeURIComponent(shareText)}`, '_blank');
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(getPageUrl())}&text=${encodeURIComponent(getJobShareMessage())}`, '_blank');
       }
     },
     {
@@ -87,7 +118,7 @@ export default function ShareButton({ title, description }: ShareButtonProps) {
         </svg>
       ),
       action: () => {
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getShareUrl())}`, '_blank');
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getPageUrl())}`, '_blank');
       }
     },
     {
@@ -148,7 +179,7 @@ export default function ShareButton({ title, description }: ShareButtonProps) {
 
           {(copied || instacopied) && (
             <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-bold py-1.5 px-3 rounded-lg shadow-md whitespace-nowrap z-50 animate-bounce">
-              {copied ? 'Link copied!' : 'Link copied! Use Instagram.'}
+              {copied ? 'Link copied!' : 'Message copied! Paste in Instagram.'}
             </div>
           )}
         </div>

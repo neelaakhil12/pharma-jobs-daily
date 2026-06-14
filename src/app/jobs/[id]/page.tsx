@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getJobById } from '@/lib/db';
@@ -8,14 +9,52 @@ import {
   CheckCircle2,
   AlertTriangle,
   ArrowLeft,
-  Award,
-  Sparkles
+  Briefcase,
+  MapPin
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
   params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const job = await getJobById(id);
+  if (!job) {
+    return {
+      title: 'Job Not Found | Pharma Jobs Daily',
+    };
+  }
+
+  // Use job's custom image if set, otherwise fall back to the default preview image
+  const ogImage = job.imageUrl || '/image-copy-3.png';
+  const shortDesc = job.description.slice(0, 160);
+
+  return {
+    title: `${job.title} at ${job.company} | Pharma Jobs Daily`,
+    description: shortDesc,
+    openGraph: {
+      title: `${job.title} at ${job.company}`,
+      description: shortDesc,
+      type: 'article',
+      images: [
+        {
+          url: ogImage,
+          width: 800,
+          height: 600,
+          alt: `${job.title} — ${job.company}`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${job.title} at ${job.company} | Pharma Jobs Daily`,
+      description: shortDesc,
+      images: [ogImage],
+    },
+  };
 }
 
 export default async function JobDetailPage({ params }: PageProps) {
@@ -53,6 +92,46 @@ export default async function JobDetailPage({ params }: PageProps) {
           {/* Main Job Details (Left) */}
           <div className="lg:col-span-8 space-y-8" data-aos="fade-right">
             
+            {/* Zydus-style Job Header Card */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-md space-y-5">
+              {/* Title and Company Row */}
+              <div className="space-y-1.5">
+                <h1 className="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight leading-snug">
+                  {job.title}
+                </h1>
+                <p className="text-sm sm:text-base font-semibold text-slate-500">{job.company}</p>
+              </div>
+
+              {/* Metadata Stack */}
+              <div className="space-y-3 pt-1 text-xs font-semibold text-slate-600">
+                <div className="flex items-center gap-3">
+                  <GraduationCap className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                  <span>{job.qualification}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <MapPin className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                  <span>{job.location}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Briefcase className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                  <span>{job.experience}</span>
+                </div>
+              </div>
+
+              {/* Footer Badge Bar */}
+              <div className="pt-4 border-t border-slate-100 flex items-center gap-4">
+                {/* Verified Job Check Badge */}
+                <div className="flex items-center gap-2 text-xs font-bold text-primary">
+                  <span className="w-4.5 h-4.5 rounded-full bg-primary-light border border-primary/20 text-primary flex items-center justify-center shrink-0">
+                    <svg className="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                    </svg>
+                  </span>
+                  <span>Verified Job</span>
+                </div>
+              </div>
+            </div>
+
             {/* Job Summary Description */}
             <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-md space-y-4">
               <h2 className="text-lg font-bold text-slate-855 border-b border-slate-100 pb-3 flex items-center gap-2">
@@ -118,25 +197,28 @@ export default async function JobDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Official Application Portal Preview */}
+             {/* How to Apply */}
             <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-md space-y-6">
               <h2 className="text-lg font-bold text-slate-855 border-b border-slate-100 pb-3 flex items-center gap-2">
                 <span className="w-1.5 h-6 rounded-full bg-primary shrink-0" />
-                Official Application Portal Preview
+                How to Apply
               </h2>
               <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
-                Below is a preview of the official GSK job details page. Click the button below to open the page and apply.
+                Click <strong>Apply Now</strong> below to go to the official application page. Share this vacancy with friends using the <strong>Share</strong> button.
               </p>
-              <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm bg-slate-50 max-w-[280px] sm:max-w-[320px] mx-auto">
+
+              {/* Job Image — use job's custom image or fallback to default */}
+              <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm bg-slate-50 max-w-[150px] sm:max-w-[180px] mx-auto">
                 <img
-                  src="/image-copy-3.png"
-                  alt="Official Application Portal Preview"
+                  src={job.imageUrl || '/image-copy-3.png'}
+                  alt={`${job.title} — ${job.company}`}
                   className="w-full h-auto mx-auto object-contain"
                 />
               </div>
+
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
                 <a
-                  href="https://gsk.wd5.myworkdayjobs.com/en-US/GSKCareers/job/Statistics-Intern_442465"
+                  href={job.applyUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-8 py-3.5 text-center text-sm font-extrabold text-white bg-gradient-to-r from-primary via-accent-sky to-secondary hover:bg-right bg-[size:200%_auto] rounded-2xl shadow-lg hover:shadow-blue-500/20 transition-all duration-300 transform hover:-translate-y-0.5 w-full sm:w-auto flex-1 max-w-[200px]"
@@ -144,7 +226,15 @@ export default async function JobDetailPage({ params }: PageProps) {
                   Apply Now
                 </a>
                 <div className="w-full sm:w-auto flex-1 max-w-[200px] relative">
-                  <ShareButton title={job.title} description={job.description} />
+                  <ShareButton
+                    title={job.title}
+                    description={job.description}
+                    applyUrl={job.applyUrl}
+                    company={job.company}
+                    location={job.location}
+                    salary={job.salary}
+                    experience={job.experience}
+                  />
                 </div>
               </div>
             </div>
@@ -152,37 +242,6 @@ export default async function JobDetailPage({ params }: PageProps) {
 
           {/* Sidebar Area (Right) */}
           <aside className="lg:col-span-4 space-y-8" data-aos="fade-left">
-            {/* Quick Job Details Specs */}
-            <div className="bg-gradient-to-br from-primary-light/70 via-accent-sky/10 to-blue-50/50 rounded-3xl p-6 border border-white/60 shadow-lg space-y-4 backdrop-blur-md">
-              <h3 className="font-extrabold text-slate-800 text-sm border-b border-slate-200/50 pb-2 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-                Vacancy Specifications
-              </h3>
-              
-              <div className="space-y-3.5">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-secondary/10 text-secondary shrink-0">
-                    <GraduationCap className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">Required Degree</span>
-                    <span className="block text-xs font-extrabold text-slate-700">{job.qualification}</span>
-                  </div>
-                </div>
-
-
-
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-primary-light text-primary shrink-0">
-                    <Award className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">Experience Level</span>
-                    <span className="block text-xs font-extrabold text-slate-700">{job.experience}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
 
             {/* Fraud safety advisory */}
             <div className="bg-primary-light/50 border border-primary/20 rounded-3xl p-6 space-y-3.5 shadow-sm">
