@@ -4,7 +4,7 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AOSProvider from '@/components/AOSProvider';
-import WhatsAppWidget from '@/components/WhatsAppWidget';
+
 import SocialChannelsPopup from '@/components/SocialChannelsPopup';
 
 const poppins = Poppins({
@@ -60,7 +60,6 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-grow pb-20 md:pb-0">{children}</main>
           <Footer />
-          <WhatsAppWidget />
         </AOSProvider>
       </body>
     </html>

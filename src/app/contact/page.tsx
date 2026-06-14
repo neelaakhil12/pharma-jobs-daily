@@ -49,7 +49,7 @@ export default function ContactPage() {
                 Direct Communication Channels
               </h2>
               <p className="text-slate-550 text-sm leading-relaxed">
-                Connect with our helpdesk administrators directly through instant support vectors. We typical respond in less than 2 hours.
+                Connect with our helpdesk administrators directly through instant support vectors.
               </p>
             </div>
 
@@ -92,7 +92,7 @@ export default function ContactPage() {
                 Online Community Links
               </h3>
               <div className="flex flex-wrap gap-2 sm:gap-3">
-                {['Telegram updates', 'LinkedIn', 'YouTube Channel'].map((social, i) => (
+                {['WhatsApp', 'Telegram updates', 'LinkedIn', 'YouTube Channel'].map((social, i) => (
                   <button
                     key={i}
                     type="button"
@@ -190,7 +190,7 @@ export default function ContactPage() {
                       <>Transmitting message...</>
                     ) : (
                       <>
-                        <Send className="w-4 h-4" /> Dispatch Letter
+                        <Send className="w-4 h-4" /> Send Message
                       </>
                     )}
                   </button>

@@ -93,26 +93,11 @@ export default function Testimonials() {
                   </p>
                 </div>
                 <div className="flex gap-3 items-center pt-6 border-t border-slate-50 mt-6 relative z-10">
-                  {/* Avatar Container */}
-                  <div className={`relative w-10 h-10 rounded-full overflow-hidden shrink-0 border border-slate-200 bg-gradient-to-br ${gradient} flex items-center justify-center`}>
-                    {/* Fallback Initials Layer */}
+                  {/* Initials Badge only — no image */}
+                  <div className={`w-10 h-10 rounded-full shrink-0 bg-gradient-to-br ${gradient} flex items-center justify-center`}>
                     <span className="text-xs font-black text-white tracking-wider">
                       {initials}
                     </span>
-
-                    {/* Image Layer - smooth fade/hide on failure */}
-                    {mounted && !hasFailed && (
-                      <img
-                        src={t.avatar}
-                        alt=""
-                        style={{ color: 'transparent' }}
-                        className="absolute inset-0 w-full h-full object-cover rounded-full transition-opacity duration-300"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none';
-                          setFailedImages((prev) => ({ ...prev, [t.name]: true }));
-                        }}
-                      />
-                    )}
                   </div>
                   <div className="min-w-0">
                     <span className="block text-xs font-extrabold text-slate-850 truncate">{t.name}</span>
