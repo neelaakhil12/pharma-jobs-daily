@@ -11,9 +11,10 @@ interface ShareButtonProps {
   location?: string;
   salary?: string;
   experience?: string;
+  qualification?: string;
 }
 
-export default function ShareButton({ title, applyUrl, company, location, experience }: ShareButtonProps) {
+export default function ShareButton({ title, applyUrl, company, location, experience, qualification }: ShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [instacopied, setInstacopied] = useState(false);
@@ -32,21 +33,17 @@ export default function ShareButton({ title, applyUrl, company, location, experi
   const getPageUrl = () =>
     typeof window !== 'undefined' ? window.location.href : '';
 
-  // SHORT clean message: apply link + minimal job info (like the job card)
+  // WhatsApp/social media share template matching user's layout
   const getShareMessage = () => {
     const pageUrl = getPageUrl();
-    const meta = [location, experience].filter(Boolean).join(' | ');
 
     return [
       `*${title}*`,
-      company || '',
-      meta,
       '',
-      `Apply Now: ${applyUrl || pageUrl}`,
+      qualification || '',
       '',
-      `🔗 ${pageUrl}`,
-      '',
-      `_Pharma Jobs Daily_`,
+      `Apply Here 🔗`,
+      pageUrl,
     ].join('\n');
   };
 

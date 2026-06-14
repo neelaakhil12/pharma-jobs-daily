@@ -27,7 +27,7 @@ export const viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://pharmajobsdaily.com'),
   title: 'Pharma Jobs Daily | Daily Pharma & Healthcare Vacancies',
   description:
     'Trusted pharmaceutical and healthcare recruitment updates since 2020. Get daily handpicked jobs for B.Pharm, M.Pharm, Staff Nurse, Paramedical, JRF, and SRF sectors.',

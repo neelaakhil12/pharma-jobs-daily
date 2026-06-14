@@ -29,7 +29,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   // Use job's custom image if set, otherwise use logo as OG preview image
-  const ogImage = job.imageUrl || '/logo-v6.png';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pharmajobsdaily.com';
+  const rawImage = job.imageUrl || '/logo-v6.png';
+  const ogImage = rawImage.startsWith('http://') || rawImage.startsWith('https://')
+    ? rawImage
+    : `${siteUrl}${rawImage.startsWith('/') ? rawImage : `/${rawImage}`}`;
   const shortDesc = job.description.slice(0, 160);
 
   return {
@@ -234,6 +238,7 @@ export default async function JobDetailPage({ params }: PageProps) {
                     location={job.location}
                     salary={job.salary}
                     experience={job.experience}
+                    qualification={job.qualification}
                   />
                 </div>
               </div>
