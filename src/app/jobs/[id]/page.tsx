@@ -28,8 +28,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  // Use job's custom image if set, otherwise fall back to the default preview image
-  const ogImage = job.imageUrl || '/image-copy-3.png';
+  // Use job's custom image if set, otherwise use logo as OG preview image
+  const ogImage = job.imageUrl || '/logo-v6.png';
   const shortDesc = job.description.slice(0, 160);
 
   return {
