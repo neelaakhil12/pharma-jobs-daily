@@ -10,7 +10,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   // Hide Footer on admin area pages
-  if (pathname && (pathname.startsWith('/admin') || pathname === '/adminlogin')) {
+  if (pathname && (pathname.startsWith('/admin') || pathname === '/superadminlogin' || pathname === '/assistantlogin')) {
     return null;
   }
 

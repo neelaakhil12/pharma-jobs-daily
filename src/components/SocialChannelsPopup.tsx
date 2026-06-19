@@ -44,7 +44,7 @@ export default function SocialChannelsPopup() {
   }, []);
 
   // Hide popup on admin area pages
-  if (pathname && (pathname.startsWith('/admin') || pathname === '/adminlogin')) {
+  if (pathname && (pathname.startsWith('/admin') || pathname === '/superadminlogin' || pathname === '/assistantlogin')) {
     return null;
   }
 

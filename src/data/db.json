@@ -1,7 +1,7 @@
 {
   "admin": {
-    "username": "admin@pharmagmail.com",
-    "password": "pharma@2026"
+    "password": "pharma@2026",
+    "username": "neelaakhilharish@gmail.com"
   },
   "superAdmin": {
     "username": "superadmin@pharmagmail.com",
@@ -724,6 +724,12 @@
       "title": "JRF & SRF Fellowship Notice Board Banner",
       "image": "/ad-banner-3.png",
       "path": "/jobs?category=JRF%20%26%20SRF%20Jobs"
+    }
+  ],
+  "admins": [
+    {
+      "password": "pharma@2026",
+      "username": "neelaakhilharish@gmail.com"
     }
   ]
 }

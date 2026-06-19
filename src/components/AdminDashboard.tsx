@@ -440,7 +440,11 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
   const handleLogout = async () => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
-      router.push('/adminlogin');
+      if (isSuperAdmin) {
+        router.push('/superadminlogin');
+      } else {
+        router.push('/assistantlogin');
+      }
       router.refresh();
     } catch (err) {
       console.error('Logout error:', err);

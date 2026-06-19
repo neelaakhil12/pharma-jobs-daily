@@ -9,7 +9,7 @@ export default async function AdminDashboardPage() {
   const session = await getAdminSessionDetails();
   
   if (!session.isAuthenticated) {
-    redirect('/adminlogin');
+    redirect('/superadminlogin');
   }
 
   const jobs = await getAllJobsForAdmin();

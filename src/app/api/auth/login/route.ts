@@ -4,7 +4,7 @@ import { setAdminSession } from '@/lib/auth';
 
 export async function POST(request: Request) {
   try {
-    const { username, password } = await request.json();
+    const { username, password, type } = await request.json();
     
     if (!username || !password) {
       return NextResponse.json(
@@ -15,23 +15,25 @@ export async function POST(request: Request) {
 
     const db = await readDb();
     
-    // Check credentials matching
-    if (db.superAdmin && db.superAdmin.username === username && db.superAdmin.password === password) {
-      await setAdminSession(username);
-      return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
-    } else if (db.admin.username === username && db.admin.password === password) {
-      await setAdminSession(username);
-      return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
-    } else if (db.admins && Array.isArray(db.admins)) {
-      const matched = db.admins.find(a => a.username === username && a.password === password);
-      if (matched) {
+    if (type === 'super') {
+      const isSuper = (db.superAdmin && db.superAdmin.username === username && db.superAdmin.password === password) ||
+                      (db.admin.username === username && db.admin.password === password);
+      if (isSuper) {
         await setAdminSession(username);
         return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
+      }
+    } else if (type === 'assistant') {
+      if (db.admins && Array.isArray(db.admins)) {
+        const matched = db.admins.find(a => a.username === username && a.password === password);
+        if (matched) {
+          await setAdminSession(username);
+          return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
+        }
       }
     }
 
     return NextResponse.json(
-      { success: false, error: 'Invalid username or password' },
+      { success: false, error: 'Invalid username or password for this login area' },
       { status: 401 }
     );
   } catch (error) {

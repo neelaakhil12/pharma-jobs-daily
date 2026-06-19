@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ShieldCheck, Lock, Mail, Loader2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
-export default function AdminLoginPage() {
+export default function AssistantLoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -21,12 +21,11 @@ export default function AdminLoginPage() {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, type: 'assistant' }),
       });
 
       const data = await res.json();
       if (res.ok && data.success) {
-        // Redirect to dashboard page
         router.push('/admin/dashboard');
         router.refresh();
       } else {
@@ -59,10 +58,10 @@ export default function AdminLoginPage() {
         <div className="bg-white border border-slate-100 shadow-xl shadow-slate-100 rounded-3xl p-8 space-y-6">
           <div className="text-center space-y-2">
             <div className="w-14 h-14 bg-gradient-to-tr from-primary to-accent text-white rounded-2xl flex items-center justify-center mx-auto shadow-md shadow-blue-500/10 animate-pulse">
-              <ShieldCheck className="w-7 h-7" />
+              <ShieldCheck className="w-7 h-7 bg-transparent" />
             </div>
-            <h2 className="text-2xl font-extrabold text-slate-800 tracking-tight">Administrative Area</h2>
-            <p className="text-slate-455 text-xs">Verify credentials to operate daily job posts.</p>
+            <h2 className="text-2xl font-extrabold text-slate-800 tracking-tight">Assistant Admin Login</h2>
+            <p className="text-slate-455 text-xs">Sign in to update and operate pharmacy postings.</p>
           </div>
 
           {error && (
@@ -76,15 +75,15 @@ export default function AdminLoginPage() {
             {/* Email field */}
             <div className="space-y-1">
               <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
-                <Mail className="w-3.5 h-3.5 text-primary" /> Email Address
+                <Mail className="w-3.5 h-3.5 text-primary" /> Assistant Username / Email
               </label>
               <input
-                type="email"
+                type="text"
                 required
-                placeholder="e.g. admin@pharmajobsdaily.com"
+                placeholder="e.g. assistant@pharmagmail.com"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary font-semibold"
                 disabled={loading}
               />
             </div>
@@ -97,7 +96,7 @@ export default function AdminLoginPage() {
               <input
                 type="password"
                 required
-                placeholder="e.g. tempPassword123"
+                placeholder="Enter assistant password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
@@ -120,6 +119,12 @@ export default function AdminLoginPage() {
             </button>
 
           </form>
+
+          <div className="text-center pt-2 border-t border-slate-100">
+            <Link href="/superadminlogin" className="text-xs font-bold text-primary hover:text-accent-sky transition-colors">
+              Are you the Super Admin? Sign In Here
+            </Link>
+          </div>
 
         </div>
 
