@@ -35,10 +35,13 @@ function normalizeUrl(url: string): string {
 
 interface PageProps {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { id } = await params;
+  const resolvedSearchParams = await searchParams;
+  const partId = resolvedSearchParams?.part;
   const job = await getJobById(id);
   if (!job) {
     return {
@@ -52,34 +55,47 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const proto = headersList.get('x-forwarded-proto') || 'https';
   const siteUrl = `${proto}://${host}`;
 
-  const rawImage = job.imageUrl || '/logo-v6.png';
+  let targetImage = job.imageUrl;
+  let targetTitle = `${job.title} at ${job.company}`;
+
+  if (partId && typeof partId === 'string' && job.applyParts) {
+    const matchingPart = job.applyParts.find((p) => p.id === partId);
+    if (matchingPart && matchingPart.imageUrl) {
+      targetImage = matchingPart.imageUrl;
+      if (matchingPart.title) {
+        targetTitle = `${matchingPart.title} - ${job.company}`;
+      }
+    }
+  }
+
+  const rawImage = targetImage || '/logo-v6.png';
   const ogImage = rawImage.startsWith('http://') || rawImage.startsWith('https://')
     ? rawImage
     : `${siteUrl}${rawImage.startsWith('/') ? rawImage : `/${rawImage}`}`;
   const shortDesc = job.description.slice(0, 160);
 
   return {
-    title: `${job.title} at ${job.company} | Pharma Jobs Daily`,
+    title: `${targetTitle} | Pharma Jobs Daily`,
     description: shortDesc,
     openGraph: {
-      title: `${job.title} at ${job.company}`,
+      title: targetTitle,
       description: shortDesc,
       type: 'article',
-      url: `${siteUrl}/jobs/${id}`,
+      url: `${siteUrl}/jobs/${id}${partId ? `?part=${partId}` : ''}`,
       siteName: 'Pharma Jobs Daily',
       images: [
         {
           url: ogImage,
           width: 800,
           height: 600,
-          alt: `${job.title} — ${job.company}`,
+          alt: targetTitle,
           type: ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg',
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${job.title} at ${job.company} | Pharma Jobs Daily`,
+      title: `${targetTitle} | Pharma Jobs Daily`,
       description: shortDesc,
       images: [ogImage],
     },
@@ -98,6 +114,11 @@ export default async function JobDetailPage({ params }: PageProps) {
   if (job.scheduledTime && new Date(job.scheduledTime) > new Date()) {
     notFound();
   }
+
+  const headersList = await headers();
+  const host = headersList.get('host') || 'pharmajobsdaily.com';
+  const proto = headersList.get('x-forwarded-proto') || 'https';
+  const siteUrl = `${proto}://${host}`;
 
   const formattedDate = new Date(job.postedDate).toLocaleDateString('en-IN', {
     day: 'numeric',
@@ -257,6 +278,7 @@ export default async function JobDetailPage({ params }: PageProps) {
                               salary={job.salary}
                               experience={job.experience}
                               qualification={job.qualification}
+                              shareUrl={`${siteUrl}/jobs/${job.id}?part=${part.id}`}
                             />
                           </div>
                         </div>
@@ -297,6 +319,7 @@ export default async function JobDetailPage({ params }: PageProps) {
                                 salary={job.salary}
                                 experience={job.experience}
                                 qualification={job.qualification}
+                                shareUrl={`${siteUrl}/jobs/${job.id}?part=${part.id}`}
                               />
                             </div>
                           )}

@@ -12,9 +12,10 @@ interface ShareButtonProps {
   salary?: string;
   experience?: string;
   qualification?: string;
+  shareUrl?: string;
 }
 
-export default function ShareButton({ title, applyUrl, company, location, experience, qualification }: ShareButtonProps) {
+export default function ShareButton({ title, applyUrl, company, location, experience, qualification, shareUrl }: ShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [instacopied, setInstacopied] = useState(false);
@@ -30,8 +31,10 @@ export default function ShareButton({ title, applyUrl, company, location, experi
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const getPageUrl = () =>
-    typeof window !== 'undefined' ? window.location.href : '';
+  const getPageUrl = () => {
+    if (shareUrl) return shareUrl;
+    return typeof window !== 'undefined' ? window.location.href : '';
+  };
 
   // WhatsApp/social media share template matching user's layout
   const getShareMessage = () => {
