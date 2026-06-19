@@ -11,7 +11,8 @@ export interface AdminSession {
 
 // A simple but secure mock JWT-like signature
 export function signToken(username: string): string {
-  const role = username.includes('superadmin') ? 'SUPER ADMIN' : 'ADMIN';
+  const isMainAdmin = username.includes('superadmin') || username === 'admin@pharmagmail.com';
+  const role = isMainAdmin ? 'SUPER ADMIN' : 'ADMIN';
   const payload = {
     username,
     role,

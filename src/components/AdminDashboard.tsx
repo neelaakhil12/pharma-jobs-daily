@@ -164,6 +164,7 @@ interface AdminDashboardProps {
 
 export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', adminUsername }: AdminDashboardProps) {
   const router = useRouter();
+  const isSuperAdmin = adminRole === 'SUPER ADMIN' || adminUsername === 'admin@pharmagmail.com' || adminUsername?.includes('superadmin');
   const [jobs, setJobs] = useState<Job[]>(initialJobs);
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -244,7 +245,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
       }
     }
     async function fetchAdmins() {
-      if (adminRole !== 'SUPER ADMIN') return;
+      if (!isSuperAdmin) return;
       setLoadingAdmins(true);
       try {
         const res = await fetch('/api/admin-credentials');
@@ -261,7 +262,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     fetchLinks();
     fetchSlides();
     fetchAdmins();
-  }, [adminRole]);
+  }, [isSuperAdmin, adminUsername, adminRole]);
 
   const handleSaveAdmins = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -847,7 +848,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
             { id: 'scheduled', label: 'Scheduled Posts', icon: Calendar, count: countScheduled },
             { id: 'slides', label: 'Hero Slides', icon: Layers, count: null },
             { id: 'settings', label: 'Social Links', icon: Share2, count: null },
-            ...(adminRole === 'SUPER ADMIN'
+            ...(isSuperAdmin
               ? [{ id: 'credentials', label: 'Manage Assistants', icon: Users, count: null }]
               : [])
           ].map((tab) => {
@@ -930,7 +931,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
               { id: 'scheduled', label: 'Scheduled Posts', icon: Calendar, count: countScheduled },
               { id: 'slides', label: 'Hero Slides', icon: Layers, count: null },
               { id: 'settings', label: 'Social Links', icon: Share2, count: null },
-              ...(adminRole === 'SUPER ADMIN'
+              ...(isSuperAdmin
                 ? [{ id: 'credentials', label: 'Manage Assistants', icon: Users, count: null }]
                 : [])
             ].map((tab) => {
