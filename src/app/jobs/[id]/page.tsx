@@ -94,7 +94,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
       ],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: 'summary',
       title: `${targetTitle} | Pharma Jobs Daily`,
       description: shortDesc,
       images: [ogImage],
