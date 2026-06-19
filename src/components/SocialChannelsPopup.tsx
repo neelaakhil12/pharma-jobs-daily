@@ -2,14 +2,32 @@
 
 import { useState, useEffect } from 'react';
 import { X, Bell, Users, ExternalLink } from 'lucide-react';
-
-const WHATSAPP_URL = 'https://whatsapp.com/channel/0029Va54XvB0G0Xg3b8hXj0s'; // Update with actual channel link
-const TELEGRAM_URL = 'https://t.me/pharmajobsdaily'; // Update with actual telegram link
-const INSTAGRAM_URL = 'https://instagram.com/pharmajobsdaily'; // Update with actual instagram link
+import { usePathname } from 'next/navigation';
 
 export default function SocialChannelsPopup() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
+  const [socialLinks, setSocialLinks] = useState({
+    whatsapp: 'https://whatsapp.com/channel/0029Va54XvB0G0Xg3b8hXj0s',
+    telegram: 'https://t.me/pharmajobsdaily',
+    instagram: 'https://instagram.com/pharmajobsdaily'
+  });
+
+  useEffect(() => {
+    async function fetchSocialLinks() {
+      try {
+        const res = await fetch('/api/social-links');
+        const data = await res.json();
+        if (res.ok && data.success && data.links) {
+          setSocialLinks(data.links);
+        }
+      } catch (error) {
+        console.error('Failed to load social links in Popup:', error);
+      }
+    }
+    fetchSocialLinks();
+  }, []);
 
   useEffect(() => {
     // Graceful 10s delay before displaying the subscription modal
@@ -24,6 +42,11 @@ export default function SocialChannelsPopup() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Hide popup on admin area pages
+  if (pathname && (pathname.startsWith('/admin') || pathname === '/adminlogin')) {
+    return null;
+  }
 
   const handleDismiss = () => {
     setIsOpen(false);
@@ -116,7 +139,7 @@ export default function SocialChannelsPopup() {
           <div className="space-y-1 sm:space-y-3.5">
             {/* WhatsApp */}
             <a
-              href={WHATSAPP_URL}
+              href={socialLinks.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleDismiss}
@@ -133,12 +156,12 @@ export default function SocialChannelsPopup() {
                   <span className="hidden sm:block text-[11px] text-slate-500 font-medium mt-0.5">Join for instant alerts</span>
                 </div>
               </div>
-              <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 text-primary/70 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
+              <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary/70 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
             </a>
 
             {/* Telegram */}
             <a
-              href={TELEGRAM_URL}
+              href={socialLinks.telegram}
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleDismiss}
@@ -155,12 +178,12 @@ export default function SocialChannelsPopup() {
                   <span className="hidden sm:block text-[11px] text-slate-500 font-medium mt-0.5">Join updates discussion</span>
                 </div>
               </div>
-              <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 text-sky-400 group-hover:text-sky-600 group-hover:translate-x-0.5 transition-all shrink-0" />
+              <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-sky-400 group-hover:text-sky-600 group-hover:translate-x-0.5 transition-all shrink-0" />
             </a>
 
             {/* Instagram */}
             <a
-              href={INSTAGRAM_URL}
+              href={socialLinks.instagram}
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleDismiss}

@@ -52,13 +52,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${inter.variable} h-full scroll-smooth antialiased`}
+      className={`${poppins.variable} ${inter.variable} h-full scroll-smooth antialiased overflow-x-hidden w-full max-w-full`}
     >
-      <body className="flex flex-col min-h-screen bg-[#F8FAFC]">
+      <body className="flex flex-col min-h-screen bg-[#F8FAFC] overflow-x-hidden w-full max-w-full relative">
         <SocialChannelsPopup />
         <AOSProvider>
           <Navbar />
-          <main className="flex-grow pb-20 md:pb-0">{children}</main>
+          <main className="flex-grow pb-20 md:pb-0 overflow-x-hidden w-full max-w-full relative">{children}</main>
           <Footer />
         </AOSProvider>
       </body>

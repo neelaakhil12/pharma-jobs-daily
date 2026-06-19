@@ -8,18 +8,14 @@ export default function Hero() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [textIndex, setTextIndex] = useState(0);
-  const [activeSlide, setActiveSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [socialLinks, setSocialLinks] = useState({
+    whatsapp: 'https://whatsapp.com/channel/0029Va54XvB0G0Xg3b8hXj0s',
+    telegram: 'https://t.me/pharmajobsdaily',
+    instagram: 'https://instagram.com/pharmajobsdaily',
+    linkedin: 'https://linkedin.com'
+  });
 
-  const rotatingTexts = [
-    'Pharmaceutical Opportunities',
-    'Staff Nursing Roles',
-    'Paramedical Careers',
-    'JRF & SRF Fellowships',
-    'Healthcare Vacancies',
-  ];
-
-  const advertisementSlides = [
+  const [advertisementSlides, setAdvertisementSlides] = useState<Array<{ id?: string; title: string; image: string; path: string }>>([
     {
       title: 'Pharmaceutical Recruitment Drive Banner',
       image: '/ad-banner-1.png',
@@ -35,6 +31,43 @@ export default function Hero() {
       image: '/ad-banner-3.png',
       path: '/jobs?category=JRF%20%26%20SRF%20Jobs'
     }
+  ]);
+
+  useEffect(() => {
+    async function fetchSocialLinks() {
+      try {
+        const res = await fetch('/api/social-links');
+        const data = await res.json();
+        if (res.ok && data.success && data.links) {
+          setSocialLinks(data.links);
+        }
+      } catch (error) {
+        console.error('Failed to load social links in Hero:', error);
+      }
+    }
+    async function fetchHeroSlides() {
+      try {
+        const res = await fetch('/api/hero-slides');
+        const data = await res.json();
+        if (res.ok && data.success && data.slides) {
+          setAdvertisementSlides(data.slides);
+        }
+      } catch (error) {
+        console.error('Failed to load hero slides in Hero:', error);
+      }
+    }
+    fetchSocialLinks();
+    fetchHeroSlides();
+  }, []);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const rotatingTexts = [
+    'Pharmaceutical Opportunities',
+    'Staff Nursing Roles',
+    'Paramedical Careers',
+    'JRF & SRF Fellowships',
+    'Healthcare Vacancies',
   ];
 
   useEffect(() => {
@@ -77,12 +110,12 @@ export default function Hero() {
           {/* Text & Search Box Area */}
           <div className="lg:col-span-7 space-y-8" data-aos="fade-right">
             {/* Social follow buttons */}
-            <div className="grid grid-cols-2 gap-2.5 sm:gap-3 items-center">
+            <div className="grid grid-cols-3 gap-2.5 sm:gap-3 items-center">
               <a
-                href="https://whatsapp.com/channel/0029Va54XvB0G0Xg3b8hXj0s"
+                href={socialLinks.whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between gap-1.5 pl-2.5 pr-1 py-1 sm:pl-4 sm:pr-1.5 sm:py-1.5 bg-[#25D366]/10 border border-[#25D366]/20 hover:bg-[#25D366]/20 transition-all text-xs sm:text-sm font-bold text-[#20ba59] rounded-full cursor-pointer shadow-sm hover:shadow-md w-full"
+                className="group flex items-center justify-center gap-1.5 px-2.5 py-2 sm:px-4 sm:py-2.5 bg-[#25D366]/10 border border-[#25D366]/20 hover:bg-[#25D366]/20 transition-all text-xs sm:text-sm font-bold text-[#20ba59] rounded-full cursor-pointer shadow-sm hover:shadow-md w-full"
               >
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -90,27 +123,27 @@ export default function Hero() {
                   </svg>
                   <span>WhatsApp</span>
                 </div>
-                <span className="text-sm sm:text-base font-extrabold w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#20ba59]/20 group-hover:bg-[#20ba59]/35 group-hover:scale-105 flex items-center justify-center transition-all leading-none shrink-0">+</span>
+                <span className="text-xs sm:text-sm font-extrabold w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#20ba59]/20 group-hover:bg-[#20ba59]/35 group-hover:scale-105 flex items-center justify-center transition-all leading-none shrink-0 ml-1">+</span>
               </a>
               <a
-                href="https://instagram.com/pharmajobsdaily"
+                href={socialLinks.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between gap-1.5 pl-2.5 pr-1 py-1 sm:pl-4 sm:pr-1.5 sm:py-1.5 bg-pink-50 border border-pink-100 hover:bg-pink-100/60 transition-all text-xs sm:text-sm font-bold text-pink-700 rounded-full cursor-pointer shadow-sm hover:shadow-md w-full"
+                className="group flex items-center justify-center gap-1.5 px-2.5 py-2 sm:px-4 sm:py-2.5 bg-pink-50 border border-pink-100 hover:bg-pink-100/60 transition-all text-xs sm:text-sm font-bold text-pink-700 rounded-full cursor-pointer shadow-sm hover:shadow-md w-full"
               >
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-current text-pink-600" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204 0.013-3.583 0.07-4.849 0.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
                   </svg>
                   <span>Instagram</span>
                 </div>
-                <span className="text-sm sm:text-base font-extrabold w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-pink-500/10 group-hover:bg-pink-550/25 group-hover:scale-105 flex items-center justify-center transition-all leading-none shrink-0">+</span>
+                <span className="text-xs sm:text-sm font-extrabold w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-pink-500/10 group-hover:bg-pink-550/25 group-hover:scale-105 flex items-center justify-center transition-all leading-none shrink-0 ml-1">+</span>
               </a>
               <a
-                href="https://t.me/pharmajobsdaily"
+                href={socialLinks.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between gap-1.5 pl-2.5 pr-1 py-1 sm:pl-4 sm:pr-1.5 sm:py-1.5 bg-sky-50 border border-sky-100 hover:bg-sky-100/60 transition-all text-xs sm:text-sm font-bold text-sky-700 rounded-full cursor-pointer shadow-sm hover:shadow-md w-full"
+                className="group flex items-center justify-center gap-1.5 px-2.5 py-2 sm:px-4 sm:py-2.5 bg-sky-50 border border-sky-100 hover:bg-sky-100/60 transition-all text-xs sm:text-sm font-bold text-sky-700 rounded-full cursor-pointer shadow-sm hover:shadow-md w-full"
               >
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -118,21 +151,7 @@ export default function Hero() {
                   </svg>
                   <span>Telegram</span>
                 </div>
-                <span className="text-sm sm:text-base font-extrabold w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-sky-500/10 group-hover:bg-sky-500/20 group-hover:scale-105 flex items-center justify-center transition-all leading-none shrink-0">+</span>
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-between gap-1.5 pl-2.5 pr-1 py-1 sm:pl-4 sm:pr-1.5 sm:py-1.5 bg-blue-50 border border-blue-100 hover:bg-blue-100/60 transition-all text-xs sm:text-sm font-bold text-blue-700 rounded-full cursor-pointer shadow-sm hover:shadow-md w-full"
-              >
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-current text-blue-600" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                  </svg>
-                  <span>LinkedIn</span>
-                </div>
-                <span className="text-sm sm:text-base font-extrabold w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-600/10 group-hover:bg-blue-600/20 group-hover:scale-105 flex items-center justify-center transition-all leading-none shrink-0">+</span>
+                <span className="text-xs sm:text-sm font-extrabold w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-sky-500/10 group-hover:bg-sky-500/20 group-hover:scale-105 flex items-center justify-center transition-all leading-none shrink-0 ml-1">+</span>
               </a>
             </div>
 

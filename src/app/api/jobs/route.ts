@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getAllJobs, addJob } from '@/lib/db';
-import { getAdminSession } from '@/lib/auth';
+import { getAdminSession, getAdminSessionDetails } from '@/lib/auth';
 
 // GET /api/jobs (supports query filters)
 export async function GET(request: Request) {
@@ -14,6 +14,12 @@ export async function GET(request: Request) {
 
     let jobs = await getAllJobs();
 
+    // Filter out future scheduled jobs for visitors
+    const now = new Date();
+    jobs = jobs.filter(
+      (job) => !job.scheduledTime || new Date(job.scheduledTime) <= now
+    );
+
     // Search filter
     if (search) {
       jobs = jobs.filter(
@@ -26,9 +32,11 @@ export async function GET(request: Request) {
 
     // Qualification filter
     if (qualification && qualification !== 'All') {
-      jobs = jobs.filter(
-        (job) => job.qualification.toLowerCase() === qualification.toLowerCase()
-      );
+      const qLower = qualification.toLowerCase();
+      jobs = jobs.filter((job) => {
+        const jqLower = job.qualification.toLowerCase();
+        return jqLower === qLower || (qLower === 'b.tech' && jqLower.includes('b.tech'));
+      });
     }
 
     // Category filter
@@ -63,8 +71,8 @@ export async function GET(request: Request) {
 // POST /api/jobs (Secure - Create a new job)
 export async function POST(request: Request) {
   try {
-    const isAuthenticated = await getAdminSession();
-    if (!isAuthenticated) {
+    const session = await getAdminSessionDetails();
+    if (!session.isAuthenticated || !session.role) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -94,7 +102,12 @@ export async function POST(request: Request) {
       responsibilities: body.responsibilities || [],
       requirements: body.requirements || [],
       benefits: body.benefits || [],
-      applyUrl: body.applyUrl || 'mailto:ifactselugu@gmail.com'
+      applyUrl: body.applyUrl || 'mailto:ifactselugu@gmail.com',
+      imageUrl: body.imageUrl || '',
+      imageUrls: body.imageUrls || [],
+      applyParts: body.applyParts || [],
+      scheduledTime: body.scheduledTime || undefined,
+      postedBy: session.role
     });
 
     return NextResponse.json({ success: true, job: newJob }, { status: 201 });

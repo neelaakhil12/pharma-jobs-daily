@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ShieldCheck, Lock, User, Loader2, ArrowLeft } from 'lucide-react';
+import { ShieldCheck, Lock, Mail, Loader2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminLoginPage() {
@@ -73,15 +73,15 @@ export default function AdminLoginPage() {
 
           <form onSubmit={handleLogin} className="space-y-4">
             
-            {/* Username field */}
+            {/* Email field */}
             <div className="space-y-1">
               <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
-                <User className="w-3.5 h-3.5 text-primary" /> Username
+                <Mail className="w-3.5 h-3.5 text-primary" /> Email Address
               </label>
               <input
-                type="text"
+                type="email"
                 required
-                placeholder="e.g. admin"
+                placeholder="e.g. admin@pharmajobsdaily.com"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
@@ -97,7 +97,7 @@ export default function AdminLoginPage() {
               <input
                 type="password"
                 required
-                placeholder="e.g. password123"
+                placeholder="e.g. tempPassword123"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
@@ -120,15 +120,6 @@ export default function AdminLoginPage() {
             </button>
 
           </form>
-
-          {/* Seed hint box */}
-          <div className="p-3.5 bg-purple-50/50 border border-purple-100 rounded-2xl space-y-1">
-            <span className="block text-[10px] font-extrabold text-purple-700 uppercase tracking-wide">Developer Demo Credentials:</span>
-            <div className="text-[10.5px] text-slate-500 flex justify-between">
-              <span>Username: <strong className="text-slate-700 select-all">admin</strong></span>
-              <span>Password: <strong className="text-slate-700 select-all">password123</strong></span>
-            </div>
-          </div>
 
         </div>
 

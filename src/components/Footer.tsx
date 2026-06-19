@@ -3,9 +3,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, MapPin, Heart } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  // Hide Footer on admin area pages
+  if (pathname && (pathname.startsWith('/admin') || pathname === '/adminlogin')) {
+    return null;
+  }
 
   return (
     <footer className="bg-neutral-950 text-neutral-300 border-t border-neutral-800">
@@ -63,11 +70,6 @@ export default function Footer() {
               <li>
                 <Link href="/contact" className="hover:text-accent-sky transition-colors duration-200 block py-0.5">
                   Get in Touch
-                </Link>
-              </li>
-              <li>
-                <Link href="/adminlogin" className="hover:text-accent-sky transition-colors duration-200 block py-0.5 text-xs text-neutral-500">
-                  Administrator Area
                 </Link>
               </li>
             </ul>

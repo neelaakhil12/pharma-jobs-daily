@@ -42,7 +42,7 @@ export default function JobsClient() {
   ];
 
   const qualificationOptions = [
-    'All', 'B.Pharm', 'D.Pharm', 'M.Pharm', 'BSc', 'MSc', 'Diploma', 'PhD', 'JRF', 'SRF', 'Staff Nurse'
+    'All', 'B.Pharm', 'D.Pharm', 'M.Pharm', 'BSc', 'MSc', 'Diploma', 'PhD', 'JRF', 'SRF', 'Staff Nurse', 'B.Tech'
   ];
 
   const typeOptions = ['All', 'Full-time', 'Contract', 'Internship'];
@@ -118,7 +118,7 @@ export default function JobsClient() {
           Active Opportunities Job Board
         </h1>
         <p className="text-slate-500 text-sm">
-          Browse verified daily vacancies in healthcare, pharmacology, and research fellowship.
+          Browse daily vacancies in healthcare, pharmacology, and research fellowship.
         </p>
       </div>
 

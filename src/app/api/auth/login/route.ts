@@ -16,8 +16,11 @@ export async function POST(request: Request) {
     const db = await readDb();
     
     // Check credentials matching
-    if (db.admin.username === username && db.admin.password === password) {
-      await setAdminSession();
+    if (db.superAdmin && db.superAdmin.username === username && db.superAdmin.password === password) {
+      await setAdminSession(username);
+      return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
+    } else if (db.admin.username === username && db.admin.password === password) {
+      await setAdminSession(username);
       return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
     }
 

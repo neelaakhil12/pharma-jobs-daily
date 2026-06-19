@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { headers } from 'next/headers';
 import { getJobById } from '@/lib/db';
 import ShareButton from '@/components/ShareButton';
+import JobImageGallery from '@/components/JobImageGallery';
 import {
   GraduationCap,
   ShieldCheck,
@@ -14,6 +16,22 @@ import {
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
+
+function normalizeUrl(url: string): string {
+  if (!url) return '';
+  const trimmed = url.trim();
+  if (
+    trimmed.startsWith('http://') ||
+    trimmed.startsWith('https://') ||
+    trimmed.startsWith('mailto:') ||
+    trimmed.startsWith('tel:') ||
+    trimmed.startsWith('/') ||
+    trimmed.startsWith('#')
+  ) {
+    return trimmed;
+  }
+  return `https://${trimmed}`;
+}
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -29,7 +47,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   // Use job's custom image if set, otherwise use logo as OG preview image
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pharmajobsdaily.com';
+  const headersList = await headers();
+  const host = headersList.get('host') || 'pharmajobsdaily.com';
+  const proto = headersList.get('x-forwarded-proto') || 'https';
+  const siteUrl = `${proto}://${host}`;
+
   const rawImage = job.imageUrl || '/logo-v6.png';
   const ogImage = rawImage.startsWith('http://') || rawImage.startsWith('https://')
     ? rawImage
@@ -66,6 +88,11 @@ export default async function JobDetailPage({ params }: PageProps) {
   const job = await getJobById(id);
 
   if (!job) {
+    notFound();
+  }
+
+  // Prevent visitor access to future scheduled jobs
+  if (job.scheduledTime && new Date(job.scheduledTime) > new Date()) {
     notFound();
   }
 
@@ -123,16 +150,11 @@ export default async function JobDetailPage({ params }: PageProps) {
               </div>
 
               {/* Footer Badge Bar */}
-              <div className="pt-4 border-t border-slate-100 flex items-center gap-4">
-                {/* Verified Job Check Badge */}
-                <div className="flex items-center gap-2 text-xs font-bold text-primary">
-                  <span className="w-4.5 h-4.5 rounded-full bg-primary-light border border-primary/20 text-primary flex items-center justify-center shrink-0">
-                    <svg className="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
-                    </svg>
-                  </span>
-                  <span>Verified Job</span>
-                </div>
+              <div className="pt-4 border-t border-slate-100 flex items-center gap-1.5 text-xs font-semibold text-slate-500">
+                <span>Job Posted Date:</span>
+                <span className={`font-extrabold ${job.postedBy === 'ADMIN' ? 'text-emerald-600' : 'text-primary'}`}>
+                  {formattedDate}
+                </span>
               </div>
             </div>
 
@@ -207,29 +229,113 @@ export default async function JobDetailPage({ params }: PageProps) {
                 <span className="w-1.5 h-6 rounded-full bg-primary shrink-0" />
                 How to Apply
               </h2>
-              <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
-                Click <strong>Apply Now</strong> below to go to the official application page. Share this vacancy with friends using the <strong>Share</strong> button.
-              </p>
+              
+              {job.applyParts && job.applyParts.length > 0 ? (
+                <div className="space-y-8 divide-y divide-slate-100">
+                  {job.applyParts.map((part, partIdx) => (
+                    <div key={part.id} className={`${partIdx > 0 ? 'pt-8' : ''} flex flex-col md:flex-row gap-6 items-start`}>
+                      {part.imageUrl && (
+                        <div className="w-full md:w-[45%] shrink-0 space-y-3">
+                          <div className="border border-slate-200 rounded-none overflow-hidden shadow-sm bg-slate-50">
+                            <img
+                              src={part.imageUrl}
+                              alt={part.title || `Poster ${partIdx + 1}`}
+                              className="w-full h-auto object-contain mx-auto"
+                            />
+                          </div>
+                          {/* Share button placed down/below the image */}
+                          <div className="relative w-full">
+                            <ShareButton
+                              title={`${job.title}${part.title ? ` - ${part.title}` : ''}`}
+                              description={job.description}
+                              applyUrl={part.applyLinks[0]?.url || job.applyUrl}
+                              company={job.company}
+                              location={job.location}
+                              salary={job.salary}
+                              experience={job.experience}
+                              qualification={job.qualification}
+                            />
+                          </div>
+                        </div>
+                      )}
+                      
+                      <div className="flex-1 space-y-4 w-full">
+                        {part.title && (
+                          <h3 className="text-sm sm:text-base font-extrabold text-slate-700 tracking-tight flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                            {part.title}
+                          </h3>
+                        )}
+                        
+                        <div className="flex flex-col gap-3 pt-1">
+                          {part.applyLinks.map((link, linkIdx) => (
+                            <a
+                              key={linkIdx}
+                              href={normalizeUrl(link.url)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-6 py-3.5 text-center text-xs font-extrabold text-white bg-gradient-to-r from-primary via-accent-sky to-secondary hover:bg-right bg-[size:200%_auto] rounded-xl shadow-md hover:shadow-blue-500/10 transition-all duration-300 transform hover:-translate-y-0.5 w-full sm:max-w-[280px]"
+                            >
+                              {link.label && link.label.trim() !== '' && link.label.toLowerCase() !== 'apply now'
+                                ? link.label
+                                : `Apply Link ${linkIdx + 1}`}
+                            </a>
+                          ))}
+                          
+                          {/* Fallback Share button under apply links if there is no image */}
+                          {!part.imageUrl && (
+                            <div className="w-full sm:max-w-[280px] relative pt-1">
+                              <ShareButton
+                                title={`${job.title}${part.title ? ` - ${part.title}` : ''}`}
+                                description={job.description}
+                                applyUrl={part.applyLinks[0]?.url || job.applyUrl}
+                                company={job.company}
+                                location={job.location}
+                                salary={job.salary}
+                                experience={job.experience}
+                                qualification={job.qualification}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <>
+                  <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
+                    Click <strong>Apply Now</strong> below to go to the official application page. Share this vacancy with friends using the <strong>Share</strong> button.
+                  </p>
 
-              {/* Job Image — use job's custom image or fallback to default */}
-              <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm bg-slate-50 max-w-[150px] sm:max-w-[180px] mx-auto">
-                <img
-                  src={job.imageUrl || '/image-copy-3.png'}
-                  alt={`${job.title} — ${job.company}`}
-                  className="w-full h-auto mx-auto object-contain"
-                />
-              </div>
+                  {/* Job Image Gallery Slideshow */}
+                  <JobImageGallery
+                    images={job.imageUrls && job.imageUrls.length > 0 ? job.imageUrls : (job.imageUrl ? [job.imageUrl] : [])}
+                    alt={`${job.title} — ${job.company}`}
+                  />
 
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
-                <a
-                  href={job.applyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-8 py-3.5 text-center text-sm font-extrabold text-white bg-gradient-to-r from-primary via-accent-sky to-secondary hover:bg-right bg-[size:200%_auto] rounded-2xl shadow-lg hover:shadow-blue-500/20 transition-all duration-300 transform hover:-translate-y-0.5 w-full sm:w-auto flex-1 max-w-[200px]"
-                >
-                  Apply Now
-                </a>
-                <div className="w-full sm:w-auto flex-1 max-w-[200px] relative">
+                  <div className="pt-2 flex justify-center w-full">
+                    <a
+                      href={normalizeUrl(job.applyUrl)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-8 py-3.5 text-center text-sm font-extrabold text-white bg-gradient-to-r from-primary via-accent-sky to-secondary hover:bg-right bg-[size:200%_auto] rounded-2xl shadow-lg hover:shadow-blue-500/20 transition-all duration-300 transform hover:-translate-y-0.5 w-full max-w-[240px]"
+                    >
+                      Apply Now
+                    </a>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Separate Share Vacancy Card (only for standard jobs without custom sections) */}
+            {(!job.applyParts || job.applyParts.length === 0) && (
+              <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-center sm:text-left space-y-1">
+                  <h4 className="font-extrabold text-slate-800 text-sm sm:text-base">Share this Vacancy</h4>
+                  <p className="text-slate-500 text-xs">Help your friends and colleagues find their next career opportunity.</p>
+                </div>
+                <div className="w-full sm:w-auto max-w-[200px] relative">
                   <ShareButton
                     title={job.title}
                     description={job.description}
@@ -242,7 +348,7 @@ export default async function JobDetailPage({ params }: PageProps) {
                   />
                 </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Sidebar Area (Right) */}

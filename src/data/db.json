@@ -1,7 +1,11 @@
 {
   "admin": {
-    "username": "admin",
-    "password": "password123"
+    "username": "admin@pharmagmail.com",
+    "password": "pharma@2026"
+  },
+  "superAdmin": {
+    "username": "superadmin@pharmagmail.com",
+    "password": "superpharma@2026"
   },
   "jobs": [
     {
@@ -612,6 +616,66 @@
         "Subsidized healthcare checkups."
       ],
       "applyUrl": "mailto:ifactstelugu@gmail.com?subject=Application for Instrumentation Specialist"
+    },
+    {
+      "id": "job-1781861873126",
+      "title": "harish",
+      "company": "ceo",
+      "category": "Pharma Job Updates",
+      "type": "Full-time",
+      "qualification": "B.Pharm",
+      "location": "hyderbad",
+      "salary": "N/A",
+      "experience": "freshers/experience",
+      "postedDate": "2026-06-19",
+      "description": "asdfghjklkjhgfds",
+      "responsibilities": [
+        "cdvfbgnh"
+      ],
+      "requirements": [
+        "xcvbn"
+      ],
+      "benefits": [
+        "xcvbnm"
+      ],
+      "applyUrl": "www.smcpvtltd.com",
+      "imageUrl": "https://res.cloudinary.com/dxhyw3vtx/image/upload/v1781861765/pharma-jobs-daily/qobkvehgfhks2ieehhp3.png",
+      "imageUrls": [
+        "https://res.cloudinary.com/dxhyw3vtx/image/upload/v1781861765/pharma-jobs-daily/qobkvehgfhks2ieehhp3.png"
+      ],
+      "applyParts": [
+        {
+          "id": "part-1781861756796",
+          "title": "",
+          "imageUrl": "https://res.cloudinary.com/dxhyw3vtx/image/upload/v1781861803/pharma-jobs-daily/gndc4st4g9jlh9krcmo9.png",
+          "applyLinks": [
+            {
+              "url": "www.codtechitsolutions.com",
+              "label": "Apply Now"
+            },
+            {
+              "url": "www.ishasoftwaresolution.com",
+              "label": "Apply Now"
+            }
+          ]
+        },
+        {
+          "id": "part-1781863067094",
+          "title": "pharma",
+          "imageUrl": "https://res.cloudinary.com/dxhyw3vtx/image/upload/v1781863088/pharma-jobs-daily/b8x5e3vim9kxdpkqlfub.png",
+          "applyLinks": [
+            {
+              "label": "Apply Now",
+              "url": "www.ishasoftwaresolution.com"
+            }
+          ]
+        }
+      ],
+      "scheduledTime": "2026-06-19T09:39:00.000Z",
+      "postedBy": "admin",
+      "responsibilitiesRaw": "cdvfbgnh",
+      "requirementsRaw": "xcvbn",
+      "benefitsRaw": "xcvbnm"
     }
   ],
   "categories": [
@@ -633,6 +697,33 @@
     "PhD",
     "JRF",
     "SRF",
-    "Staff Nurse"
+    "Staff Nurse",
+    "B.Tech"
+  ],
+  "socialLinks": {
+    "whatsapp": "https://whatsapp.com/channel/0029Va54XvB0G0Xg3b8hXj0s",
+    "telegram": "https://t.me/pharmajobsdaily_updated",
+    "instagram": "https://instagram.com/pharmajobsdaily",
+    "linkedin": "https://linkedin.com"
+  },
+  "heroSlides": [
+    {
+      "id": "slide-1",
+      "title": "Pharmaceutical Recruitment Drive Banner",
+      "image": "/ad-banner-1.png",
+      "path": "/jobs"
+    },
+    {
+      "id": "slide-2",
+      "title": "Staff Nurse Vacancy Banner",
+      "image": "/ad-banner-2.png",
+      "path": "/services"
+    },
+    {
+      "id": "slide-3",
+      "title": "JRF & SRF Fellowship Notice Board Banner",
+      "image": "/ad-banner-3.png",
+      "path": "/jobs?category=JRF%20%26%20SRF%20Jobs"
+    }
   ]
 }

@@ -14,6 +14,7 @@ export default function AOSProvider({ children }: { children: React.ReactNode })
       easing: 'ease-out-cubic',
       once: false,
       offset: 50,
+      disable: 'mobile',
     });
   }, []);
 

@@ -3,11 +3,18 @@ import { cookies } from 'next/headers';
 const ADMIN_TOKEN_COOKIE = 'pharma_admin_token';
 const SECRET_SALT = 'pharma_jobs_secret_2026';
 
+export interface AdminSession {
+  isAuthenticated: boolean;
+  username?: string;
+  role?: 'SUPER ADMIN' | 'ADMIN';
+}
+
 // A simple but secure mock JWT-like signature
 export function signToken(username: string): string {
+  const role = username.includes('superadmin') ? 'SUPER ADMIN' : 'ADMIN';
   const payload = {
     username,
-    role: 'admin',
+    role,
     exp: Date.now() + 24 * 60 * 60 * 1000 // 1 day
   };
   const str = JSON.stringify(payload);
@@ -18,28 +25,36 @@ export function signToken(username: string): string {
   return `${base64Payload}.${signature}`;
 }
 
-export function verifyToken(token: string | undefined): boolean {
-  if (!token) return false;
+export function decodeAndVerifyToken(token: string | undefined): AdminSession {
+  if (!token) return { isAuthenticated: false };
   try {
     const parts = token.split('.');
-    if (parts.length !== 2) return false;
+    if (parts.length !== 2) return { isAuthenticated: false };
     
     const [base64Payload, signature] = parts;
     const computedSignature = Buffer.from(base64Payload + SECRET_SALT).toString('base64').substring(0, 20);
     
-    if (signature !== computedSignature) return false;
+    if (signature !== computedSignature) return { isAuthenticated: false };
     
     const payloadStr = Buffer.from(base64Payload, 'base64').toString('utf8');
     const payload = JSON.parse(payloadStr);
     
     if (payload.exp < Date.now()) {
-      return false; // Token expired
+      return { isAuthenticated: false };
     }
     
-    return payload.username === 'admin';
+    return {
+      isAuthenticated: true,
+      username: payload.username,
+      role: payload.role
+    };
   } catch (error) {
-    return false;
+    return { isAuthenticated: false };
   }
+}
+
+export function verifyToken(token: string | undefined): boolean {
+  return decodeAndVerifyToken(token).isAuthenticated;
 }
 
 export async function getAdminSession(): Promise<boolean> {
@@ -48,8 +63,14 @@ export async function getAdminSession(): Promise<boolean> {
   return verifyToken(token);
 }
 
-export async function setAdminSession(): Promise<void> {
-  const token = signToken('admin');
+export async function getAdminSessionDetails(): Promise<AdminSession> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(ADMIN_TOKEN_COOKIE)?.value;
+  return decodeAndVerifyToken(token);
+}
+
+export async function setAdminSession(username: string): Promise<void> {
+  const token = signToken(username);
   const cookieStore = await cookies();
   cookieStore.set(ADMIN_TOKEN_COOKIE, token, {
     httpOnly: true,

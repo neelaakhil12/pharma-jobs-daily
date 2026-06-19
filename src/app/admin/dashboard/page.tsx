@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getAdminSession } from '@/lib/auth';
-import { getAllJobs } from '@/lib/db';
+import { getAllJobsForAdmin } from '@/lib/db';
 import AdminDashboard from '@/components/AdminDashboard';
 
 export const dynamic = 'force-dynamic';
@@ -12,7 +12,7 @@ export default async function AdminDashboardPage() {
     redirect('/adminlogin');
   }
 
-  const jobs = await getAllJobs();
+  const jobs = await getAllJobsForAdmin();
 
   return (
     <div className="bg-[#F8FAFC] min-h-screen">
@@ -20,3 +20,4 @@ export default async function AdminDashboardPage() {
     </div>
   );
 }
+

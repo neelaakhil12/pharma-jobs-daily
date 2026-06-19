@@ -55,14 +55,8 @@ export default function JobCard({ job }: JobCardProps) {
 
       {/* Footer Badge Bar */}
       <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-        {/* Verified Job Check Badge */}
-        <div className="flex items-center gap-2 text-xs font-bold text-primary">
-          <span className="w-4.5 h-4.5 rounded-full bg-primary-light border border-primary/20 text-primary flex items-center justify-center shrink-0">
-            <svg className="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
-            </svg>
-          </span>
-          <span>Verified Job</span>
+        <div className={`text-[11px] font-extrabold truncate ${job.postedBy === 'ADMIN' ? 'text-emerald-600' : 'text-primary'}`}>
+          {job.postedDate}
         </div>
 
         {/* Apply Button */}
