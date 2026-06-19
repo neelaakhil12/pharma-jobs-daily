@@ -303,7 +303,7 @@ export default async function JobDetailPage({ params }: PageProps) {
                             >
                               {link.label && link.label.trim() !== '' && link.label.toLowerCase() !== 'apply now'
                                 ? link.label
-                                : `Apply Link ${linkIdx + 1}`}
+                                : (part.applyLinks.length === 1 ? 'Apply Now' : `Apply Link ${linkIdx + 1}`)}
                             </a>
                           ))}
                           
