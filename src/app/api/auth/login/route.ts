@@ -19,14 +19,14 @@ export async function POST(request: Request) {
       const isSuper = (db.superAdmin && db.superAdmin.username === username && db.superAdmin.password === password) ||
                       (db.admin.username === username && db.admin.password === password);
       if (isSuper) {
-        await setAdminSession(username);
+        await setAdminSession(username, 'SUPER ADMIN');
         return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
       }
     } else if (type === 'assistant') {
       if (db.admins && Array.isArray(db.admins)) {
         const matched = db.admins.find(a => a.username === username && a.password === password);
         if (matched) {
-          await setAdminSession(username);
+          await setAdminSession(username, 'ADMIN');
           return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
         }
       }

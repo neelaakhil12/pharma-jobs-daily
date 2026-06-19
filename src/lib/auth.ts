@@ -10,9 +10,12 @@ export interface AdminSession {
 }
 
 // A simple but secure mock JWT-like signature
-export function signToken(username: string): string {
-  const isMainAdmin = username.includes('superadmin') || username === 'admin@pharmagmail.com';
-  const role = isMainAdmin ? 'SUPER ADMIN' : 'ADMIN';
+export function signToken(username: string, explicitRole?: 'SUPER ADMIN' | 'ADMIN'): string {
+  let role = explicitRole;
+  if (!role) {
+    const isMainAdmin = username.includes('superadmin') || username === 'admin@pharmagmail.com';
+    role = isMainAdmin ? 'SUPER ADMIN' : 'ADMIN';
+  }
   const payload = {
     username,
     role,
@@ -70,8 +73,8 @@ export async function getAdminSessionDetails(): Promise<AdminSession> {
   return decodeAndVerifyToken(token);
 }
 
-export async function setAdminSession(username: string): Promise<void> {
-  const token = signToken(username);
+export async function setAdminSession(username: string, explicitRole?: 'SUPER ADMIN' | 'ADMIN'): Promise<void> {
+  const token = signToken(username, explicitRole);
   const cookieStore = await cookies();
   cookieStore.set(ADMIN_TOKEN_COOKIE, token, {
     httpOnly: true,

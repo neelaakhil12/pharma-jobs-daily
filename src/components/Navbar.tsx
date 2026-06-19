@@ -45,7 +45,13 @@ export default function Navbar() {
   }, [mobileOpen]);
 
   // Hide Navbar on admin area pages
-  if (pathname && (pathname.startsWith('/admin') || pathname === '/superadminlogin' || pathname === '/assistantlogin')) {
+  if (pathname && (
+    pathname.startsWith('/admin') || 
+    pathname.startsWith('/superadmin') || 
+    pathname.startsWith('/assistantadmin') || 
+    pathname === '/superadminlogin' || 
+    pathname === '/assistantlogin'
+  )) {
     return null;
   }
 

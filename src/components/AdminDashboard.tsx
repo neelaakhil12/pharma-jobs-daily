@@ -840,7 +840,9 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
           </div>
           <div>
             <span className="block font-extrabold tracking-tight text-lg leading-none">Pharma Jobs</span>
-            <span className="block text-[10px] font-bold tracking-widest text-accent uppercase mt-1">Admin Portal</span>
+            <span className="block text-[10px] font-bold tracking-widest text-accent uppercase mt-1">
+              {adminRole === 'SUPER ADMIN' ? 'Super Admin Portal' : 'Assistant Admin Portal'}
+            </span>
           </div>
         </div>
 
@@ -910,7 +912,9 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
         <div className="flex items-center justify-between px-4 py-4">
           <div className="flex items-center gap-2.5">
             <ShieldCheck className="w-6 h-6 text-accent" />
-            <span className="font-extrabold tracking-tight text-sm">PJD Admin</span>
+            <span className="font-extrabold tracking-tight text-sm">
+              {adminRole === 'SUPER ADMIN' ? 'PJD Super Admin' : 'PJD Assistant Admin'}
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <button
