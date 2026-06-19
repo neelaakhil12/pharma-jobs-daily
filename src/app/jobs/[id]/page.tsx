@@ -65,12 +65,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${job.title} at ${job.company}`,
       description: shortDesc,
       type: 'article',
+      url: `${siteUrl}/jobs/${id}`,
+      siteName: 'Pharma Jobs Daily',
       images: [
         {
           url: ogImage,
           width: 800,
           height: 600,
           alt: `${job.title} — ${job.company}`,
+          type: ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg',
         },
       ],
     },
