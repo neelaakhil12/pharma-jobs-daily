@@ -1206,23 +1206,16 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                       <tr key={job.id} className="hover:bg-slate-50/30 transition-colors">
                         {/* Title & Company */}
                         <td className="p-4 sm:p-5">
-                          <div className="flex items-center gap-3">
-                            <img
-                              src={job.imageUrl || '/logo-v6.png'}
-                              alt={job.title}
-                              className="w-12 h-12 rounded-lg object-cover border border-slate-200 shrink-0"
-                            />
-                            <div>
-                              <div className="flex flex-wrap items-center gap-1.5 font-bold">
-                                <span className="font-extrabold text-slate-800 leading-tight text-sm line-clamp-1">{job.title}</span>
-                                {job.scheduledTime && new Date(job.scheduledTime) > new Date() && (
-                                  <span className="inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 bg-blue-50 border border-blue-200 text-blue-600 rounded">
-                                    Scheduled: {new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}
-                                  </span>
-                                )}
-                              </div>
-                              <div className="text-slate-450 text-[11px] font-semibold mt-0.5">{job.company}</div>
+                          <div className="flex flex-col">
+                            <div className="flex flex-wrap items-center gap-1.5 font-bold">
+                              <span className="font-extrabold text-slate-800 leading-tight text-sm line-clamp-1">{job.title}</span>
+                              {job.scheduledTime && new Date(job.scheduledTime) > new Date() && (
+                                <span className="inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 bg-blue-50 border border-blue-200 text-blue-600 rounded">
+                                  Scheduled: {new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}
+                                </span>
+                              )}
                             </div>
+                            <div className="text-slate-450 text-[11px] font-semibold mt-0.5">{job.company}</div>
                           </div>
                         </td>
                         {/* Qualification & Category */}
