@@ -460,6 +460,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     const responsibilities = form.responsibilitiesRaw.split('\n').map(s => s.trim()).filter(Boolean);
     const requirements = form.requirementsRaw.split('\n').map(s => s.trim()).filter(Boolean);
     const benefits = form.benefitsRaw.split('\n').map(s => s.trim()).filter(Boolean);
+    const calculatedApplyUrl = form.applyParts?.[0]?.applyLinks?.[0]?.url || 'mailto:ifactselugu@gmail.com';
 
     try {
       const res = await fetch('/api/jobs', {
@@ -467,6 +468,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...form,
+          applyUrl: calculatedApplyUrl,
           scheduledTime: form.scheduledTime ? new Date(form.scheduledTime).toISOString() : undefined,
           responsibilities,
           requirements,
@@ -495,6 +497,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     const responsibilities = form.responsibilitiesRaw.split('\n').map(s => s.trim()).filter(Boolean);
     const requirements = form.requirementsRaw.split('\n').map(s => s.trim()).filter(Boolean);
     const benefits = form.benefitsRaw.split('\n').map(s => s.trim()).filter(Boolean);
+    const calculatedApplyUrl = form.applyUrl || form.applyParts?.[0]?.applyLinks?.[0]?.url || 'mailto:ifactselugu@gmail.com';
 
     try {
       const res = await fetch(`/api/jobs/${selectedJob.id}`, {
@@ -502,6 +505,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...form,
+          applyUrl: calculatedApplyUrl,
           scheduledTime: form.scheduledTime ? new Date(form.scheduledTime).toISOString() : null,
           responsibilities,
           requirements,
@@ -1652,88 +1656,18 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                 </div>
               </div>
 
-              {/* Apply Direct URL/Email & Schedule Post */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Apply Link</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. mailto:ifactselugu@gmail.com"
-                    value={form.applyUrl}
-                    onChange={(e) => setForm({ ...form, applyUrl: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                    Schedule Publish Date & Time <span className="text-slate-300 font-normal normal-case">(optional)</span>
-                  </label>
-                  <DateTimePicker12h
-                    value={form.scheduledTime}
-                    onChange={(val) => setForm({ ...form, scheduledTime: val })}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                  Job Banner Images <span className="text-slate-300 font-normal normal-case">(optional — supports multiple images for slideshow)</span>
+              {/* Schedule Post */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  Schedule Publish Date & Time <span className="text-slate-300 font-normal normal-case">(optional)</span>
                 </label>
-                
-                {/* Image Thumbnails Grid */}
-                {form.imageUrls && form.imageUrls.length > 0 && (
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3 bg-slate-50 border border-slate-200 rounded-2xl">
-                    {form.imageUrls.map((url, idx) => (
-                      <div key={idx} className="relative aspect-square rounded-xl border border-slate-200 overflow-hidden bg-white group shadow-sm flex items-center justify-center">
-                        <img
-                          src={url}
-                          alt={`Upload Preview ${idx + 1}`}
-                          className="max-w-full max-h-full object-contain"
-                        />
-                        {/* Overlay Delete Button */}
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all">
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveJobImage(idx)}
-                            className="p-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors cursor-pointer"
-                            title="Remove Image"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                        {/* Index Badge */}
-                        <span className="absolute bottom-1 right-1 text-[8px] font-bold px-1.5 py-0.5 bg-black/60 text-white rounded">
-                          {idx + 1}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Upload Trigger Dropzone */}
-                <div className="relative w-full h-24 rounded-2xl border border-dashed border-slate-200 hover:border-primary transition-all bg-slate-50/50 flex flex-col items-center justify-center p-4">
-                  {uploadingJobImage ? (
-                    <div className="flex flex-col items-center justify-center gap-2">
-                      <Loader2 className="w-5 h-5 animate-spin text-primary" />
-                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Uploading assets...</span>
-                    </div>
-                  ) : (
-                    <>
-                      <Plus className="w-5 h-5 text-slate-400 mb-1" />
-                      <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Add Job Poster Image(s)</span>
-                      <span className="text-[9px] text-slate-400 mt-0.5">Click or drag images to upload</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={handleJobImageUpload}
-                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                      />
-                    </>
-                  )}
-                </div>
+                <DateTimePicker12h
+                  value={form.scheduledTime}
+                  onChange={(val) => setForm({ ...form, scheduledTime: val })}
+                />
               </div>
+
+
 
               {/* Poster-Apply Sections Builder */}
               <div className="border-t border-slate-100 pt-4 space-y-4">
@@ -2079,87 +2013,18 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                 </div>
               </div>
 
-              {/* Apply Direct URL/Email & Schedule Post */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Apply Link</label>
-                  <input
-                    type="text"
-                    required
-                    value={form.applyUrl}
-                    onChange={(e) => setForm({ ...form, applyUrl: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                    Schedule Publish Date & Time <span className="text-slate-300 font-normal normal-case">(optional)</span>
-                  </label>
-                  <DateTimePicker12h
-                    value={form.scheduledTime}
-                    onChange={(val) => setForm({ ...form, scheduledTime: val })}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                  Job Banner Images <span className="text-slate-300 font-normal normal-case">(optional — supports multiple images for slideshow)</span>
+              {/* Schedule Post */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  Schedule Publish Date & Time <span className="text-slate-300 font-normal normal-case">(optional)</span>
                 </label>
-                
-                {/* Image Thumbnails Grid */}
-                {form.imageUrls && form.imageUrls.length > 0 && (
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3 bg-slate-50 border border-slate-200 rounded-2xl">
-                    {form.imageUrls.map((url, idx) => (
-                      <div key={idx} className="relative aspect-square rounded-xl border border-slate-200 overflow-hidden bg-white group shadow-sm flex items-center justify-center">
-                        <img
-                          src={url}
-                          alt={`Upload Preview ${idx + 1}`}
-                          className="max-w-full max-h-full object-contain"
-                        />
-                        {/* Overlay Delete Button */}
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all">
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveJobImage(idx)}
-                            className="p-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors cursor-pointer"
-                            title="Remove Image"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                        {/* Index Badge */}
-                        <span className="absolute bottom-1 right-1 text-[8px] font-bold px-1.5 py-0.5 bg-black/60 text-white rounded">
-                          {idx + 1}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Upload Trigger Dropzone */}
-                <div className="relative w-full h-24 rounded-2xl border border-dashed border-slate-200 hover:border-primary transition-all bg-slate-50/50 flex flex-col items-center justify-center p-4">
-                  {uploadingJobImage ? (
-                    <div className="flex flex-col items-center justify-center gap-2">
-                      <Loader2 className="w-5 h-5 animate-spin text-primary" />
-                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Uploading assets...</span>
-                    </div>
-                  ) : (
-                    <>
-                      <Plus className="w-5 h-5 text-slate-400 mb-1" />
-                      <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Add Job Poster Image(s)</span>
-                      <span className="text-[9px] text-slate-400 mt-0.5">Click or drag images to upload</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={handleJobImageUpload}
-                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                      />
-                    </>
-                  )}
-                </div>
+                <DateTimePicker12h
+                  value={form.scheduledTime}
+                  onChange={(val) => setForm({ ...form, scheduledTime: val })}
+                />
               </div>
+
+
 
               {/* Poster-Apply Sections Builder */}
               <div className="border-t border-slate-100 pt-4 space-y-4">

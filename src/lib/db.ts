@@ -234,6 +234,7 @@ export async function readDb(): Promise<DbSchema> {
         return {
           admin: creds.admin,
           superAdmin: creds.superAdmin,
+          admins: creds.admins || [],
           jobs: [],
           categories: [],
           qualifications: []

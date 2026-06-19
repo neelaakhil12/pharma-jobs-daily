@@ -1,6 +1,6 @@
 {
   "admin": {
-    "password": "pharma@2026",
+    "password": "9989551305",
     "username": "neelaakhilharish@gmail.com"
   },
   "superAdmin": {
@@ -676,6 +676,51 @@
       "responsibilitiesRaw": "cdvfbgnh",
       "requirementsRaw": "xcvbn",
       "benefitsRaw": "xcvbnm"
+    },
+    {
+      "id": "job-1781870325050",
+      "title": "akhil",
+      "company": "manager",
+      "category": "Pharma Job Updates",
+      "type": "Full-time",
+      "qualification": "B.Pharm",
+      "location": "hyderbad",
+      "salary": "N/A",
+      "experience": "3 years",
+      "postedDate": "2026-06-19",
+      "description": "sdfvbgnhmj",
+      "responsibilities": [
+        "xscdvfbgnhm"
+      ],
+      "requirements": [
+        "sdfvbgnh"
+      ],
+      "benefits": [
+        "xcvbnm"
+      ],
+      "applyUrl": "www.smcpvtltd.com",
+      "imageUrl": "https://res.cloudinary.com/dxhyw3vtx/image/upload/v1781870297/pharma-jobs-daily/czaksfxin7haexcepu8r.png",
+      "imageUrls": [
+        "https://res.cloudinary.com/dxhyw3vtx/image/upload/v1781870297/pharma-jobs-daily/czaksfxin7haexcepu8r.png"
+      ],
+      "applyParts": [
+        {
+          "id": "part-1781870705293",
+          "title": "",
+          "imageUrl": "https://res.cloudinary.com/dxhyw3vtx/image/upload/v1781870729/pharma-jobs-daily/c6xkcvcgtmm5c3w4uted.png",
+          "applyLinks": [
+            {
+              "label": "Apply Now",
+              "url": "www.codtechitsolutions.com"
+            }
+          ]
+        }
+      ],
+      "scheduledTime": "2026-06-19T12:00:00.000Z",
+      "postedBy": "ADMIN",
+      "responsibilitiesRaw": "xscdvfbgnhm",
+      "requirementsRaw": "sdfvbgnh",
+      "benefitsRaw": "xcvbnm"
     }
   ],
   "categories": [
@@ -701,7 +746,7 @@
     "B.Tech"
   ],
   "socialLinks": {
-    "whatsapp": "https://whatsapp.com/channel/0029Va54XvB0G0Xg3b8hXj0s",
+    "whatsapp": "https://whatsapp.com/channel/0029Vb8JE4vDp2Q1N7vPyv0K",
     "telegram": "https://t.me/pharmajobsdaily_updated",
     "instagram": "https://instagram.com/pharmajobsdaily",
     "linkedin": "https://linkedin.com"
@@ -728,7 +773,7 @@
   ],
   "admins": [
     {
-      "password": "pharma@2026",
+      "password": "9989551305",
       "username": "neelaakhilharish@gmail.com"
     }
   ]
