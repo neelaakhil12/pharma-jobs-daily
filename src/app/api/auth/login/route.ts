@@ -22,6 +22,12 @@ export async function POST(request: Request) {
     } else if (db.admin.username === username && db.admin.password === password) {
       await setAdminSession(username);
       return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
+    } else if (db.admins && Array.isArray(db.admins)) {
+      const matched = db.admins.find(a => a.username === username && a.password === password);
+      if (matched) {
+        await setAdminSession(username);
+        return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
+      }
     }
 
     return NextResponse.json(

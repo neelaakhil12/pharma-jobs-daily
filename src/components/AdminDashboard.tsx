@@ -23,7 +23,9 @@ import {
   Briefcase,
   Wrench,
   Share2,
-  Layers
+  Layers,
+  Users,
+  Key
 } from 'lucide-react';
 
 interface DateTimePicker12hProps {
@@ -156,9 +158,11 @@ function DateTimePicker12h({ value, onChange }: DateTimePicker12hProps) {
 
 interface AdminDashboardProps {
   initialJobs: Job[];
+  adminRole?: 'SUPER ADMIN' | 'ADMIN';
+  adminUsername?: string;
 }
 
-export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
+export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', adminUsername }: AdminDashboardProps) {
   const router = useRouter();
   const [jobs, setJobs] = useState<Job[]>(initialJobs);
   const [loading, setLoading] = useState(false);
@@ -174,7 +178,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
   const [selectedSlide, setSelectedSlide] = useState<any | null>(null);
 
   // Tab & search layout state
-  const [activeTab, setActiveTab] = useState<'all' | 'government' | 'private' | 'other' | 'settings' | 'slides' | 'scheduled'>('government');
+  const [activeTab, setActiveTab] = useState<'all' | 'government' | 'private' | 'other' | 'settings' | 'slides' | 'scheduled' | 'credentials'>('government');
   const [searchTerm, setSearchTerm] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -201,6 +205,13 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
   const [savingLinks, setSavingLinks] = useState(false);
   const [linksSuccessMessage, setLinksSuccessMessage] = useState('');
   const [linksErrorMessage, setLinksErrorMessage] = useState('');
+
+  // Assistant credentials states
+  const [adminsList, setAdminsList] = useState<any[]>([]);
+  const [loadingAdmins, setLoadingAdmins] = useState(false);
+  const [savingAdmins, setSavingAdmins] = useState(false);
+  const [adminsSuccessMessage, setAdminsSuccessMessage] = useState('');
+  const [adminsErrorMessage, setAdminsErrorMessage] = useState('');
 
   // Fetch social configurations on mount
   useEffect(() => {
@@ -232,9 +243,66 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
         setLoadingSlides(false);
       }
     }
+    async function fetchAdmins() {
+      if (adminRole !== 'SUPER ADMIN') return;
+      setLoadingAdmins(true);
+      try {
+        const res = await fetch('/api/admin-credentials');
+        const data = await res.json();
+        if (res.ok && data.success && data.admins) {
+          setAdminsList(data.admins);
+        }
+      } catch (err) {
+        console.error('Failed to fetch admins list:', err);
+      } finally {
+        setLoadingAdmins(false);
+      }
+    }
     fetchLinks();
     fetchSlides();
-  }, []);
+    fetchAdmins();
+  }, [adminRole]);
+
+  const handleSaveAdmins = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSavingAdmins(true);
+    setAdminsSuccessMessage('');
+    setAdminsErrorMessage('');
+
+    try {
+      const res = await fetch('/api/admin-credentials', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ admins: adminsList })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setAdminsSuccessMessage('Assistant credentials successfully updated!');
+        setTimeout(() => setAdminsSuccessMessage(''), 4000);
+      } else {
+        setAdminsErrorMessage(data.error || 'Failed to update credentials.');
+      }
+    } catch (err) {
+      console.error('Failed to save credentials:', err);
+      setAdminsErrorMessage('An unexpected error occurred while saving.');
+    } finally {
+      setSavingAdmins(false);
+    }
+  };
+
+  const handleAddAdminRow = () => {
+    setAdminsList((prev) => [...prev, { username: '', password: '' }]);
+  };
+
+  const handleRemoveAdminRow = (idx: number) => {
+    setAdminsList((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  const handleUpdateAdminRow = (idx: number, field: 'username' | 'password', value: string) => {
+    setAdminsList((prev) =>
+      prev.map((admin, i) => (i === idx ? { ...admin, [field]: value } : admin))
+    );
+  };
 
   const handleSaveSocialLinks = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -778,7 +846,10 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
             { id: 'other', label: 'Other Jobs', icon: Wrench, count: countOth },
             { id: 'scheduled', label: 'Scheduled Posts', icon: Calendar, count: countScheduled },
             { id: 'slides', label: 'Hero Slides', icon: Layers, count: null },
-            { id: 'settings', label: 'Social Links', icon: Share2, count: null }
+            { id: 'settings', label: 'Social Links', icon: Share2, count: null },
+            ...(adminRole === 'SUPER ADMIN'
+              ? [{ id: 'credentials', label: 'Manage Assistants', icon: Users, count: null }]
+              : [])
           ].map((tab) => {
             const active = activeTab === tab.id;
             const Icon = tab.icon;
@@ -858,7 +929,10 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
               { id: 'other', label: 'Other Jobs', icon: Wrench, count: countOth },
               { id: 'scheduled', label: 'Scheduled Posts', icon: Calendar, count: countScheduled },
               { id: 'slides', label: 'Hero Slides', icon: Layers, count: null },
-              { id: 'settings', label: 'Social Links', icon: Share2, count: null }
+              { id: 'settings', label: 'Social Links', icon: Share2, count: null },
+              ...(adminRole === 'SUPER ADMIN'
+                ? [{ id: 'credentials', label: 'Manage Assistants', icon: Users, count: null }]
+                : [])
             ].map((tab) => {
               const active = activeTab === tab.id;
               const Icon = tab.icon;
@@ -914,6 +988,8 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                 ? 'Hero Slides Manager' 
                 : activeTab === 'scheduled' 
                 ? 'Scheduled Postings' 
+                : activeTab === 'credentials' 
+                ? 'Manage Assistant Credentials' 
                 : activeTab === 'all' 
                 ? 'All Active Openings' 
                 : `${activeTab} Jobs Portal`}
@@ -922,6 +998,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
               {activeTab === 'settings' && 'Update the destination URLs for WhatsApp, Telegram, and Instagram.'}
               {activeTab === 'slides' && 'Add, edit, or delete slide banners displayed on the landing page hero carousel.'}
               {activeTab === 'scheduled' && 'Monitor scheduling queue status, upcoming publish timings, and activation states.'}
+              {activeTab === 'credentials' && 'Create, edit, or delete login credentials for your assistant admins.'}
               {activeTab === 'all' && 'Review and audit all pharmaceutical and healthcare vacancies.'}
               {activeTab === 'government' && 'Dispense government vacancies, exam listings, and fellowships.'}
               {activeTab === 'private' && 'Publish and edit private sector openings from leading bio-labs.'}
@@ -929,7 +1006,7 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
             </p>
           </div>
 
-          {activeTab !== 'settings' && (
+          {activeTab !== 'settings' && activeTab !== 'credentials' && (
             <div className="flex items-center gap-3 w-full sm:w-auto">
               {activeTab !== 'slides' && (
                 <div className="relative flex-grow sm:flex-grow-0 sm:w-64">
@@ -1059,6 +1136,107 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
                     >
                   {savingLinks && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                       Save Social Configurations
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </main>
+        ) : activeTab === 'credentials' ? (
+          <main className="flex-grow p-6 md:p-8 max-w-3xl w-full mx-auto overflow-y-auto">
+            <div className="bg-white border border-slate-100 shadow-xl rounded-3xl p-6 sm:p-8 space-y-6 animate-fade-in">
+              <div className="space-y-1">
+                <h2 className="text-lg sm:text-xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2">
+                  <Key className="w-5 h-5 text-primary" /> Assistant Login Credentials
+                </h2>
+                <p className="text-xs text-slate-450">Create and manage accounts for your assistants to manage the site details.</p>
+              </div>
+
+              {loadingAdmins ? (
+                <div className="py-12 flex flex-col items-center justify-center gap-3 text-slate-450">
+                  <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                  <span className="text-xs font-bold">Fetching admin registry...</span>
+                </div>
+              ) : (
+                <form onSubmit={handleSaveAdmins} className="space-y-6">
+                  {adminsSuccessMessage && (
+                    <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold rounded-xl flex items-center gap-2">
+                      <ShieldCheck className="w-4.5 h-4.5 shrink-0" />
+                      {adminsSuccessMessage}
+                    </div>
+                  )}
+
+                  {adminsErrorMessage && (
+                    <div className="p-4 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-xl flex items-center gap-2">
+                      <ShieldCheck className="w-4.5 h-4.5 shrink-0" />
+                      {adminsErrorMessage}
+                    </div>
+                  )}
+
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                      <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Assistant Accounts</span>
+                      <button
+                        type="button"
+                        onClick={handleAddAdminRow}
+                        className="px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <Plus className="w-3.5 h-3.5" /> Add Assistant
+                      </button>
+                    </div>
+
+                    {adminsList.length === 0 ? (
+                      <div className="py-6 text-center text-xs font-semibold text-slate-400 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+                        No assistant accounts created. Click "+ Add Assistant" to create one.
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {adminsList.map((admin, idx) => (
+                          <div key={idx} className="flex flex-col sm:flex-row gap-3 items-end sm:items-center bg-slate-50/50 p-4 border border-slate-150 rounded-2xl relative group">
+                            <div className="flex-1 w-full space-y-1">
+                              <label className="text-[10px] font-extrabold text-slate-450 uppercase tracking-wider font-semibold">Username / Email</label>
+                              <input
+                                type="text"
+                                required
+                                placeholder="assistant@gmail.com"
+                                value={admin.username}
+                                onChange={(e) => handleUpdateAdminRow(idx, 'username', e.target.value)}
+                                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary font-bold shadow-sm"
+                              />
+                            </div>
+                            <div className="flex-1 w-full space-y-1">
+                              <label className="text-[10px] font-extrabold text-slate-450 uppercase tracking-wider font-semibold">Password</label>
+                              <input
+                                type="text"
+                                required
+                                placeholder="Enter secure password"
+                                value={admin.password || ''}
+                                onChange={(e) => handleUpdateAdminRow(idx, 'password', e.target.value)}
+                                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary font-mono shadow-sm"
+                              />
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveAdminRow(idx)}
+                              className="p-2 text-slate-400 hover:text-red-600 transition-colors border border-slate-200 hover:border-red-200 bg-white hover:bg-red-50 rounded-xl cursor-pointer shrink-0"
+                              title="Delete Account"
+                            >
+                              <Trash2 className="w-4.5 h-4.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="pt-4 border-t border-slate-100 flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={savingAdmins}
+                      className="px-6 py-3 bg-gradient-to-r from-primary to-accent-sky text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-2 hover:shadow-lg transition-all"
+                    >
+                      {savingAdmins && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                      Save Credentials Registry
                     </button>
                   </div>
                 </form>

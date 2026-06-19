@@ -62,6 +62,10 @@ export interface DbSchema {
     username: string;
     password?: string;
   };
+  admins?: Array<{
+    username: string;
+    password?: string;
+  }>;
   jobs: Job[];
   categories: string[];
   qualifications: string[];
@@ -595,4 +599,53 @@ export async function deleteHeroSlide(id: string): Promise<boolean> {
   db.heroSlides = db.heroSlides.filter((s) => s.id !== id);
   await writeLocalDb(db);
   return db.heroSlides.length !== before;
+}
+
+export interface AdminCredential {
+  username: string;
+  password?: string;
+}
+
+export async function getAdminsList(): Promise<AdminCredential[]> {
+  const db = await readDb();
+  if (!db.admins || db.admins.length === 0) {
+    return [db.admin];
+  }
+  return db.admins;
+}
+
+export async function updateAdminsList(admins: AdminCredential[]): Promise<AdminCredential[]> {
+  const available = await isSupabaseAvailable();
+  const db = await readDb();
+  
+  db.admins = admins;
+  
+  if (admins.length > 0) {
+    db.admin = admins[0];
+  }
+
+  if (available) {
+    try {
+      const credentialsObj = {
+        admin: db.admin,
+        superAdmin: db.superAdmin,
+        admins: db.admins
+      };
+      
+      const { error } = await supabase
+        .from('settings')
+        .upsert({ key: 'admin_credentials', value: credentialsObj });
+      if (error) throw error;
+    } catch (err) {
+      console.warn('[db] Supabase admin credentials update failed, updating local:', err);
+    }
+  }
+
+  // Always mirror in local db.json
+  const localDb = await readLocalDb();
+  localDb.admins = db.admins;
+  localDb.admin = db.admin;
+  await writeLocalDb(localDb);
+
+  return db.admins;
 }

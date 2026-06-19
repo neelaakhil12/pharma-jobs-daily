@@ -1,14 +1,14 @@
 import { redirect } from 'next/navigation';
-import { getAdminSession } from '@/lib/auth';
+import { getAdminSessionDetails } from '@/lib/auth';
 import { getAllJobsForAdmin } from '@/lib/db';
 import AdminDashboard from '@/components/AdminDashboard';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboardPage() {
-  const isAuthenticated = await getAdminSession();
+  const session = await getAdminSessionDetails();
   
-  if (!isAuthenticated) {
+  if (!session.isAuthenticated) {
     redirect('/adminlogin');
   }
 
@@ -16,7 +16,7 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="bg-[#F8FAFC] min-h-screen">
-      <AdminDashboard initialJobs={jobs} />
+      <AdminDashboard initialJobs={jobs} adminRole={session.role} adminUsername={session.username} />
     </div>
   );
 }
