@@ -71,11 +71,14 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     }
   }
 
-  const rawImage = targetImage || '/logo-v6.png';
+  const rawImage = targetImage || '/logo-thumbnail.png';
   const ogImage = rawImage.startsWith('http://') || rawImage.startsWith('https://')
     ? rawImage
     : `${siteUrl}${rawImage.startsWith('/') ? rawImage : `/${rawImage}`}`;
   const shortDesc = job.description.slice(0, 160);
+
+  // Optimize and resize preview image dynamically to exactly 256px wide for WhatsApp/Telegram thumbnails
+  const optimizedOgImage = `${siteUrl}/_next/image?url=${encodeURIComponent(ogImage)}&w=256&q=75`;
 
   return {
     title: `${targetTitle} | Pharma Jobs Daily`,
@@ -88,7 +91,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
       siteName: 'Pharma Jobs Daily',
       images: [
         {
-          url: ogImage,
+          url: optimizedOgImage,
           width: 256,
           height: 256,
           alt: targetTitle,
@@ -100,7 +103,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
       card: 'summary',
       title: `${targetTitle} | Pharma Jobs Daily`,
       description: shortDesc,
-      images: [ogImage],
+      images: [optimizedOgImage],
     },
   };
 }

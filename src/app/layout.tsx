@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     description: 'Trusted pharmaceutical and healthcare recruitment updates since 2020. Get daily handpicked jobs for B.Pharm, M.Pharm, Staff Nurse, Paramedical, JRF, and SRF sectors.',
     images: [
       {
-        url: '/logo-v6.png',
+        url: '/logo-thumbnail.png',
         width: 256,
         height: 256,
         alt: 'Pharma Jobs Daily Logo',
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Pharma Jobs Daily | Daily Pharma & Healthcare Vacancies',
     description: 'Trusted pharmaceutical and healthcare recruitment updates since 2020. Get daily handpicked jobs for B.Pharm, M.Pharm, Staff Nurse, Paramedical, JRF, and SRF sectors.',
-    images: ['/logo-v6.png'],
+    images: ['/logo-thumbnail.png'],
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
