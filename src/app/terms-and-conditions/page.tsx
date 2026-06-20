@@ -114,7 +114,7 @@ export default function TermsAndConditionsPage() {
               <div className="text-xs space-y-1 text-slate-550 mt-2">
                 <p className="font-bold text-slate-800">Pharma Jobs Daily</p>
                 <p>
-                  Email: <a href="mailto:ifactstelugu@gmail.com" className="text-primary hover:underline font-semibold">ifactstelugu@gmail.com</a>
+                  Email: <a href="mailto:pharmajobsdaily@gmail.com" className="text-primary hover:underline font-semibold">pharmajobsdaily@gmail.com</a>
                 </p>
                 <p>
                   Website: <a href="https://pharmajobsdaily.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">https://pharmajobsdaily.com</a>

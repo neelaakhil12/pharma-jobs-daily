@@ -443,17 +443,49 @@ export async function deleteJob(id: string): Promise<boolean> {
 // ──────────────────────────────────────────────
 export async function getCategories(): Promise<string[]> {
   const available = await isSupabaseAvailable();
+  let categories: string[] = [];
   if (available) {
     try {
       const { data, error } = await supabase
         .from('settings').select('value').eq('key', 'categories').single();
-      if (!error && data?.value) return data.value as string[];
+      if (!error && data?.value) categories = data.value as string[];
     } catch {}
   }
-  const db = await readLocalDb();
-  return db.categories.length > 0
-    ? db.categories
-    : ['Pharma Job Updates','Government Pharma Jobs','Private Pharma Jobs','Staff Nurse Jobs','Paramedical Jobs','JRF & SRF Jobs','Other Jobs'];
+  
+  if (categories.length === 0) {
+    const db = await readLocalDb();
+    if (db.categories && db.categories.length > 0) {
+      categories = db.categories;
+    }
+  }
+
+  // Self-migrating one-off check
+  const targetCategories = ['Government Jobs', 'Private Jobs', 'Engineering Jobs', 'Other Jobs'];
+  if (
+    categories.length === 0 ||
+    categories.includes('Government Pharma Jobs') ||
+    categories.includes('Staff Nurse Jobs') ||
+    categories.includes('Private Pharma Jobs')
+  ) {
+    categories = targetCategories;
+    await updateCategories(targetCategories);
+    
+    // Migrate existing jobs categories
+    const renames: Record<string, string> = {
+      'Government Pharma Jobs': 'Government Jobs',
+      'Staff Nurse Jobs': 'Government Jobs',
+      'Paramedical Jobs': 'Government Jobs',
+      'JRF & SRF Jobs': 'Government Jobs',
+      'Private Pharma Jobs': 'Private Jobs',
+      'Pharma Job Updates': 'Other Jobs'
+    };
+    // Run rename migration without blocking
+    renameCategoriesInJobs(renames, [], 'Other Jobs').catch((err) => {
+      console.error('Error migrating category names on jobs:', err);
+    });
+  }
+
+  return categories;
 }
 
 export async function getQualifications(): Promise<string[]> {
@@ -512,6 +544,55 @@ export async function updateSocialLinks(links: SocialLinks): Promise<SocialLinks
   await writeLocalDb(db);
   return links;
 }
+
+export async function updateCategories(categories: string[]): Promise<string[]> {
+  const available = await isSupabaseAvailable();
+  if (available) {
+    try {
+      const { error } = await supabase
+        .from('settings')
+        .upsert({ key: 'categories', value: categories });
+      if (error) throw error;
+    } catch (err) {
+      console.warn('[db] Supabase categories update failed, updating local:', err);
+    }
+  }
+  // Always mirror in local db.json
+  const db = await readLocalDb();
+  db.categories = categories;
+  await writeLocalDb(db);
+  return categories;
+}
+
+export async function renameCategoriesInJobs(
+  renames: Record<string, string>,
+  deletions: string[],
+  fallbackCategory: string
+): Promise<void> {
+  const jobs = await getAllJobsForAdmin();
+  
+  for (const job of jobs) {
+    let updatedCategory = job.category;
+    let needsUpdate = false;
+
+    // Check if category is renamed
+    if (renames[job.category]) {
+      updatedCategory = renames[job.category];
+      needsUpdate = true;
+    }
+    // Check if category is deleted
+    else if (deletions.includes(job.category)) {
+      updatedCategory = fallbackCategory;
+      needsUpdate = true;
+    }
+
+    if (needsUpdate) {
+      await updateJob(job.id, { category: updatedCategory });
+    }
+  }
+}
+
+
 
 // ──────────────────────────────────────────────
 //  HERO SLIDES

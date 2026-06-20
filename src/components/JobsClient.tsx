@@ -6,7 +6,11 @@ import { Search, MapPin, SlidersHorizontal, RefreshCw, Briefcase, GraduationCap 
 import JobCard from '@/components/JobCard';
 import { Job } from '@/lib/db';
 
-export default function JobsClient() {
+interface JobsClientProps {
+  initialCategories?: string[];
+}
+
+export default function JobsClient({ initialCategories }: JobsClientProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -26,19 +30,17 @@ export default function JobsClient() {
   const [qualification, setQualification] = useState(initialQualification);
   const [type, setType] = useState(initialType);
   
-  // Tab sector state (All, Government, Private, Other)
-  const [sectorTab, setSectorTab] = useState<'All' | 'Government' | 'Private' | 'Other'>('All');
-
-  // Static options (matching seed data and tags)
+  // Dynamic options populated from DB, falling back to defaults
   const categoryOptions = [
     'All',
-    'Pharma Job Updates',
-    'Government Pharma Jobs',
-    'Private Pharma Jobs',
-    'Staff Nurse Jobs',
-    'Paramedical Jobs',
-    'JRF & SRF Jobs',
-    'Other Jobs'
+    ...(initialCategories && initialCategories.length > 0
+      ? initialCategories
+      : [
+          'Government Jobs',
+          'Private Jobs',
+          'Engineering Jobs',
+          'Other Jobs'
+        ])
   ];
 
   const qualificationOptions = [
@@ -59,12 +61,6 @@ export default function JobsClient() {
       // Handle category filtering
       if (category !== 'All') {
         params.append('category', category);
-      } else if (sectorTab === 'Government') {
-        params.append('category', 'Government Pharma Jobs');
-      } else if (sectorTab === 'Private') {
-        params.append('category', 'Private Pharma Jobs');
-      } else if (sectorTab === 'Other') {
-        params.append('category', 'Other Jobs');
       }
 
       if (qualification !== 'All') params.append('qualification', qualification);
@@ -99,7 +95,7 @@ export default function JobsClient() {
     router.replace(newQuery ? `${pathname}?${newQuery}` : pathname);
 
     return () => clearTimeout(timer);
-  }, [search, location, category, qualification, type, sectorTab, pathname]);
+  }, [search, location, category, qualification, type, pathname]);
 
   const handleReset = () => {
     setSearch('');
@@ -107,7 +103,6 @@ export default function JobsClient() {
     setCategory('All');
     setQualification('All');
     setType('All');
-    setSectorTab('All');
   };
 
   return (
@@ -118,7 +113,7 @@ export default function JobsClient() {
           Active Opportunities Job Board
         </h1>
         <p className="text-slate-500 text-sm">
-          Browse daily vacancies in healthcare, pharmacology, and research fellowship.
+          Browse the latest vacancies in Pharma, Healthcare, Engineering, and Research Fellowships.
         </p>
       </div>
 
@@ -150,17 +145,16 @@ export default function JobsClient() {
             </div>
           </div>
 
-          {/* Sector Tabs (All / Government Jobs / Private Jobs / Other Jobs) */}
+          {/* Sector Tabs (Dynamic Categories from DB) */}
           <div className="flex border-b border-slate-200 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] whitespace-nowrap">
-            {(['All', 'Government', 'Private', 'Other'] as const).map((tab) => {
-              const active = sectorTab === tab;
+            {categoryOptions.map((tab) => {
+              const active = category === tab;
               return (
                 <button
                   key={tab}
                   type="button"
                   onClick={() => {
-                    setSectorTab(tab);
-                    setCategory('All'); // Reset specific subcategory to avoid conflict
+                    setCategory(tab);
                   }}
                   className={`px-3.5 sm:px-6 py-3 font-bold text-xs sm:text-sm tracking-wide transition-all border-b-2 uppercase cursor-pointer shrink-0 ${
                     active
@@ -168,7 +162,7 @@ export default function JobsClient() {
                       : 'border-transparent text-slate-500 hover:text-slate-700'
                   }`}
                 >
-                  {tab === 'All' ? 'All Openings' : `${tab} Jobs`}
+                  {tab === 'All' ? 'All Openings' : tab}
                 </button>
               );
             })}

@@ -92,8 +92,8 @@ export default function Footer() {
                 <Mail className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>
                   <span className="block text-xs text-neutral-500">Email Enquiries</span>
-                  <a href="mailto:ifactstelugu@gmail.com" className="hover:text-white transition-colors text-white font-medium">
-                    ifactstelugu@gmail.com
+                  <a href="mailto:pharmajobsdaily@gmail.com" className="hover:text-white transition-colors text-white font-medium">
+                    pharmajobsdaily@gmail.com
                   </a>
                 </div>
               </li>

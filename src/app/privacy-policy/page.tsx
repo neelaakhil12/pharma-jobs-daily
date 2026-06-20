@@ -125,7 +125,7 @@ export default function PrivacyPolicyPage() {
               <h2 className="text-base font-extrabold text-slate-800">Contact Us</h2>
               <p>For any privacy-related concerns, contact us at:</p>
               <p className="font-bold text-primary">
-                Email: <a href="mailto:ifactstelugu@gmail.com" className="hover:underline">ifactstelugu@gmail.com</a>
+                Email: <a href="mailto:pharmajobsdaily@gmail.com" className="hover:underline">pharmajobsdaily@gmail.com</a>
               </p>
             </div>
           </div>

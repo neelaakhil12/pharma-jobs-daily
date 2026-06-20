@@ -3,6 +3,7 @@ import StatsSection from '@/components/StatsSection';
 import Testimonials from '@/components/Testimonials';
 import JobsClient from '@/components/JobsClient';
 import { Suspense } from 'react';
+import { getCategories } from '@/lib/db';
 import {
   Award,
   ShieldCheck,
@@ -13,6 +14,8 @@ import {
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
+  const categories = await getCategories();
+  
   return (
     <div className="relative">
       {/* 1. Hero Landing Banner */}
@@ -30,7 +33,7 @@ export default async function HomePage() {
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mt-3">
             Daily Vacancies
           </h2>
-          <p className="text-slate-500 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+          <p className="text-slate-550 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
             Handpicked career alerts uploaded directly by our recruiters. Search, filter by qualification, category, or location and apply directly.
           </p>
         </div>
@@ -39,7 +42,7 @@ export default async function HomePage() {
             Loading jobs...
           </div>
         }>
-          <JobsClient />
+          <JobsClient initialCategories={categories} />
         </Suspense>
       </section>
 

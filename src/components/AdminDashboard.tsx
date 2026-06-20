@@ -25,8 +25,18 @@ import {
   Share2,
   Layers,
   Users,
-  Key
+  Key,
+  ChevronDown
 } from 'lucide-react';
+
+const getCategoryIcon = (catName: string) => {
+  const name = catName.toLowerCase();
+  if (name.includes('government') || name.includes('govt')) return ShieldCheck;
+  if (name.includes('private')) return Building;
+  if (name.includes('nurse') || name.includes('paramedical')) return GraduationCap;
+  if (name.includes('engineering')) return Wrench;
+  return Briefcase;
+};
 
 interface DateTimePicker12hProps {
   value: string;
@@ -160,9 +170,10 @@ interface AdminDashboardProps {
   initialJobs: Job[];
   adminRole?: 'SUPER ADMIN' | 'ADMIN';
   adminUsername?: string;
+  initialCategories?: string[];
 }
 
-export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', adminUsername }: AdminDashboardProps) {
+export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', adminUsername, initialCategories }: AdminDashboardProps) {
   const router = useRouter();
   const isSuperAdmin = adminRole === 'SUPER ADMIN' || adminUsername === 'admin@pharmagmail.com' || adminUsername?.includes('superadmin');
   const [jobs, setJobs] = useState<Job[]>(initialJobs);
@@ -179,9 +190,12 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
   const [selectedSlide, setSelectedSlide] = useState<any | null>(null);
 
   // Tab & search layout state
-  const [activeTab, setActiveTab] = useState<'all' | 'government' | 'private' | 'other' | 'settings' | 'slides' | 'scheduled' | 'credentials'>('government');
+  const [activeTab, setActiveTab] = useState<string>(
+    initialCategories && initialCategories.length > 0 ? initialCategories[0] : 'Government Jobs'
+  );
   const [searchTerm, setSearchTerm] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [categoriesExpanded, setCategoriesExpanded] = useState(true);
 
   // Slide management states
   const [slides, setSlides] = useState<any[]>([]);
@@ -206,6 +220,194 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
   const [savingLinks, setSavingLinks] = useState(false);
   const [linksSuccessMessage, setLinksSuccessMessage] = useState('');
   const [linksErrorMessage, setLinksErrorMessage] = useState('');
+
+  // Dynamic Categories Management States
+  const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
+  const [showDeleteCategoryModal, setShowDeleteCategoryModal] = useState(false);
+  const [newCategoryNameInput, setNewCategoryNameInput] = useState('');
+  const [categories, setCategories] = useState<string[]>(
+    initialCategories && initialCategories.length > 0
+      ? initialCategories
+      : [
+          'Government Jobs',
+          'Private Jobs',
+          'Engineering Jobs',
+          'Other Jobs'
+        ]
+  );
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [savingCategories, setSavingCategories] = useState(false);
+  const [categoriesSuccessMessage, setCategoriesSuccessMessage] = useState('');
+  const [categoriesErrorMessage, setCategoriesErrorMessage] = useState('');
+  const [categoryRenames, setCategoryRenames] = useState<Record<string, string>>({});
+  const [categoryDeletions, setCategoryDeletions] = useState<string[]>([]);
+  const [editingCategory, setEditingCategory] = useState<string | null>(null);
+  const [editingCategoryValue, setEditingCategoryValue] = useState('');
+
+  const handleCreateCategorySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = newCategoryNameInput.trim();
+    if (!trimmed) return;
+    if (categories.includes(trimmed)) {
+      alert('Category already exists.');
+      return;
+    }
+    
+    const updatedCategories = [...categories, trimmed];
+    setSavingCategories(true);
+
+    try {
+      const res = await fetch('/api/categories', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ categories: updatedCategories })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setCategories(updatedCategories);
+        setShowAddCategoryModal(false);
+        setNewCategoryNameInput('');
+      } else {
+        alert(data.error || 'Failed to add category.');
+      }
+    } catch (err) {
+      console.error('Failed to add category:', err);
+      alert('An unexpected error occurred.');
+    } finally {
+      setSavingCategories(false);
+    }
+  };
+
+  const handleDeleteCategoryDirect = async (nameToRemove: string) => {
+    if (categories.length <= 1) {
+      alert('You must keep at least one category.');
+      return;
+    }
+    if (!confirm(`Are you absolutely sure you want to delete the category "${nameToRemove}"? All jobs under this category will be moved to the default fallback category.`)) {
+      return;
+    }
+
+    const updatedCategories = categories.filter((c) => c !== nameToRemove);
+    setSavingCategories(true);
+
+    try {
+      const res = await fetch('/api/categories', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          categories: updatedCategories,
+          deletions: [nameToRemove]
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setCategories(updatedCategories);
+        if (activeTab === nameToRemove) {
+          setActiveTab(updatedCategories[0] || 'Government Jobs');
+        }
+        alert(`Category "${nameToRemove}" successfully deleted!`);
+      } else {
+        alert(data.error || 'Failed to delete category.');
+      }
+    } catch (err) {
+      console.error('Failed to delete category:', err);
+      alert('An unexpected error occurred.');
+    } finally {
+      setSavingCategories(false);
+    }
+  };
+
+  const handleSaveCategories = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSavingCategories(true);
+    setCategoriesSuccessMessage('');
+    setCategoriesErrorMessage('');
+
+    try {
+      const res = await fetch('/api/categories', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          categories,
+          renames: categoryRenames,
+          deletions: categoryDeletions
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setCategoriesSuccessMessage('Categories list successfully updated!');
+        setCategoryRenames({});
+        setCategoryDeletions([]);
+        setTimeout(() => setCategoriesSuccessMessage(''), 4000);
+      } else {
+        setCategoriesErrorMessage(data.error || 'Failed to update categories.');
+      }
+    } catch (err) {
+      console.error('Failed to save categories:', err);
+      setCategoriesErrorMessage('An unexpected error occurred while saving.');
+    } finally {
+      setSavingCategories(false);
+    }
+  };
+
+  const handleAddCategory = () => {
+    const trimmed = newCategoryName.trim();
+    if (!trimmed) return;
+    if (categories.includes(trimmed)) {
+      setCategoriesErrorMessage('Category already exists.');
+      return;
+    }
+    setCategories([...categories, trimmed]);
+    setNewCategoryName('');
+  };
+
+  const handleRemoveCategory = (nameToRemove: string) => {
+    if (categories.length <= 1) {
+      setCategoriesErrorMessage('You must keep at least one category.');
+      return;
+    }
+    setCategories(categories.filter((c) => c !== nameToRemove));
+    setCategoryDeletions((prev) => [...prev, nameToRemove]);
+  };
+
+  const handleStartEditCategory = (cat: string) => {
+    setEditingCategory(cat);
+    setEditingCategoryValue(cat);
+  };
+
+  const handleCancelEditCategory = () => {
+    setEditingCategory(null);
+    setEditingCategoryValue('');
+  };
+
+  const handleSaveInlineCategory = (oldName: string) => {
+    const trimmed = editingCategoryValue.trim();
+    if (!trimmed || trimmed === oldName) {
+      setEditingCategory(null);
+      return;
+    }
+    if (categories.includes(trimmed)) {
+      setCategoriesErrorMessage('Category already exists.');
+      return;
+    }
+    setCategories(categories.map((c) => (c === oldName ? trimmed : c)));
+    
+    setCategoryRenames((prev) => {
+      const updated = { ...prev };
+      let foundOriginalKey = oldName;
+      for (const [key, value] of Object.entries(prev)) {
+        if (value === oldName) {
+          foundOriginalKey = key;
+          break;
+        }
+      }
+      updated[foundOriginalKey] = trimmed;
+      return updated;
+    });
+
+    setEditingCategory(null);
+    setEditingCategoryValue('');
+  };
 
   // Assistant credentials states
   const [adminsList, setAdminsList] = useState<any[]>([]);
@@ -332,29 +534,13 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     }
   };
 
-  // Helper to map job categories to general tabs
-  const getJobSector = (category: string): 'government' | 'private' | 'other' => {
-    const cat = category.toLowerCase();
-    if (
-      cat.includes('government') ||
-      cat.includes('staff nurse') ||
-      cat.includes('paramedical') ||
-      cat.includes('jrf') ||
-      cat.includes('srf')
-    ) {
-      return 'government';
-    }
-    if (cat.includes('private')) {
-      return 'private';
-    }
-    return 'other';
-  };
+
 
   // Form Field States
   const [form, setForm] = useState({
     title: '',
     company: '',
-    category: 'Pharma Job Updates',
+    category: (initialCategories && initialCategories.length > 0) ? initialCategories[0] : 'Government Jobs',
     type: 'Full-time',
     qualification: 'B.Pharm',
     location: '',
@@ -371,15 +557,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     scheduledTime: ''
   });
 
-  const categories = [
-    'Pharma Job Updates',
-    'Government Pharma Jobs',
-    'Private Pharma Jobs',
-    'Staff Nurse Jobs',
-    'Paramedical Jobs',
-    'JRF & SRF Jobs',
-    'Other Jobs'
-  ];
+
 
   const qualifications = [
     'B.Pharm', 'D.Pharm', 'M.Pharm', 'BSc', 'MSc', 'Diploma', 'PhD', 'JRF', 'SRF', 'Staff Nurse', 'B.Tech'
@@ -392,7 +570,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     setForm({
       title: '',
       company: '',
-      category: 'Pharma Job Updates',
+      category: categories[0] || 'Government Jobs',
       type: 'Full-time',
       qualification: 'B.Pharm',
       location: '',
@@ -460,7 +638,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     const responsibilities = form.responsibilitiesRaw.split('\n').map(s => s.trim()).filter(Boolean);
     const requirements = form.requirementsRaw.split('\n').map(s => s.trim()).filter(Boolean);
     const benefits = form.benefitsRaw.split('\n').map(s => s.trim()).filter(Boolean);
-    const calculatedApplyUrl = form.applyParts?.[0]?.applyLinks?.[0]?.url || 'mailto:ifactselugu@gmail.com';
+    const calculatedApplyUrl = form.applyParts?.[0]?.applyLinks?.[0]?.url || 'mailto:pharmajobsdaily@gmail.com';
 
     try {
       const res = await fetch('/api/jobs', {
@@ -497,7 +675,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     const responsibilities = form.responsibilitiesRaw.split('\n').map(s => s.trim()).filter(Boolean);
     const requirements = form.requirementsRaw.split('\n').map(s => s.trim()).filter(Boolean);
     const benefits = form.benefitsRaw.split('\n').map(s => s.trim()).filter(Boolean);
-    const calculatedApplyUrl = form.applyUrl || form.applyParts?.[0]?.applyLinks?.[0]?.url || 'mailto:ifactselugu@gmail.com';
+    const calculatedApplyUrl = form.applyUrl || form.applyParts?.[0]?.applyLinks?.[0]?.url || 'mailto:pharmajobsdaily@gmail.com';
 
     try {
       const res = await fetch(`/api/jobs/${selectedJob.id}`, {
@@ -810,8 +988,10 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     let matchesTab = false;
     if (activeTab === 'scheduled') {
       matchesTab = !!job.scheduledTime;
+    } else if (activeTab === 'all') {
+      matchesTab = true;
     } else {
-      matchesTab = activeTab === 'all' || getJobSector(job.category) === activeTab;
+      matchesTab = job.category.toLowerCase() === activeTab.toLowerCase();
     }
     const matchesSearch =
       job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -822,10 +1002,6 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
   });
 
   // Calculate Metrics for sidebar / widgets
-  const countAll = jobs.length;
-  const countGov = jobs.filter(j => getJobSector(j.category) === 'government').length;
-  const countPvt = jobs.filter(j => getJobSector(j.category) === 'private').length;
-  const countOth = jobs.filter(j => getJobSector(j.category) === 'other').length;
   const countScheduled = jobs.filter(j => !!j.scheduledTime).length;
 
   return (
@@ -851,13 +1027,62 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
           <span className="block px-3 text-[10px] font-bold text-white/40 uppercase tracking-widest mb-3">
             Navigation
           </span>
+          
+          {/* Collapsible Categories Section */}
+          <div className="space-y-1">
+            <button
+              onClick={() => setCategoriesExpanded(!categoriesExpanded)}
+              className="w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-xs font-bold transition-all duration-200 cursor-pointer text-white/80 hover:bg-white/5 hover:text-white"
+            >
+              <div className="flex items-center gap-3">
+                <FolderOpen className="w-4.5 h-4.5 text-white/60" />
+                <span>Categories</span>
+              </div>
+              <ChevronDown className={`w-4 h-4 text-white/60 transition-transform duration-200 ${categoriesExpanded ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {categoriesExpanded && (
+              <div className="pl-4 space-y-1 border-l border-white/10 ml-6">
+                {categories.map((cat) => {
+                  const active = activeTab === cat;
+                  const Icon = getCategoryIcon(cat);
+                  const count = jobs.filter(j => j.category.toLowerCase() === cat.toLowerCase()).length;
+                  return (
+                    <button
+                      key={cat}
+                      onClick={() => {
+                        setActiveTab(cat);
+                        setSearchTerm('');
+                      }}
+                      className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                        active
+                          ? 'bg-white text-primary shadow-lg shadow-black/5'
+                          : 'text-white/80 hover:bg-white/5 hover:text-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className={`w-4.5 h-4.5 ${active ? 'text-primary' : 'text-white/60'}`} />
+                        <span className="truncate max-w-[120px] text-left">{cat}</span>
+                      </div>
+                      <span className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border ${
+                        active 
+                          ? 'bg-primary-light text-primary border-primary/20' 
+                          : 'bg-white/10 text-white/70 border-white/10'
+                      }`}>
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Standard Navigation Tabs */}
           {[
-            { id: 'government', label: 'Government Jobs', icon: ShieldCheck, count: countGov },
-            { id: 'private', label: 'Private Jobs', icon: Building, count: countPvt },
-            { id: 'other', label: 'Other Jobs', icon: Wrench, count: countOth },
             { id: 'scheduled', label: 'Scheduled Posts', icon: Calendar, count: countScheduled },
             { id: 'slides', label: 'Hero Slides', icon: Layers, count: null },
-            { id: 'settings', label: 'Social Links', icon: Share2, count: null },
+            { id: 'settings', label: 'Social Links & Categories', icon: Share2, count: null },
             ...(isSuperAdmin
               ? [{ id: 'credentials', label: 'Manage Assistants', icon: Users, count: null }]
               : [])
@@ -868,7 +1093,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
               <button
                 key={tab.id}
                 onClick={() => {
-                  setActiveTab(tab.id as any);
+                  setActiveTab(tab.id);
                   setSearchTerm('');
                 }}
                 className={`w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-xs font-bold transition-all duration-200 cursor-pointer ${
@@ -879,7 +1104,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
               >
                 <div className="flex items-center gap-3">
                   <Icon className={`w-4.5 h-4.5 ${active ? 'text-primary' : 'text-white/60'}`} />
-                  <span>{tab.label}</span>
+                  <span className="truncate max-w-[140px] text-left">{tab.label}</span>
                 </div>
                 {tab.count !== null && (
                   <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${
@@ -918,6 +1143,20 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
           </div>
           <div className="flex items-center gap-2">
             <button
+              onClick={() => setShowAddCategoryModal(true)}
+              className="p-2 bg-emerald-500 hover:bg-emerald-650 text-white rounded-lg shadow-md flex items-center justify-center cursor-pointer"
+              title="New Category"
+            >
+              <Plus className="w-4.5 h-4.5" />
+            </button>
+            <button
+              onClick={() => setShowDeleteCategoryModal(true)}
+              className="p-2 bg-rose-500 hover:bg-rose-650 text-white rounded-lg shadow-md flex items-center justify-center cursor-pointer"
+              title="Delete Category"
+            >
+              <Trash2 className="w-4.5 h-4.5" />
+            </button>
+            <button
               onClick={handleOpenAdd}
               className="p-2 bg-gradient-to-r from-accent to-accent-hover text-slate-900 rounded-lg shadow-md flex items-center justify-center cursor-pointer"
               title="Publish New"
@@ -935,14 +1174,61 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
 
         {/* Collapsible Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="px-4 pb-4 space-y-1.5 border-t border-white/10 pt-3 bg-[#00367a] animate-fade-in">
+          <div className="px-4 pb-4 space-y-1.5 border-t border-white/10 pt-3 bg-[#00367a] animate-fade-in max-h-[80vh] overflow-y-auto">
+            {/* Collapsible Categories Section */}
+            <div className="space-y-1">
+              <button
+                onClick={() => setCategoriesExpanded(!categoriesExpanded)}
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer text-white/80 hover:bg-white/5"
+              >
+                <div className="flex items-center gap-2.5">
+                  <FolderOpen className="w-4 h-4 text-white/60" />
+                  <span>Categories</span>
+                </div>
+                <ChevronDown className={`w-3.5 h-3.5 text-white/60 transition-transform ${categoriesExpanded ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {categoriesExpanded && (
+                <div className="pl-3 space-y-1 border-l border-white/10 ml-5">
+                  {categories.map((cat) => {
+                    const active = activeTab === cat;
+                    const Icon = getCategoryIcon(cat);
+                    const count = jobs.filter(j => j.category.toLowerCase() === cat.toLowerCase()).length;
+                    return (
+                      <button
+                        key={cat}
+                        onClick={() => {
+                          setActiveTab(cat);
+                          setSearchTerm('');
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                          active
+                            ? 'bg-white text-primary'
+                            : 'text-white/80 hover:bg-white/5'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <Icon className="w-3.5 h-3.5" />
+                          <span className="truncate max-w-[160px] text-left">{cat}</span>
+                        </div>
+                        <span className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded-full ${
+                          active ? 'bg-primary-light text-primary' : 'bg-white/10 text-white/70'
+                        }`}>
+                          {count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Standard Navigation Tabs */}
             {[
-              { id: 'government', label: 'Government Jobs', icon: ShieldCheck, count: countGov },
-              { id: 'private', label: 'Private Jobs', icon: Building, count: countPvt },
-              { id: 'other', label: 'Other Jobs', icon: Wrench, count: countOth },
               { id: 'scheduled', label: 'Scheduled Posts', icon: Calendar, count: countScheduled },
               { id: 'slides', label: 'Hero Slides', icon: Layers, count: null },
-              { id: 'settings', label: 'Social Links', icon: Share2, count: null },
+              { id: 'settings', label: 'Social Links & Categories', icon: Share2, count: null },
               ...(isSuperAdmin
                 ? [{ id: 'credentials', label: 'Manage Assistants', icon: Users, count: null }]
                 : [])
@@ -953,7 +1239,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                 <button
                   key={tab.id}
                   onClick={() => {
-                    setActiveTab(tab.id as any);
+                    setActiveTab(tab.id);
                     setSearchTerm('');
                     setMobileMenuOpen(false);
                   }}
@@ -965,7 +1251,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                 >
                   <div className="flex items-center gap-2.5">
                     <Icon className="w-4 h-4" />
-                    <span>{tab.label}</span>
+                    <span className="truncate max-w-[200px] text-left">{tab.label}</span>
                   </div>
                   {tab.count !== null && (
                     <span className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded-full ${
@@ -996,7 +1282,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
           <div>
             <h1 className="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2 capitalize">
               {activeTab === 'settings' 
-                ? 'Configure Social Channels' 
+                ? 'Configure Social Links & Categories' 
                 : activeTab === 'slides' 
                 ? 'Hero Slides Manager' 
                 : activeTab === 'scheduled' 
@@ -1005,17 +1291,15 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                 ? 'Manage Assistant Credentials' 
                 : activeTab === 'all' 
                 ? 'All Active Openings' 
-                : `${activeTab} Jobs Portal`}
+                : `${activeTab} Portal`}
             </h1>
             <p className="text-slate-450 text-[11px] sm:text-xs font-medium mt-1">
-              {activeTab === 'settings' && 'Update the destination URLs for WhatsApp, Telegram, and Instagram.'}
+              {activeTab === 'settings' && 'Update social links and configure/edit categories for the active jobs board.'}
               {activeTab === 'slides' && 'Add, edit, or delete slide banners displayed on the landing page hero carousel.'}
               {activeTab === 'scheduled' && 'Monitor scheduling queue status, upcoming publish timings, and activation states.'}
               {activeTab === 'credentials' && 'Create, edit, or delete login credentials for your assistant admins.'}
               {activeTab === 'all' && 'Review and audit all pharmaceutical and healthcare vacancies.'}
-              {activeTab === 'government' && 'Dispense government vacancies, exam listings, and fellowships.'}
-              {activeTab === 'private' && 'Publish and edit private sector openings from leading bio-labs.'}
-              {activeTab === 'other' && 'Track engineering, paramedical, calibration, and other job bulletins.'}
+              {!['settings', 'slides', 'scheduled', 'credentials', 'all'].includes(activeTab) && `Manage and publish vacancies under the ${activeTab} category.`}
             </p>
           </div>
 
@@ -1051,14 +1335,32 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                   <span>New Banner Slide</span>
                 </button>
               ) : (
-                <button
-                  onClick={handleOpenAdd}
-                  className="px-4 py-2.5 bg-gradient-to-r from-primary to-accent-sky text-xs font-bold text-white rounded-xl shadow-md flex items-center justify-center gap-1.5 hover:shadow-lg transition-all shrink-0 cursor-pointer"
-                >
-                  <Plus className="w-4 h-4" /> 
-                  <span className="hidden sm:inline">New Vacancy</span>
-                  <span className="sm:hidden">Add</span>
-                </button>
+                <div className="flex gap-2.5">
+                  <button
+                    onClick={() => setShowAddCategoryModal(true)}
+                    className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-750 text-xs font-bold text-white rounded-xl shadow-md flex items-center justify-center gap-1.5 hover:shadow-lg transition-all shrink-0 cursor-pointer"
+                  >
+                    <Plus className="w-4.5 h-4.5" /> 
+                    <span className="hidden sm:inline">New Category</span>
+                    <span className="sm:hidden">Category</span>
+                  </button>
+                  <button
+                    onClick={() => setShowDeleteCategoryModal(true)}
+                    className="px-4 py-2.5 bg-rose-600 hover:bg-rose-750 text-xs font-bold text-white rounded-xl shadow-md flex items-center justify-center gap-1.5 hover:shadow-lg transition-all shrink-0 cursor-pointer"
+                  >
+                    <Trash2 className="w-4.5 h-4.5" /> 
+                    <span className="hidden sm:inline">Delete Category</span>
+                    <span className="sm:hidden">Delete</span>
+                  </button>
+                  <button
+                    onClick={handleOpenAdd}
+                    className="px-4 py-2.5 bg-gradient-to-r from-primary to-accent-sky text-xs font-bold text-white rounded-xl shadow-md flex items-center justify-center gap-1.5 hover:shadow-lg transition-all shrink-0 cursor-pointer"
+                  >
+                    <Plus className="w-4.5 h-4.5" /> 
+                    <span className="hidden sm:inline">New Vacancy</span>
+                    <span className="sm:hidden">Add</span>
+                  </button>
+                </div>
               )}
             </div>
           )}
@@ -1066,7 +1368,8 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
 
         {/* Main workstation area */}
         {activeTab === 'settings' ? (
-          <main className="flex-grow p-6 md:p-8 max-w-3xl w-full mx-auto overflow-y-auto">
+          <main className="flex-grow p-6 md:p-8 max-w-3xl w-full mx-auto overflow-y-auto space-y-8">
+            {/* Social Links Card */}
             <div className="bg-white border border-slate-100 shadow-xl rounded-3xl p-6 sm:p-8 space-y-6 animate-fade-in">
               <div className="space-y-1">
                 <h2 className="text-lg sm:text-xl font-extrabold text-slate-800 tracking-tight">Social Communities Links</h2>
@@ -1141,18 +1444,152 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                     />
                   </div>
 
+                  {/* LinkedIn */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-[#0077b5]" />
+                      LinkedIn Page Link
+                    </label>
+                    <input
+                      type="url"
+                      required
+                      placeholder="https://linkedin.com/company/..."
+                      value={socialLinks.linkedin}
+                      onChange={(e) => setSocialLinks({ ...socialLinks, linkedin: e.target.value })}
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary focus:bg-white transition-all shadow-sm"
+                    />
+                  </div>
+
                   <div className="pt-4 border-t border-slate-100 flex justify-end">
                     <button
                       type="submit"
                       disabled={savingLinks}
                       className="px-6 py-3 bg-gradient-to-r from-primary to-accent-sky text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-2 hover:shadow-lg transition-all"
                     >
-                  {savingLinks && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                      {savingLinks && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                       Save Social Configurations
                     </button>
                   </div>
                 </form>
               )}
+            </div>
+
+            {/* Category Management Card */}
+            <div className="bg-white border border-slate-100 shadow-xl rounded-3xl p-6 sm:p-8 space-y-6 animate-fade-in">
+              <div className="space-y-1">
+                <h2 className="text-lg sm:text-xl font-extrabold text-slate-800 tracking-tight">Job Categories Manager</h2>
+                <p className="text-xs text-slate-450">Add or remove categories used to organize and filter job vacancies.</p>
+              </div>
+
+              {categoriesSuccessMessage && (
+                <div className="p-4 bg-emerald-50 border border-emerald-255 text-emerald-700 rounded-2xl text-xs font-bold animate-fade-in flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping shrink-0" />
+                  {categoriesSuccessMessage}
+                </div>
+              )}
+
+              {categoriesErrorMessage && (
+                <div className="p-4 bg-red-50 border border-red-150 text-red-650 rounded-2xl text-xs font-bold animate-fade-in">
+                  {categoriesErrorMessage}
+                </div>
+              )}
+
+              {/* Add New Category Form */}
+              <div className="flex gap-2 items-center pb-4 border-b border-slate-100">
+                <div className="flex-grow">
+                  <input
+                    type="text"
+                    placeholder="Enter new category name e.g., Biotech Jobs"
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary focus:bg-white transition-all shadow-sm font-semibold"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAddCategory}
+                  className="px-5 py-3.5 bg-primary text-white text-xs font-bold rounded-xl shadow-md cursor-pointer hover:bg-primary-hover hover:shadow-lg transition-all whitespace-nowrap"
+                >
+                  Add Category
+                </button>
+              </div>
+
+              {/* List of active categories */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  Active Categories List ({categories.length})
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {categories.map((cat) => (
+                    <div 
+                      key={cat}
+                      className="flex items-center justify-between p-3.5 bg-slate-50 border border-slate-150 rounded-2xl text-xs font-semibold text-slate-700"
+                    >
+                      {editingCategory === cat ? (
+                        <div className="flex items-center gap-2 w-full">
+                          <input
+                            type="text"
+                            value={editingCategoryValue}
+                            onChange={(e) => setEditingCategoryValue(e.target.value)}
+                            className="flex-grow px-2 py-1 bg-white border border-slate-250 rounded-lg text-xs font-bold focus:outline-none focus:border-primary"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleSaveInlineCategory(cat)}
+                            className="p-1 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors cursor-pointer"
+                            title="Save"
+                          >
+                            <ShieldCheck className="w-4.5 h-4.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleCancelEditCategory}
+                            className="p-1 text-slate-400 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                            title="Cancel"
+                          >
+                            <X className="w-4.5 h-4.5" />
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          <span className="truncate pr-2">{cat}</span>
+                          <div className="flex items-center gap-1 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => handleStartEditCategory(cat)}
+                              className="p-1.5 text-slate-400 hover:text-primary hover:bg-primary-light rounded-lg transition-colors cursor-pointer"
+                              title="Edit name"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveCategory(cat)}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                              title="Remove category"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Save categories button */}
+              <div className="pt-4 border-t border-slate-100 flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleSaveCategories}
+                  disabled={savingCategories}
+                  className="px-6 py-3 bg-gradient-to-r from-primary to-accent-sky text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-2 hover:shadow-lg transition-all"
+                >
+                  {savingCategories && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                  Save Categories List
+                </button>
+              </div>
             </div>
           </main>
         ) : activeTab === 'credentials' ? (
@@ -1349,9 +1786,9 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
           <main className="flex-grow p-6 md:p-8 space-y-8 max-w-7xl w-full mx-auto overflow-y-auto">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
             {[
-              { label: 'Govt Positions', value: countGov, icon: ShieldCheck, color: 'text-secondary bg-secondary/10 border-secondary/15' },
-              { label: 'Private Jobs', value: countPvt, icon: Building, color: 'text-accent-sky bg-accent-sky/10 border-accent-sky/15' },
-              { label: 'Other/Misc Jobs', value: countOth, icon: Sparkles, color: 'text-amber-600 bg-amber-50 border-amber-100' }
+              { label: 'Active Openings', value: jobs.filter(j => !j.scheduledTime).length, icon: Briefcase, color: 'text-secondary bg-secondary/10 border-secondary/15' },
+              { label: 'Scheduled Posts', value: countScheduled, icon: Calendar, color: 'text-accent-sky bg-accent-sky/10 border-accent-sky/15' },
+              { label: 'Total Postings', value: jobs.length, icon: Sparkles, color: 'text-amber-600 bg-amber-50 border-amber-100' }
             ].map((met, i) => {
               const Icon = met.icon;
               return (
@@ -2425,6 +2862,124 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* ADD CATEGORY MODAL */}
+      {showAddCategoryModal && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full border border-slate-100 shadow-2xl overflow-hidden animate-zoom-in">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+              <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-2">
+                <Plus className="w-5 h-5 text-emerald-600" />
+                Add New Category
+              </h3>
+              <button 
+                onClick={() => {
+                  setShowAddCategoryModal(false);
+                  setNewCategoryNameInput('');
+                }} 
+                className="text-slate-450 hover:text-slate-650 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Body / Form */}
+            <form onSubmit={handleCreateCategorySubmit} className="p-6 space-y-4">
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Category Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Biotech Jobs, Research Fellowships"
+                  value={newCategoryNameInput}
+                  onChange={(e) => setNewCategoryNameInput(e.target.value)}
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:border-primary shadow-sm"
+                />
+              </div>
+
+              {/* Modal Footer Controls */}
+              <div className="pt-4 border-t border-slate-100 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAddCategoryModal(false);
+                    setNewCategoryNameInput('');
+                  }}
+                  className="px-5 py-2.5 border border-slate-200 hover:bg-slate-100 text-xs font-bold text-slate-600 rounded-xl cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingCategories}
+                  className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-1.5"
+                >
+                  {savingCategories && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                  Add Category
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* DELETE CATEGORY MODAL */}
+      {showDeleteCategoryModal && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full border border-slate-100 shadow-2xl overflow-hidden animate-zoom-in">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+              <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-2">
+                <Trash2 className="w-5 h-5 text-rose-650" />
+                Delete Category
+              </h3>
+              <button 
+                onClick={() => setShowDeleteCategoryModal(false)} 
+                className="text-slate-455 hover:text-slate-650 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Body / List */}
+            <div className="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Select a category to delete. Note: deleting a category will automatically assign all jobs in that category to <span className="font-extrabold text-slate-700">"Other Jobs"</span>.
+              </p>
+              <div className="space-y-2">
+                {categories.map((cat) => (
+                  <div 
+                    key={cat}
+                    className="flex items-center justify-between p-3.5 bg-slate-50 border border-slate-150 rounded-2xl text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors"
+                  >
+                    <span className="truncate pr-4">{cat}</span>
+                    <button
+                      type="button"
+                      disabled={savingCategories}
+                      onClick={() => handleDeleteCategoryDirect(cat)}
+                      className="p-2 border border-slate-200 hover:border-red-300 hover:bg-red-50 text-slate-500 hover:text-red-650 rounded-xl cursor-pointer transition-all flex items-center justify-center shrink-0 disabled:opacity-50"
+                      title={`Delete "${cat}"`}
+                    >
+                      <Trash2 className="w-4.5 h-4.5" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Modal Footer Controls */}
+            <div className="p-6 border-t border-slate-100 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setShowDeleteCategoryModal(false)}
+                className="px-5 py-2.5 border border-slate-200 hover:bg-slate-100 text-xs font-bold text-slate-600 rounded-xl cursor-pointer"
+              >
+                Close Window
+              </button>
+            </div>
           </div>
         </div>
       )}

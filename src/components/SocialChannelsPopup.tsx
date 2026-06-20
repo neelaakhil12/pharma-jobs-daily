@@ -11,7 +11,8 @@ export default function SocialChannelsPopup() {
   const [socialLinks, setSocialLinks] = useState({
     whatsapp: 'https://whatsapp.com/channel/0029Va54XvB0G0Xg3b8hXj0s',
     telegram: 'https://t.me/pharmajobsdaily',
-    instagram: 'https://instagram.com/pharmajobsdaily'
+    instagram: 'https://instagram.com/pharmajobsdaily',
+    linkedin: 'https://linkedin.com'
   });
 
   useEffect(() => {
@@ -207,6 +208,28 @@ export default function SocialChannelsPopup() {
                 </div>
               </div>
               <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-pink-400 group-hover:text-pink-600 group-hover:translate-x-0.5 transition-all shrink-0" />
+            </a>
+
+            {/* LinkedIn */}
+            <a
+              href={socialLinks.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleDismiss}
+              className="flex items-center justify-between py-1.5 px-2 sm:p-4 bg-blue-50 hover:bg-blue-100/80 border border-blue-100 hover:border-blue-350 rounded-xl sm:rounded-2xl transition-all duration-300 group shadow-sm hover:shadow-md cursor-pointer hover:-translate-y-0.5"
+            >
+              <div className="flex items-center gap-2 sm:gap-3.5">
+                <div className="p-0.5 sm:p-2.5 bg-[#0077b5] text-white rounded-lg sm:rounded-xl shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300 shrink-0">
+                  <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                  </svg>
+                </div>
+                <div className="text-left">
+                  <span className="block text-slate-800 font-extrabold text-[11px] sm:text-sm group-hover:text-blue-600 transition-colors">LinkedIn Page</span>
+                  <span className="hidden sm:block text-[11px] text-slate-500 font-medium mt-0.5">Follow professional updates</span>
+                </div>
+              </div>
+              <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all shrink-0" />
             </a>
           </div>
 

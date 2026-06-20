@@ -390,7 +390,7 @@ export default async function JobDetailPage({ params }: PageProps) {
                 Pharma Jobs Daily is a completely free career service. We <strong>NEVER</strong> demand payments or processing fee commissions for hiring schedules or drug inspector mock forms. Avoid sharing private banking credentials.
               </p>
               <div className="text-[10px] text-slate-450">
-                Need verification? Contact <a href="mailto:ifactstelugu@gmail.com" className="underline font-semibold hover:text-primary">ifactstelugu@gmail.com</a>
+                Need verification? Contact <a href="mailto:pharmajobsdaily@gmail.com" className="underline font-semibold hover:text-primary">pharmajobsdaily@gmail.com</a>
               </div>
             </div>
           </aside>

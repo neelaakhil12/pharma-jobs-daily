@@ -11,6 +11,7 @@ export async function GET(request: Request) {
     const category = searchParams.get('category') || '';
     const type = searchParams.get('type') || '';
     const location = searchParams.get('location')?.toLowerCase() || '';
+    const sector = searchParams.get('sector')?.toLowerCase() || '';
 
     let jobs = await getAllJobs();
 
@@ -44,6 +45,29 @@ export async function GET(request: Request) {
       jobs = jobs.filter(
         (job) => job.category.toLowerCase() === category.toLowerCase()
       );
+    }
+
+    // Sector filter
+    if (sector && sector !== 'all') {
+      const getJobSector = (catName: string): 'government' | 'private' | 'other' => {
+        const cat = catName.toLowerCase();
+        if (
+          cat.includes('government') ||
+          cat.includes('govt') ||
+          cat.includes('staff nurse') ||
+          cat.includes('paramedical') ||
+          cat.includes('jrf') ||
+          cat.includes('srf')
+        ) {
+          return 'government';
+        }
+        if (cat.includes('private')) {
+          return 'private';
+        }
+        return 'other';
+      };
+
+      jobs = jobs.filter((job) => getJobSector(job.category) === sector);
     }
 
     // Job Type filter (Full-time, Contract, etc.)
@@ -102,7 +126,7 @@ export async function POST(request: Request) {
       responsibilities: body.responsibilities || [],
       requirements: body.requirements || [],
       benefits: body.benefits || [],
-      applyUrl: body.applyUrl || 'mailto:ifactselugu@gmail.com',
+      applyUrl: body.applyUrl || 'mailto:pharmajobsdaily@gmail.com',
       imageUrl: body.imageUrl || '',
       imageUrls: body.imageUrls || [],
       applyParts: body.applyParts || [],

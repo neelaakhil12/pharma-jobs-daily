@@ -1,10 +1,13 @@
 import { Suspense } from 'react';
 import JobsClient from '@/components/JobsClient';
 import { Loader2 } from 'lucide-react';
+import { getCategories } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
-export default function JobsPage() {
+export default async function JobsPage() {
+  const categories = await getCategories();
+  
   return (
     <div className="bg-[#F8FAFC] min-h-screen">
       <Suspense
@@ -15,7 +18,7 @@ export default function JobsPage() {
           </div>
         }
       >
-        <JobsClient />
+        <JobsClient initialCategories={categories} />
       </Suspense>
     </div>
   );

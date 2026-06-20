@@ -13,9 +13,28 @@ export const metadata = {
 export default async function OtherJobsPage() {
   const allJobs = await getAllJobs();
   
-  // Filter for engineering-related / other jobs
+  // Helper to map job categories to general tabs
+  const getJobSector = (catName: string): 'government' | 'private' | 'other' => {
+    const cat = catName.toLowerCase();
+    if (
+      cat.includes('government') ||
+      cat.includes('govt') ||
+      cat.includes('staff nurse') ||
+      cat.includes('paramedical') ||
+      cat.includes('jrf') ||
+      cat.includes('srf')
+    ) {
+      return 'government';
+    }
+    if (cat.includes('private')) {
+      return 'private';
+    }
+    return 'other';
+  };
+
+  // Filter for engineering-related / other jobs (anything in 'other' sector)
   const engineeringJobs = allJobs.filter(
-    (job) => job.category.toLowerCase() === 'other jobs'
+    (job) => getJobSector(job.category) === 'other'
   );
 
   return (

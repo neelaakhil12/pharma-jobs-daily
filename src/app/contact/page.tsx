@@ -72,7 +72,7 @@ export default function ContactPage() {
 
               {/* Email Channel */}
               <a
-                href="mailto:ifactstelugu@gmail.com"
+                href="mailto:pharmajobsdaily@gmail.com"
                 className="flex items-center gap-4 p-4.5 sm:p-5 bg-white border border-slate-100 hover:border-accent-sky/40 shadow-md rounded-2xl transition-all duration-300 transform hover:-translate-y-1 block"
               >
                 <div className="p-3 bg-accent-sky/10 text-accent-sky rounded-xl shrink-0">
@@ -80,7 +80,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <span className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">Email Inquiry</span>
-                  <span className="block text-xs sm:text-sm font-extrabold text-slate-700 hover:text-accent-sky transition-colors break-all">ifactstelugu@gmail.com</span>
+                  <span className="block text-xs sm:text-sm font-extrabold text-slate-700 hover:text-accent-sky transition-colors break-all">pharmajobsdaily@gmail.com</span>
                 </div>
               </a>
             </div>
@@ -92,7 +92,7 @@ export default function ContactPage() {
                 Online Community Links
               </h3>
               <div className="flex flex-wrap gap-2 sm:gap-3">
-                {['WhatsApp', 'Telegram updates', 'LinkedIn', 'YouTube Channel'].map((social, i) => (
+                {['WhatsApp', 'Telegram updates', 'LinkedIn'].map((social, i) => (
                   <button
                     key={i}
                     type="button"

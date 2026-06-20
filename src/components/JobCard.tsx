@@ -9,14 +9,17 @@ interface JobCardProps {
 export default function JobCard({ job }: JobCardProps) {
   // Determine left border styling based on category
   const getStyleCategory = (category: string) => {
-    switch (category) {
-      case 'Government Pharma Jobs':
-        return 'border-l-4 border-l-secondary';
-      case 'JRF & SRF Jobs':
-        return 'border-l-4 border-l-accent-sky';
-      default:
-        return 'border-l-4 border-l-primary';
+    const cat = category.toLowerCase();
+    if (cat.includes('government') || cat.includes('govt')) {
+      return 'border-l-4 border-l-secondary';
     }
+    if (cat.includes('engineering')) {
+      return 'border-l-4 border-l-accent-sky';
+    }
+    if (cat.includes('private')) {
+      return 'border-l-4 border-l-emerald-500';
+    }
+    return 'border-l-4 border-l-primary';
   };
 
   const borderStyle = getStyleCategory(job.category);

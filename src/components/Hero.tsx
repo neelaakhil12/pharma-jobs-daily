@@ -110,7 +110,7 @@ export default function Hero() {
           {/* Text & Search Box Area */}
           <div className="lg:col-span-7 space-y-8" data-aos="fade-right">
             {/* Social follow buttons */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 items-center">
               <a
                 href={socialLinks.whatsapp}
                 target="_blank"
@@ -135,20 +135,30 @@ export default function Hero() {
                 <span className="text-xs sm:text-sm truncate">Instagram</span>
                 <span className="text-xs sm:text-sm font-extrabold w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-pink-500/10 group-hover:bg-pink-550/25 group-hover:scale-105 flex items-center justify-center transition-all leading-none shrink-0">+</span>
               </a>
-              <div className="col-span-2 sm:col-span-1 flex justify-center">
-                <a
-                  href={socialLinks.telegram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center justify-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 bg-sky-50 border border-sky-100 hover:bg-sky-100/60 transition-all font-bold text-sky-700 rounded-full cursor-pointer shadow-sm hover:shadow-md w-full max-w-[180px] sm:max-w-none min-w-0 overflow-hidden"
-                >
-                  <svg className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 fill-current shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.003 2.002c-5.52 0-9.99 4.47-9.99 9.99 0 5.52 4.47 9.99 9.99 9.99 5.52 0 9.99-4.47 9.99-9.99 0-5.52-4.47-9.99-9.99-9.99zm4.59 6.75l-1.53 7.21c-.11.51-.41.63-.84.39l-2.33-1.72-1.12 1.08c-.12.12-.22.23-.45.23l.17-2.38 4.34-3.92c.19-.17-.04-.26-.29-.1l-5.36 3.37-2.31-.72c-.5-.16-.51-.5.1-.74l9.01-3.47c.42-.15.79.11.62.9z" />
-                  </svg>
-                  <span className="text-[10px] sm:text-sm truncate">Telegram</span>
-                  <span className="text-[10px] sm:text-sm font-extrabold w-3.5 h-3.5 sm:w-5 sm:h-5 rounded-full bg-sky-500/10 group-hover:bg-sky-500/20 group-hover:scale-105 flex items-center justify-center transition-all leading-none shrink-0">+</span>
-                </a>
-              </div>
+              <a
+                href={socialLinks.telegram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-1.5 sm:gap-1.5 px-2.5 sm:px-4 py-2 sm:py-2.5 bg-sky-50 border border-sky-100 hover:bg-sky-100/60 transition-all font-bold text-sky-700 rounded-full cursor-pointer shadow-sm hover:shadow-md w-full min-w-0 overflow-hidden"
+              >
+                <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-current shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12.003 2.002c-5.52 0-9.99 4.47-9.99 9.99 0 5.52 4.47 9.99 9.99 9.99 5.52 0 9.99-4.47 9.99-9.99 0-5.52-4.47-9.99-9.99-9.99zm4.59 6.75l-1.53 7.21c-.11.51-.41.63-.84.39l-2.33-1.72-1.12 1.08c-.12.12-.22.23-.45.23l.17-2.38 4.34-3.92c.19-.17-.04-.26-.29-.1l-5.36 3.37-2.31-.72c-.5-.16-.51-.5.1-.74l9.01-3.47c.42-.15.79.11.62.9z" />
+                </svg>
+                <span className="text-xs sm:text-sm truncate">Telegram</span>
+                <span className="text-xs sm:text-sm font-extrabold w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-sky-500/10 group-hover:bg-sky-500/20 group-hover:scale-105 flex items-center justify-center transition-all leading-none shrink-0">+</span>
+              </a>
+              <a
+                href={socialLinks.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-1.5 sm:gap-1.5 px-2.5 sm:px-4 py-2 sm:py-2.5 bg-blue-50 border border-blue-100 hover:bg-blue-100/60 transition-all font-bold text-blue-700 rounded-full cursor-pointer shadow-sm hover:shadow-md w-full min-w-0 overflow-hidden"
+              >
+                <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-current text-blue-600 shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                </svg>
+                <span className="text-xs sm:text-sm truncate">LinkedIn</span>
+                <span className="text-xs sm:text-sm font-extrabold w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-blue-500/10 group-hover:bg-blue-500/25 group-hover:scale-105 flex items-center justify-center transition-all leading-none shrink-0">+</span>
+              </a>
             </div>
 
             <div className="space-y-4">
