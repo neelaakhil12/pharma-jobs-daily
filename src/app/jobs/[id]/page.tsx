@@ -120,11 +120,14 @@ export default async function JobDetailPage({ params }: PageProps) {
   const proto = headersList.get('x-forwarded-proto') || 'https';
   const siteUrl = `${proto}://${host}`;
 
-  const formattedDate = new Date(job.postedDate).toLocaleDateString('en-IN', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  });
+  const formattedDate = (() => {
+    if (!job.postedDate) return '';
+    const parts = job.postedDate.split('-');
+    if (parts.length === 3) {
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+    return job.postedDate;
+  })();
 
   return (
     <div className="bg-[#F8FAFC] min-h-screen py-10">

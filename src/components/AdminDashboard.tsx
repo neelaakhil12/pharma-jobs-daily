@@ -1902,7 +1902,14 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                             </div>
                             <div className={`text-[10px] font-extrabold flex items-center gap-1 ${job.postedBy === 'ADMIN' ? 'text-emerald-600' : 'text-primary'}`}>
                               <Calendar className="w-3.5 h-3.5 shrink-0" /> 
-                              {job.postedDate}
+                              {(() => {
+                                if (!job.postedDate) return '';
+                                const parts = job.postedDate.split('-');
+                                if (parts.length === 3) {
+                                  return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                                }
+                                return job.postedDate;
+                              })()}
                             </div>
                           </td>
                         )}

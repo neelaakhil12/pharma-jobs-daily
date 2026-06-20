@@ -58,8 +58,15 @@ export default function JobCard({ job }: JobCardProps) {
 
       {/* Footer Badge Bar */}
       <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-        <div className={`text-[11px] font-extrabold truncate ${job.postedBy === 'ADMIN' ? 'text-emerald-600' : 'text-primary'}`}>
-          {job.postedDate}
+        <div className={`text-[11px] font-extrabold truncate ${job.postedBy === 'ADMIN' ? 'text-emerald-650' : 'text-primary'}`}>
+          {(() => {
+            if (!job.postedDate) return '';
+            const parts = job.postedDate.split('-');
+            if (parts.length === 3) {
+              return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return job.postedDate;
+          })()}
         </div>
 
         {/* Apply Button */}
