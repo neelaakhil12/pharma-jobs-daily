@@ -111,7 +111,7 @@ export default function Hero() {
           {/* Text & Search Box Area */}
           <div className="lg:col-span-7 space-y-8" data-aos="fade-right">
             {/* Social follow buttons */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3 items-center">
+            <div className="grid grid-cols-2 gap-2 items-center">
               <a
                 href={socialLinks.whatsapp}
                 target="_blank"
