@@ -552,6 +552,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     requirementsRaw: '',
     benefitsRaw: '',
     applyUrl: '',
+    recruiterEmail: '',
     imageUrl: '',
     imageUrls: [] as string[],
     applyParts: [] as JobApplyPart[],
@@ -582,6 +583,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
       requirementsRaw: '',
       benefitsRaw: '',
       applyUrl: '',
+      recruiterEmail: '',
       imageUrl: '',
       imageUrls: [] as string[],
       applyParts: [] as JobApplyPart[],
@@ -593,6 +595,10 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
   // Handle opening Edit Form
   const handleOpenEdit = (job: Job) => {
     setSelectedJob(job);
+    const isEmail = job.applyUrl ? job.applyUrl.startsWith('mailto:') : false;
+    const emailVal = isEmail ? job.applyUrl.replace('mailto:', '') : '';
+    const linkVal = isEmail ? '' : (job.applyUrl || '');
+
     setForm({
       title: job.title,
       company: job.company,
@@ -606,7 +612,8 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
       responsibilitiesRaw: job.responsibilities ? job.responsibilities.join('\n') : '',
       requirementsRaw: job.requirements ? job.requirements.join('\n') : '',
       benefitsRaw: job.benefits ? job.benefits.join('\n') : '',
-      applyUrl: job.applyUrl,
+      applyUrl: linkVal,
+      recruiterEmail: emailVal,
       imageUrl: job.imageUrl || '',
       imageUrls: job.imageUrls || (job.imageUrl ? [job.imageUrl] : []),
       applyParts: job.applyParts || [],
@@ -639,7 +646,9 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     const responsibilities = form.responsibilitiesRaw.split('\n').map(s => s.trim()).filter(Boolean);
     const requirements = form.requirementsRaw.split('\n').map(s => s.trim()).filter(Boolean);
     const benefits = form.benefitsRaw.split('\n').map(s => s.trim()).filter(Boolean);
-    const calculatedApplyUrl = form.applyParts?.[0]?.applyLinks?.[0]?.url || 'mailto:pharmajobsdaily@gmail.com';
+    const calculatedApplyUrl = form.recruiterEmail
+      ? `mailto:${form.recruiterEmail.trim()}`
+      : (form.applyUrl || form.applyParts?.[0]?.applyLinks?.[0]?.url || 'mailto:pharmajobsdaily@gmail.com');
 
     try {
       const res = await fetch('/api/jobs', {
@@ -676,7 +685,9 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     const responsibilities = form.responsibilitiesRaw.split('\n').map(s => s.trim()).filter(Boolean);
     const requirements = form.requirementsRaw.split('\n').map(s => s.trim()).filter(Boolean);
     const benefits = form.benefitsRaw.split('\n').map(s => s.trim()).filter(Boolean);
-    const calculatedApplyUrl = form.applyUrl || form.applyParts?.[0]?.applyLinks?.[0]?.url || 'mailto:pharmajobsdaily@gmail.com';
+    const calculatedApplyUrl = form.recruiterEmail
+      ? `mailto:${form.recruiterEmail.trim()}`
+      : (form.applyUrl || form.applyParts?.[0]?.applyLinks?.[0]?.url || 'mailto:pharmajobsdaily@gmail.com');
 
     try {
       const res = await fetch(`/api/jobs/${selectedJob.id}`, {
@@ -2120,6 +2131,30 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                 </div>
               </div>
 
+              {/* Apply Link & Recruiter Email */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 pt-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-450">Apply Link / URL <span className="text-slate-350 font-normal normal-case">(optional)</span></label>
+                  <input
+                    type="text"
+                    placeholder="https://company.com/careers/apply"
+                    value={form.applyUrl}
+                    onChange={(e) => setForm({ ...form, applyUrl: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-455">Recruiter Email <span className="text-slate-350 font-normal normal-case">(optional)</span></label>
+                  <input
+                    type="text"
+                    placeholder="e.g. hr@company.com"
+                    value={form.recruiterEmail}
+                    onChange={(e) => setForm({ ...form, recruiterEmail: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+
               {/* Schedule Post */}
               <div className="space-y-1">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
@@ -2473,6 +2508,30 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                     value={form.benefitsRaw}
                     onChange={(e) => setForm({ ...form, benefitsRaw: e.target.value })}
                     className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none"
+                  />
+                </div>
+              </div>
+
+              {/* Apply Link & Recruiter Email */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 pt-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-450">Apply Link / URL <span className="text-slate-350 font-normal normal-case">(optional)</span></label>
+                  <input
+                    type="text"
+                    placeholder="https://company.com/careers/apply"
+                    value={form.applyUrl}
+                    onChange={(e) => setForm({ ...form, applyUrl: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-455">Recruiter Email <span className="text-slate-350 font-normal normal-case">(optional)</span></label>
+                  <input
+                    type="text"
+                    placeholder="e.g. hr@company.com"
+                    value={form.recruiterEmail}
+                    onChange={(e) => setForm({ ...form, recruiterEmail: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
                   />
                 </div>
               </div>

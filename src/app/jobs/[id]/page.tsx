@@ -30,6 +30,9 @@ function normalizeUrl(url: string): string {
   ) {
     return trimmed;
   }
+  if (trimmed.includes('@') && !trimmed.includes('/')) {
+    return `mailto:${trimmed}`;
+  }
   return `https://${trimmed}`;
 }
 
@@ -306,7 +309,9 @@ export default async function JobDetailPage({ params }: PageProps) {
                             >
                               {link.label && link.label.trim() !== '' && link.label.toLowerCase() !== 'apply now'
                                 ? link.label
-                                : (part.applyLinks.length === 1 ? 'Apply Now' : `Apply Link ${linkIdx + 1}`)}
+                                : (normalizeUrl(link.url).startsWith('mailto:')
+                                  ? 'Email Resume'
+                                  : (part.applyLinks.length === 1 ? 'Apply Now' : `Apply Link ${linkIdx + 1}`))}
                             </a>
                           ))}
                           
@@ -333,26 +338,44 @@ export default async function JobDetailPage({ params }: PageProps) {
                 </div>
               ) : (
                 <>
-                  <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
-                    Click <strong>Apply Now</strong> below to go to the official application page. Share this vacancy with friends using the <strong>Share</strong> button.
-                  </p>
+                  {(() => {
+                    const normalized = normalizeUrl(job.applyUrl);
+                    const isEmail = normalized.startsWith('mailto:');
+                    const emailAddress = isEmail ? normalized.replace('mailto:', '') : '';
 
-                  {/* Job Image Gallery Slideshow */}
-                  <JobImageGallery
-                    images={job.imageUrls && job.imageUrls.length > 0 ? job.imageUrls : (job.imageUrl ? [job.imageUrl] : [])}
-                    alt={`${job.title} — ${job.company}`}
-                  />
+                    return (
+                      <>
+                        <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
+                          {isEmail ? (
+                            <>
+                              Click <strong>Email Resume</strong> below to send your application directly to the recruiter's email: <strong>{emailAddress}</strong>.
+                            </>
+                          ) : (
+                            <>
+                              Click <strong>Apply Now</strong> below to go to the official application page. Share this vacancy with friends using the <strong>Share</strong> button.
+                            </>
+                          )}
+                        </p>
 
-                  <div className="pt-2 flex justify-center w-full">
-                    <a
-                      href={normalizeUrl(job.applyUrl)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-8 py-3.5 text-center text-sm font-extrabold text-white bg-gradient-to-r from-primary via-accent-sky to-secondary hover:bg-right bg-[size:200%_auto] rounded-2xl shadow-lg hover:shadow-blue-500/20 transition-all duration-300 transform hover:-translate-y-0.5 w-full max-w-[240px]"
-                    >
-                      Apply Now
-                    </a>
-                  </div>
+                        {/* Job Image Gallery Slideshow */}
+                        <JobImageGallery
+                          images={job.imageUrls && job.imageUrls.length > 0 ? job.imageUrls : (job.imageUrl ? [job.imageUrl] : [])}
+                          alt={`${job.title} — ${job.company}`}
+                        />
+
+                        <div className="pt-2 flex justify-center w-full">
+                          <a
+                            href={normalized}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-8 py-3.5 text-center text-sm font-extrabold text-white bg-gradient-to-r from-primary via-accent-sky to-secondary hover:bg-right bg-[size:200%_auto] rounded-2xl shadow-lg hover:shadow-blue-500/20 transition-all duration-300 transform hover:-translate-y-0.5 w-full max-w-[240px]"
+                          >
+                            {isEmail ? 'Email Resume' : 'Apply Now'}
+                          </a>
+                        </div>
+                      </>
+                    );
+                  })()}
                 </>
               )}
             </div>
