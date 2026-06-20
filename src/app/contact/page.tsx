@@ -35,12 +35,24 @@ export default function ContactPage() {
     e.preventDefault();
     setLoading(true);
     
-    // Simulate premium message dispatching
+    // Construct the formatted WhatsApp message
+    const formattedText = `Hello Pharma Jobs Daily,
+
+I have submitted an inquiry via the contact form:
+*Name:* ${form.name}
+*Email:* ${form.email}
+*Subject:* ${form.subject}
+*Message:* ${form.message}`;
+
+    const whatsappUrl = `https://wa.me/918919278961?text=${encodeURIComponent(formattedText)}`;
+    
     setTimeout(() => {
       setLoading(false);
       setSuccess(true);
       setForm({ name: '', email: '', subject: '', message: '' });
-    }, 1500);
+      // Redirect to WhatsApp
+      window.open(whatsappUrl, '_blank');
+    }, 1000);
   };
 
   return (
