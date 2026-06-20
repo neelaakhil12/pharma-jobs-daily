@@ -92,15 +92,46 @@ export default function ContactPage() {
                 Online Community Links
               </h3>
               <div className="flex flex-wrap gap-2 sm:gap-3">
-                {['WhatsApp', 'Telegram updates', 'LinkedIn'].map((social, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    className="text-xs px-3.5 py-2 bg-slate-50 border border-slate-200 hover:border-primary hover:text-primary text-slate-655 font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
-                  >
-                    {social}
-                  </button>
-                ))}
+                <a
+                  href="https://whatsapp.com/channel/0029Va54XvB0G0Xg3b8hXj0s"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs px-3.5 py-2 bg-[#25D366]/10 border border-[#25D366]/30 hover:bg-[#25D366]/20 text-[#20ba59] font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
+                >
+                  WhatsApp Channel
+                </a>
+                <a
+                  href="https://t.me/pharmajobsdaily"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs px-3.5 py-2 bg-sky-50 border border-sky-200 hover:bg-sky-100 text-sky-700 font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
+                >
+                  Telegram Channel
+                </a>
+                <a
+                  href="https://instagram.com/pharmajobsdaily"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs px-3.5 py-2 bg-pink-50 border border-pink-200 hover:bg-pink-100 text-pink-700 font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
+                >
+                  Instagram
+                </a>
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs px-3.5 py-2 bg-blue-50 border border-blue-200 hover:bg-blue-100 text-blue-700 font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
+                >
+                  LinkedIn
+                </a>
+                <a
+                  href="https://youtube.com/@pharmajobsdaily"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs px-3.5 py-2 bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
+                >
+                  YouTube Channel
+                </a>
               </div>
             </div>
           </div>
