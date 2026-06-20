@@ -28,7 +28,10 @@ export const viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://pharmajobsdaily.com'),
-  title: 'Pharma Jobs Daily | Daily Pharma & Healthcare Vacancies',
+  title: {
+    default: 'Pharma Jobs Daily | Daily Pharma & Healthcare Vacancies',
+    template: '%s | Pharma Jobs Daily',
+  },
   description:
     'Trusted pharmaceutical and healthcare recruitment updates since 2020. Get daily handpicked jobs for B.Pharm, M.Pharm, Staff Nurse, Paramedical, JRF, and SRF sectors.',
   keywords: [
@@ -40,8 +43,54 @@ export const metadata: Metadata = {
     'M.Pharm Jobs',
     'JRF Opportunities',
     'SRF Recruitment India',
+    'Pharmacist Jobs',
+    'QA Jobs Pharma',
+    'QC Jobs Pharma',
+    'Drug Inspector Vacancies',
+    'Government Pharma Jobs',
+    'Private Pharma Jobs',
   ],
   authors: [{ name: 'Pharma Jobs Daily' }],
+  creator: 'Pharma Jobs Daily',
+  publisher: 'Pharma Jobs Daily',
+  openGraph: {
+    type: 'website',
+    locale: 'en_IN',
+    url: 'https://pharmajobsdaily.com',
+    siteName: 'Pharma Jobs Daily',
+    title: 'Pharma Jobs Daily | Daily Pharma & Healthcare Vacancies',
+    description: 'Trusted pharmaceutical and healthcare recruitment updates since 2020. Get daily handpicked jobs for B.Pharm, M.Pharm, Staff Nurse, Paramedical, JRF, and SRF sectors.',
+    images: [
+      {
+        url: '/logo-v6.png',
+        width: 800,
+        height: 600,
+        alt: 'Pharma Jobs Daily Logo',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Pharma Jobs Daily | Daily Pharma & Healthcare Vacancies',
+    description: 'Trusted pharmaceutical and healthcare recruitment updates since 2020. Get daily handpicked jobs for B.Pharm, M.Pharm, Staff Nurse, Paramedical, JRF, and SRF sectors.',
+    images: ['/logo-v6.png'],
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
