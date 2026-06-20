@@ -89,8 +89,8 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
       images: [
         {
           url: ogImage,
-          width: 800,
-          height: 600,
+          width: 256,
+          height: 256,
           alt: targetTitle,
           type: ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg',
         },

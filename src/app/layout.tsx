@@ -63,14 +63,14 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/logo-v6.png',
-        width: 800,
-        height: 600,
+        width: 256,
+        height: 256,
         alt: 'Pharma Jobs Daily Logo',
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title: 'Pharma Jobs Daily | Daily Pharma & Healthcare Vacancies',
     description: 'Trusted pharmaceutical and healthcare recruitment updates since 2020. Get daily handpicked jobs for B.Pharm, M.Pharm, Staff Nurse, Paramedical, JRF, and SRF sectors.',
     images: ['/logo-v6.png'],
