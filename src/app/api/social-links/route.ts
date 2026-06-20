@@ -23,16 +23,17 @@ export async function PUT(request: Request) {
     
     const body = await request.json();
     
-    // Simple validation
+    // Simple validation (youtube is optional)
     if (!body.whatsapp || !body.telegram || !body.instagram || !body.linkedin) {
-      return NextResponse.json({ success: false, error: 'All social links are required' }, { status: 400 });
+      return NextResponse.json({ success: false, error: 'WhatsApp, Telegram, Instagram and LinkedIn links are required' }, { status: 400 });
     }
 
     const updated = await updateSocialLinks({
       whatsapp: body.whatsapp,
       telegram: body.telegram,
       instagram: body.instagram,
-      linkedin: body.linkedin
+      linkedin: body.linkedin,
+      youtube: body.youtube || ''
     });
     
     return NextResponse.json({ success: true, links: updated }, { status: 200 });
