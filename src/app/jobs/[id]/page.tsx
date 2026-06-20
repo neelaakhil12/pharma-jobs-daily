@@ -388,10 +388,12 @@ export default async function JobDetailPage({ params }: PageProps) {
                         </p>
 
                         {/* Job Image Gallery Slideshow */}
-                        <JobImageGallery
-                          images={job.imageUrls && job.imageUrls.length > 0 ? job.imageUrls : (job.imageUrl ? [job.imageUrl] : [])}
-                          alt={`${job.title} — ${job.company}`}
-                        />
+                        {(hasImages || !isEmail) && (
+                          <JobImageGallery
+                            images={job.imageUrls && job.imageUrls.length > 0 ? job.imageUrls : (job.imageUrl ? [job.imageUrl] : [])}
+                            alt={`${job.title} — ${job.company}`}
+                          />
+                        )}
 
                         {isEmail && !hasImages ? (
                           <div className="pt-2 flex flex-col items-center justify-center w-full p-6 bg-slate-50 border border-slate-100 rounded-2xl text-center space-y-2 max-w-[400px] mx-auto">
