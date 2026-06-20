@@ -43,6 +43,7 @@ export interface SocialLinks {
   telegram: string;
   instagram: string;
   linkedin: string;
+  youtube: string;
 }
 
 export interface HeroSlide {
@@ -519,7 +520,8 @@ const DEFAULT_SOCIAL_LINKS: SocialLinks = {
   whatsapp: 'https://whatsapp.com/channel/0029Va54XvB0G0Xg3b8hXj0s',
   telegram: 'https://t.me/pharmajobsdaily',
   instagram: 'https://instagram.com/pharmajobsdaily',
-  linkedin: 'https://linkedin.com'
+  linkedin: 'https://linkedin.com',
+  youtube: 'https://youtube.com/@pharmajobsdaily'
 };
 
 export async function getSocialLinks(): Promise<SocialLinks> {

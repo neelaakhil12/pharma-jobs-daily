@@ -214,7 +214,8 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     whatsapp: '',
     telegram: '',
     instagram: '',
-    linkedin: ''
+    linkedin: '',
+    youtube: ''
   });
   const [loadingLinks, setLoadingLinks] = useState(false);
   const [savingLinks, setSavingLinks] = useState(false);
@@ -1456,6 +1457,21 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                       placeholder="https://linkedin.com/company/..."
                       value={socialLinks.linkedin}
                       onChange={(e) => setSocialLinks({ ...socialLinks, linkedin: e.target.value })}
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary focus:bg-white transition-all shadow-sm"
+                    />
+                  </div>
+
+                  {/* YouTube */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-[#FF0000]" />
+                      YouTube Channel Link
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://youtube.com/@yourchannel"
+                      value={socialLinks.youtube || ''}
+                      onChange={(e) => setSocialLinks({ ...socialLinks, youtube: e.target.value })}
                       className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary focus:bg-white transition-all shadow-sm"
                     />
                   </div>
