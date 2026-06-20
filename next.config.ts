@@ -5,11 +5,24 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'uvnbgyevuwpdsykaequq.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.pharmajobsdaily.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'pharmajobsdaily.com',
       },
       {
         protocol: 'http',
-        hostname: '**',
+        hostname: 'localhost',
+        port: '3000',
       }
     ],
   },
