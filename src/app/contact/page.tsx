@@ -1,12 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Mail, MapPin, Send, MessageCircle, Globe, Share2, CheckCircle2 } from 'lucide-react';
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  const [socialLinks, setSocialLinks] = useState({
+    whatsapp: 'https://whatsapp.com/channel/0029Va54XvB0G0Xg3b8hXj0s',
+    telegram: 'https://t.me/pharmajobsdaily',
+    instagram: 'https://instagram.com/pharmajobsdaily',
+    linkedin: 'https://linkedin.com',
+    youtube: 'https://youtube.com/@pharmajobsdaily'
+  });
+
+  useEffect(() => {
+    async function fetchSocialLinks() {
+      try {
+        const res = await fetch('/api/social-links');
+        const data = await res.json();
+        if (res.ok && data.success && data.links) {
+          setSocialLinks(data.links);
+        }
+      } catch (error) {
+        console.error('Failed to load social links in ContactPage:', error);
+      }
+    }
+    fetchSocialLinks();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,7 +116,7 @@ export default function ContactPage() {
               </h3>
               <div className="flex flex-wrap gap-2 sm:gap-3">
                 <a
-                  href="https://whatsapp.com/channel/0029Va54XvB0G0Xg3b8hXj0s"
+                  href={socialLinks.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs px-3.5 py-2 bg-[#25D366]/10 border border-[#25D366]/30 hover:bg-[#25D366]/20 text-[#20ba59] font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
@@ -101,7 +124,7 @@ export default function ContactPage() {
                   WhatsApp Channel
                 </a>
                 <a
-                  href="https://t.me/pharmajobsdaily"
+                  href={socialLinks.telegram}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs px-3.5 py-2 bg-sky-50 border border-sky-200 hover:bg-sky-100 text-sky-700 font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
@@ -109,7 +132,7 @@ export default function ContactPage() {
                   Telegram Channel
                 </a>
                 <a
-                  href="https://instagram.com/pharmajobsdaily"
+                  href={socialLinks.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs px-3.5 py-2 bg-pink-50 border border-pink-200 hover:bg-pink-100 text-pink-700 font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
@@ -117,7 +140,7 @@ export default function ContactPage() {
                   Instagram
                 </a>
                 <a
-                  href="https://linkedin.com"
+                  href={socialLinks.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs px-3.5 py-2 bg-blue-50 border border-blue-200 hover:bg-blue-100 text-blue-700 font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
@@ -125,7 +148,7 @@ export default function ContactPage() {
                   LinkedIn
                 </a>
                 <a
-                  href="https://youtube.com/@pharmajobsdaily"
+                  href={socialLinks.youtube || 'https://youtube.com/@pharmajobsdaily'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs px-3.5 py-2 bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
