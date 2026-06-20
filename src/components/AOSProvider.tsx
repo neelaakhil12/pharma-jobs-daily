@@ -10,11 +10,10 @@ export default function AOSProvider({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     AOS.init({
-      duration: 800,
+      duration: 600,
       easing: 'ease-out-cubic',
-      once: false,
-      offset: 50,
-      disable: 'mobile',
+      once: true,
+      offset: 30,
     });
   }, []);
 

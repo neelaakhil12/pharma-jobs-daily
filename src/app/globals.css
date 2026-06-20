@@ -45,6 +45,17 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-poppins), sans-serif;
 }
 
+/* AOS Safety Net: Ensure data-aos elements are always visible
+   even before AOS JS initializes (prevents hidden content on slow mobile) */
+[data-aos] {
+  pointer-events: auto !important;
+}
+html:not(.aos-initialized) [data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+
 /* Custom premium class names for our UI */
 .glass-panel {
   background: rgba(255, 255, 255, 0.85);
