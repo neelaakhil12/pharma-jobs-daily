@@ -92,7 +92,8 @@ export default function JobsClient({ initialCategories }: JobsClientProps) {
     if (type !== 'All') params.append('type', type);
     
     const newQuery = params.toString();
-    router.replace(newQuery ? `${pathname}?${newQuery}` : pathname);
+    const newUrl = newQuery ? `${pathname}?${newQuery}` : pathname;
+    window.history.replaceState(null, '', newUrl);
 
     return () => clearTimeout(timer);
   }, [search, location, category, qualification, type, pathname]);

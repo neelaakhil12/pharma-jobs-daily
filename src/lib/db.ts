@@ -180,8 +180,13 @@ function mapJobToRow(job: Partial<Job>): Partial<JobRow> {
   return row;
 }
 
+let cachedSupabaseAvailable: boolean | null = null;
+
 /** Returns true when the Supabase connection is usable */
 async function isSupabaseAvailable(): Promise<boolean> {
+  if (cachedSupabaseAvailable) {
+    return true;
+  }
   try {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -190,7 +195,11 @@ async function isSupabaseAvailable(): Promise<boolean> {
     }
     // Quick probe – check settings table exists
     const { error } = await supabase.from('settings').select('key').limit(1);
-    return !error;
+    const available = !error;
+    if (available) {
+      cachedSupabaseAvailable = true;
+    }
+    return available;
   } catch {
     return false;
   }
