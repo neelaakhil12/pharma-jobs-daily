@@ -1288,7 +1288,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col h-full overflow-y-auto min-w-0">
+      <div className="flex-1 flex flex-col md:h-full overflow-y-auto min-w-0">
         {/* Top Header */}
         <header className="bg-white border-b border-slate-100 px-6 py-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shrink-0 shadow-sm">
           <div>
@@ -1347,7 +1347,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                   <span>New Banner Slide</span>
                 </button>
               ) : (
-                <div className="flex gap-2.5">
+                <div className="hidden md:flex gap-2.5">
                   <button
                     onClick={() => setShowAddCategoryModal(true)}
                     className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-750 text-xs font-bold text-white rounded-xl shadow-md flex items-center justify-center gap-1.5 hover:shadow-lg transition-all shrink-0 cursor-pointer"
@@ -1732,7 +1732,8 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                 </h3>
               </div>
 
-              <div className="overflow-x-auto">
+              {/* Desktop view */}
+              <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-slate-100 text-[10px] font-bold text-slate-450 uppercase bg-slate-50/30">
@@ -1766,7 +1767,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                           {/* Slide Title */}
                           <td className="p-4 sm:p-5">
                             <div className="font-extrabold text-slate-800 leading-tight text-sm line-clamp-1">{slide.title}</div>
-                            <div className="text-slate-450 text-[10px] font-semibold mt-0.5">ID: {slide.id}</div>
+                            <div className="text-slate-455 text-[10px] font-semibold mt-0.5">ID: {slide.id}</div>
                           </td>
                           {/* Slide Path */}
                           <td className="p-4 sm:p-5 font-mono text-slate-500 text-[11px] max-w-xs truncate">
@@ -1807,6 +1808,67 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                   </tbody>
                 </table>
               </div>
+
+              {/* Mobile View */}
+              <div className="block md:hidden divide-y divide-slate-100">
+                {loadingSlides ? (
+                  <div className="p-12 text-center text-slate-450">
+                    <Loader2 className="w-6 h-6 animate-spin text-primary mx-auto mb-2" />
+                    <div className="font-bold">Retrieving banner slides...</div>
+                  </div>
+                ) : slides.length > 0 ? (
+                  slides.map((slide) => (
+                    <div key={slide.id} className="p-4 space-y-4 hover:bg-slate-50/20 transition-colors">
+                      <div className="flex gap-4 items-start">
+                        {/* Slide image left */}
+                        <div className="relative w-24 h-16 shrink-0 rounded-xl border border-slate-100 overflow-hidden bg-slate-50">
+                          <img
+                            src={slide.image}
+                            alt={slide.title}
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                        {/* Slide info right */}
+                        <div className="flex-1 min-w-0 space-y-1">
+                          <div className="font-extrabold text-slate-800 text-xs line-clamp-2 leading-tight">{slide.title}</div>
+                          <div className="text-slate-450 text-[9px] font-semibold">ID: {slide.id}</div>
+                          <div className="font-mono text-slate-500 text-[10px] truncate" title={slide.path}>
+                            {slide.path}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex justify-end gap-2.5 pt-3 border-t border-slate-100/60">
+                        <button
+                          onClick={() => handleOpenEditSlide(slide)}
+                          className="px-3 py-1.5 border border-slate-200 hover:border-primary hover:bg-primary-light text-slate-500 hover:text-primary rounded-lg cursor-pointer transition-colors text-xs font-bold flex items-center gap-1"
+                          title="Edit Slide"
+                        >
+                          <Edit className="w-3.5 h-3.5" />
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteSlide(slide.id)}
+                          className="px-3 py-1.5 border border-slate-200 hover:border-red-300 hover:bg-red-50 text-slate-500 hover:text-red-650 rounded-lg cursor-pointer transition-colors text-xs font-bold flex items-center gap-1"
+                          title="Delete Slide"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-12 text-center text-slate-450 space-y-3">
+                    <FolderOpen className="w-8 h-8 text-slate-355 mx-auto" />
+                    <div className="font-extrabold text-sm text-slate-700">No active slide banners published</div>
+                    <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                      Click "New Banner Slide" at the top to publish your first banner slide.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </main>
         ) : (
@@ -1843,7 +1905,8 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
               </h3>
             </div>
 
-            <div className="overflow-x-auto">
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-slate-100 text-[10px] font-bold text-slate-450 uppercase bg-slate-50/30">
@@ -1870,7 +1933,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                                 </span>
                               )}
                             </div>
-                            <div className="text-slate-450 text-[11px] font-semibold mt-0.5">{job.company}</div>
+                            <div className="text-slate-455 text-[11px] font-semibold mt-0.5">{job.company}</div>
                           </div>
                         </td>
                         {/* Qualification & Category */}
@@ -1964,6 +2027,116 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                   )}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobile Cards View */}
+            <div className="block md:hidden divide-y divide-slate-100">
+              {filteredJobs.length > 0 ? (
+                filteredJobs.map((job) => (
+                  <div key={job.id} className="p-4 space-y-3 hover:bg-slate-50/20 transition-colors">
+                    {/* Job Title & Company */}
+                    <div className="space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-extrabold text-slate-800 text-sm leading-snug">{job.title}</span>
+                        {job.scheduledTime && new Date(job.scheduledTime) > new Date() && (
+                          <span className="inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 bg-blue-50 border border-blue-200 text-blue-600 rounded">
+                            Scheduled: {new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-slate-450 text-[11px] font-semibold">{job.company}</div>
+                    </div>
+
+                    {/* Eligibility & Sector Badge */}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="inline-block text-[10px] font-bold px-2 py-0.5 bg-slate-50 border border-slate-200 text-slate-655 rounded">
+                        {job.qualification}
+                      </span>
+                      <span className="text-[10px] font-bold text-primary">{job.category}</span>
+                    </div>
+
+                    {/* Location, Date, Scheduling Status */}
+                    <div className="space-y-2 pt-2 border-t border-slate-100/60 text-[11px]">
+                      {activeTab === 'scheduled' ? (
+                        <div className="space-y-2">
+                          <div>
+                            {job.scheduledTime && new Date(job.scheduledTime) > new Date() ? (
+                              <span className="inline-flex items-center text-[9px] font-extrabold px-2 py-0.5 bg-blue-50 border border-blue-200 text-blue-600 rounded-full">
+                                Pending / Scheduled
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center text-[9px] font-extrabold px-2 py-0.5 bg-emerald-50 border border-emerald-200 text-emerald-600 rounded-full">
+                                Published / Active
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-[10px] font-extrabold text-slate-550 flex items-center gap-1.5">
+                            <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <span>
+                              {job.scheduledTime && new Date(job.scheduledTime) > new Date() ? 'Run: ' : 'Live: '}
+                              {job.scheduledTime ? new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }) : 'N/A'}
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-1.5 text-slate-600">
+                          <div className="flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <span>{job.location}</span>
+                          </div>
+                          <div className={`text-[10px] font-extrabold flex items-center gap-1.5 ${job.postedBy === 'ADMIN' ? 'text-emerald-600' : 'text-primary'}`}>
+                            <Calendar className="w-3.5 h-3.5 shrink-0" />
+                            <span>
+                              Posted: {(() => {
+                                if (!job.postedDate) return '';
+                                const parts = job.postedDate.split('-');
+                                if (parts.length === 3) {
+                                  return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                                }
+                                return job.postedDate;
+                              })()}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex justify-end gap-2.5 pt-2 border-t border-slate-100/60">
+                      <button
+                        onClick={() => handleOpenEdit(job)}
+                        className="px-3 py-1.5 border border-slate-200 hover:border-primary hover:bg-primary-light text-slate-500 hover:text-primary rounded-lg cursor-pointer transition-colors text-xs font-bold flex items-center gap-1"
+                        title="Edit Posting"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(job.id)}
+                        className="px-3 py-1.5 border border-slate-200 hover:border-red-300 hover:bg-red-50 text-slate-500 hover:text-red-650 rounded-lg cursor-pointer transition-colors text-xs font-bold flex items-center gap-1"
+                        title="Remove Posting"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-12 text-center text-slate-450 space-y-3">
+                  <FolderOpen className="w-8 h-8 text-slate-355 mx-auto" />
+                  <div className="font-extrabold text-sm text-slate-700">
+                    {activeTab === 'scheduled' 
+                      ? 'No scheduled postings found' 
+                      : 'No active positions matching criteria'}
+                  </div>
+                  <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                    {activeTab === 'scheduled'
+                      ? 'Create or edit a vacancy and set a Schedule Publish Date & Time to queue it.'
+                      : 'Try adjusting your search keywords or switch sectors to find other publications.'}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </main>

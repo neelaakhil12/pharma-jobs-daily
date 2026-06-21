@@ -42,8 +42,8 @@ export default function SuperAdminLoginPage() {
     <div className="bg-[#F8FAFC] min-h-[80vh] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative">
       
       {/* Decorative Blur Backgrounds */}
-      <div className="absolute top-10 right-10 w-72 h-72 bg-purple-200/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-10 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+      <div className="absolute top-10 right-10 w-72 h-72 bg-purple-200/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-md w-full mx-auto space-y-8" data-aos="zoom-in">
         
