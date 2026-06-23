@@ -27,7 +27,11 @@ export async function GET(request: Request) {
         (job) =>
           job.title.toLowerCase().includes(search) ||
           job.company.toLowerCase().includes(search) ||
-          job.description.toLowerCase().includes(search)
+          job.description.toLowerCase().includes(search) ||
+          (job.customSections && job.customSections.some(sec => 
+            sec.title.toLowerCase().includes(search) || 
+            sec.items.some(item => item.toLowerCase().includes(search))
+          ))
       );
     }
 
@@ -103,7 +107,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     
     // Simple validation
-    const requiredFields = ['title', 'company', 'category', 'type', 'qualification', 'location', 'salary', 'experience', 'description'];
+    const requiredFields = ['title'];
     for (const field of requiredFields) {
       if (!body[field]) {
         return NextResponse.json(
@@ -131,7 +135,8 @@ export async function POST(request: Request) {
       imageUrls: body.imageUrls || [],
       applyParts: body.applyParts || [],
       scheduledTime: body.scheduledTime || undefined,
-      postedBy: session.role
+      postedBy: session.role,
+      customSections: body.customSections || []
     });
 
     return NextResponse.json({ success: true, job: newJob }, { status: 201 });

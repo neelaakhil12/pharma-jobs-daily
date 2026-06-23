@@ -163,24 +163,36 @@ export default async function JobDetailPage({ params }: PageProps) {
                 <h1 className="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight leading-snug">
                   {job.title}
                 </h1>
-                <p className="text-sm sm:text-base font-semibold text-slate-500">{job.company}</p>
+                {job.company && job.company.trim() !== '' && (
+                  <p className="text-sm sm:text-base font-semibold text-slate-500">{job.company}</p>
+                )}
               </div>
 
               {/* Metadata Stack */}
-              <div className="space-y-3 pt-1 text-xs font-semibold text-slate-600">
-                <div className="flex items-center gap-3">
-                  <GraduationCap className="w-4.5 h-4.5 text-slate-400 shrink-0" />
-                  <span>{job.qualification}</span>
+              {((job.qualification && job.qualification.trim() !== '') ||
+                (job.location && job.location.trim() !== '') ||
+                (job.experience && job.experience.trim() !== '')) && (
+                <div className="space-y-3 pt-1 text-xs font-semibold text-slate-600">
+                  {job.qualification && job.qualification.trim() !== '' && (
+                    <div className="flex items-center gap-3">
+                      <GraduationCap className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                      <span>{job.qualification}</span>
+                    </div>
+                  )}
+                  {job.location && job.location.trim() !== '' && (
+                    <div className="flex items-center gap-3">
+                      <MapPin className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                      <span>{job.location}</span>
+                    </div>
+                  )}
+                  {job.experience && job.experience.trim() !== '' && (
+                    <div className="flex items-center gap-3">
+                      <Briefcase className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                      <span>{job.experience}</span>
+                    </div>
+                  )}
                 </div>
-                <div className="flex items-center gap-3">
-                  <MapPin className="w-4.5 h-4.5 text-slate-400 shrink-0" />
-                  <span>{job.location}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Briefcase className="w-4.5 h-4.5 text-slate-400 shrink-0" />
-                  <span>{job.experience}</span>
-                </div>
-              </div>
+              )}
 
               {/* Footer Badge Bar */}
               <div className="pt-4 border-t border-slate-100 flex items-center gap-1.5 text-xs font-semibold text-slate-500">
@@ -192,15 +204,72 @@ export default async function JobDetailPage({ params }: PageProps) {
             </div>
 
             {/* Job Summary Description */}
-            <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-md space-y-4">
-              <h2 className="text-lg font-bold text-slate-855 border-b border-slate-100 pb-3 flex items-center gap-2">
-                <span className="w-1.5 h-6 rounded-full bg-primary shrink-0" />
-                Job Overview
-              </h2>
-              <p className="text-slate-500 text-sm leading-relaxed whitespace-pre-line">
-                {job.description}
-              </p>
-            </div>
+            {job.description && job.description.trim() !== '' && (
+              <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-md space-y-4">
+                <style dangerouslySetInnerHTML={{
+                  __html: `
+                    .raw-html-content ul {
+                      list-style-position: outside;
+                      margin-left: 1.5rem;
+                      margin-top: 0.5rem;
+                      margin-bottom: 0.5rem;
+                    }
+                    .raw-html-content ol {
+                      list-style-position: outside;
+                      margin-left: 1.5rem;
+                      margin-top: 0.5rem;
+                      margin-bottom: 0.5rem;
+                    }
+                    .raw-html-content ul:not([style*="list-style-type"]) {
+                      list-style-type: disc;
+                    }
+                    .raw-html-content ol:not([style*="list-style-type"]) {
+                      list-style-type: decimal;
+                    }
+                    .raw-html-content li {
+                      margin-bottom: 0.35rem;
+                      line-height: 1.5;
+                    }
+                    .raw-html-content h1 {
+                      font-size: 1.625rem;
+                      font-weight: 800;
+                      margin-top: 1.25rem;
+                      margin-bottom: 0.625rem;
+                      color: #1e293b;
+                      line-height: 1.25;
+                    }
+                    .raw-html-content h2 {
+                      font-size: 1.375rem;
+                      font-weight: 700;
+                      margin-top: 1rem;
+                      margin-bottom: 0.5rem;
+                      color: #1e293b;
+                      line-height: 1.3;
+                    }
+                    .raw-html-content h3 {
+                      font-size: 1.125rem;
+                      font-weight: 600;
+                      margin-top: 0.875rem;
+                      margin-bottom: 0.375rem;
+                      color: #1e293b;
+                      line-height: 1.35;
+                    }
+                    .raw-html-content p {
+                      margin-bottom: 0.75rem;
+                      line-height: 1.6;
+                    }
+                  `
+                }} />
+                <h2 className="text-lg font-bold text-slate-855 border-b border-slate-100 pb-3 flex items-center gap-2">
+                  <span className="w-1.5 h-6 rounded-full bg-primary shrink-0" />
+                  Job Overview
+                </h2>
+                <div 
+                  className="text-slate-500 text-sm leading-relaxed whitespace-pre-wrap raw-html-content"
+                  dangerouslySetInnerHTML={{ __html: job.description }}
+                />
+              </div>
+            )}
 
             {/* Responsibilities */}
             {job.responsibilities && job.responsibilities.length > 0 && (
@@ -256,6 +325,25 @@ export default async function JobDetailPage({ params }: PageProps) {
               </div>
             )}
 
+            {/* Custom Sections */}
+            {job.customSections && job.customSections.map((sec, secIdx) => (
+              <div key={secIdx} className="bg-white rounded-3xl p-8 border border-slate-100 shadow-md space-y-4">
+                <h2 className="text-lg font-bold text-slate-855 border-b border-slate-100 pb-3 flex items-center gap-2">
+                  <span className="w-1.5 h-6 rounded-full bg-primary shrink-0" />
+                  {sec.title}
+                </h2>
+                <ul className="space-y-3.5">
+                  {sec.items.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                      <span className="text-slate-500 text-xs sm:text-sm leading-normal">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+
+
              {/* How to Apply */}
             <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-md space-y-6">
               <h2 className="text-lg font-bold text-slate-855 border-b border-slate-100 pb-3 flex items-center gap-2">
@@ -281,7 +369,7 @@ export default async function JobDetailPage({ params }: PageProps) {
                             <ShareButton
                               title={`${job.title}${part.title ? ` - ${part.title}` : ''}`}
                               description={job.description}
-                              applyUrl={part.applyLinks[0]?.url || job.applyUrl}
+                              applyUrl={part.applyLinks?.find(l => l.url && l.url.trim() !== '')?.url || job.applyUrl}
                               company={job.company}
                               location={job.location}
                               salary={job.salary}
@@ -302,7 +390,7 @@ export default async function JobDetailPage({ params }: PageProps) {
                         )}
                         
                         <div className="flex flex-col gap-3 pt-1">
-                          {part.applyLinks.map((link, linkIdx) => {
+                          {part.applyLinks?.filter(link => link.url && link.url.trim() !== '').map((link, linkIdx) => {
                             const normalizedLink = normalizeUrl(link.url);
                             const isLinkEmail = normalizedLink.startsWith('mailto:');
                             const emailLinkAddress = isLinkEmail ? normalizedLink.replace('mailto:', '') : '';
@@ -347,7 +435,7 @@ export default async function JobDetailPage({ params }: PageProps) {
                               <ShareButton
                                 title={`${job.title}${part.title ? ` - ${part.title}` : ''}`}
                                 description={job.description}
-                                applyUrl={part.applyLinks[0]?.url || job.applyUrl}
+                                applyUrl={part.applyLinks?.find(l => l.url && l.url.trim() !== '')?.url || job.applyUrl}
                                 company={job.company}
                                 location={job.location}
                                 salary={job.salary}

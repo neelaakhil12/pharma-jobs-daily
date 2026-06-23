@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Job, JobApplyPart, ApplyLink } from '@/lib/db';
+import RichTextEditor from './RichTextEditor';
 import {
   ShieldCheck,
   Plus,
@@ -548,9 +549,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     salary: '',
     experience: '',
     description: '',
-    responsibilitiesRaw: '',
-    requirementsRaw: '',
-    benefitsRaw: '',
+    listSections: [] as Array<{ id: string; title: string; valueRaw: string; isDefault: boolean }>,
     applyUrl: '',
     recruiterEmail: '',
     imageUrl: '',
@@ -559,7 +558,45 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     scheduledTime: ''
   });
 
+  const handleAddListSection = () => {
+    setForm(prev => ({
+      ...prev,
+      listSections: [
+        ...prev.listSections,
+        {
+          id: `custom-${Date.now()}`,
+          title: 'Custom Section',
+          valueRaw: '',
+          isDefault: false
+        }
+      ]
+    }));
+  };
 
+  const handleRemoveListSection = (id: string) => {
+    setForm(prev => ({
+      ...prev,
+      listSections: prev.listSections.filter(sec => sec.id !== id)
+    }));
+  };
+
+  const handleUpdateListSectionTitle = (id: string, newTitle: string) => {
+    setForm(prev => ({
+      ...prev,
+      listSections: prev.listSections.map(sec => 
+        sec.id === id ? { ...sec, title: newTitle } : sec
+      )
+    }));
+  };
+
+  const handleUpdateListSectionValue = (id: string, newValueRaw: string) => {
+    setForm(prev => ({
+      ...prev,
+      listSections: prev.listSections.map(sec => 
+        sec.id === id ? { ...sec, valueRaw: newValueRaw } : sec
+      )
+    }));
+  };
 
   const qualifications = [
     'B.Pharm', 'D.Pharm', 'M.Pharm', 'BSc', 'MSc', 'Diploma', 'PhD', 'JRF', 'SRF', 'Staff Nurse', 'B.Tech'
@@ -579,9 +616,11 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
       salary: 'N/A',
       experience: '',
       description: '',
-      responsibilitiesRaw: '',
-      requirementsRaw: '',
-      benefitsRaw: '',
+      listSections: [
+        { id: 'responsibilities', title: 'Responsibilities', valueRaw: '', isDefault: true },
+        { id: 'requirements', title: 'Requirements', valueRaw: '', isDefault: true },
+        { id: 'benefits', title: 'Benefits', valueRaw: '', isDefault: true }
+      ],
       applyUrl: '',
       recruiterEmail: '',
       imageUrl: '',
@@ -599,6 +638,23 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     const emailVal = isEmail ? job.applyUrl.replace('mailto:', '') : '';
     const linkVal = isEmail ? '' : (job.applyUrl || '');
 
+    const listSections = [
+      { id: 'responsibilities', title: 'Responsibilities', valueRaw: job.responsibilities ? job.responsibilities.join('\n') : '', isDefault: true },
+      { id: 'requirements', title: 'Requirements', valueRaw: job.requirements ? job.requirements.join('\n') : '', isDefault: true },
+      { id: 'benefits', title: 'Benefits', valueRaw: job.benefits ? job.benefits.join('\n') : '', isDefault: true }
+    ];
+
+    if (job.customSections) {
+      job.customSections.forEach((sec, idx) => {
+        listSections.push({
+          id: `custom-${idx}-${Date.now()}`,
+          title: sec.title,
+          valueRaw: sec.items ? sec.items.join('\n') : '',
+          isDefault: false
+        });
+      });
+    }
+
     setForm({
       title: job.title,
       company: job.company,
@@ -609,9 +665,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
       salary: job.salary,
       experience: job.experience,
       description: job.description,
-      responsibilitiesRaw: job.responsibilities ? job.responsibilities.join('\n') : '',
-      requirementsRaw: job.requirements ? job.requirements.join('\n') : '',
-      benefitsRaw: job.benefits ? job.benefits.join('\n') : '',
+      listSections,
       applyUrl: linkVal,
       recruiterEmail: emailVal,
       imageUrl: job.imageUrl || '',
@@ -643,9 +697,18 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     setSubmitting(true);
     
     // Parse raw multi-line strings into arrays
-    const responsibilities = form.responsibilitiesRaw.split('\n').map(s => s.trim()).filter(Boolean);
-    const requirements = form.requirementsRaw.split('\n').map(s => s.trim()).filter(Boolean);
-    const benefits = form.benefitsRaw.split('\n').map(s => s.trim()).filter(Boolean);
+    const responsibilities = form.listSections.find(s => s.id === 'responsibilities')?.valueRaw.split('\n').map(s => s.trim()).filter(Boolean) || [];
+    const requirements = form.listSections.find(s => s.id === 'requirements')?.valueRaw.split('\n').map(s => s.trim()).filter(Boolean) || [];
+    const benefits = form.listSections.find(s => s.id === 'benefits')?.valueRaw.split('\n').map(s => s.trim()).filter(Boolean) || [];
+
+    const customSections = form.listSections
+      .filter(s => !s.isDefault)
+      .map(s => ({
+        title: s.title.trim(),
+        items: s.valueRaw.split('\n').map(item => item.trim()).filter(Boolean)
+      }))
+      .filter(s => s.title && s.items.length > 0);
+
     const calculatedApplyUrl = form.recruiterEmail
       ? `mailto:${form.recruiterEmail.trim()}`
       : (form.applyUrl || form.applyParts?.[0]?.applyLinks?.[0]?.url || 'mailto:pharmajobsdaily@gmail.com');
@@ -660,7 +723,8 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
           scheduledTime: form.scheduledTime ? new Date(form.scheduledTime).toISOString() : undefined,
           responsibilities,
           requirements,
-          benefits
+          benefits,
+          customSections
         })
       });
 
@@ -682,9 +746,18 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     if (!selectedJob) return;
     setSubmitting(true);
 
-    const responsibilities = form.responsibilitiesRaw.split('\n').map(s => s.trim()).filter(Boolean);
-    const requirements = form.requirementsRaw.split('\n').map(s => s.trim()).filter(Boolean);
-    const benefits = form.benefitsRaw.split('\n').map(s => s.trim()).filter(Boolean);
+    const responsibilities = form.listSections.find(s => s.id === 'responsibilities')?.valueRaw.split('\n').map(s => s.trim()).filter(Boolean) || [];
+    const requirements = form.listSections.find(s => s.id === 'requirements')?.valueRaw.split('\n').map(s => s.trim()).filter(Boolean) || [];
+    const benefits = form.listSections.find(s => s.id === 'benefits')?.valueRaw.split('\n').map(s => s.trim()).filter(Boolean) || [];
+
+    const customSections = form.listSections
+      .filter(s => !s.isDefault)
+      .map(s => ({
+        title: s.title.trim(),
+        items: s.valueRaw.split('\n').map(item => item.trim()).filter(Boolean)
+      }))
+      .filter(s => s.title && s.items.length > 0);
+
     const calculatedApplyUrl = form.recruiterEmail
       ? `mailto:${form.recruiterEmail.trim()}`
       : (form.applyUrl || form.applyParts?.[0]?.applyLinks?.[0]?.url || 'mailto:pharmajobsdaily@gmail.com');
@@ -699,7 +772,8 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
           scheduledTime: form.scheduledTime ? new Date(form.scheduledTime).toISOString() : null,
           responsibilities,
           requirements,
-          benefits
+          benefits,
+          customSections
         })
       });
 
@@ -726,6 +800,31 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
       }
     } catch (err) {
       console.error('Delete job error:', err);
+    }
+  };
+
+  // Process Canceling/Removing Schedule (Job remains active on the website)
+  const handleRemoveSchedule = async (job: Job) => {
+    if (!confirm('Are you sure you want to delete this post from Scheduled Posts only? It will remain in its category and become live on the website immediately.')) return;
+    
+    try {
+      const res = await fetch(`/api/jobs/${job.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...job,
+          scheduledTime: null // Clear scheduledTime
+        })
+      });
+      if (res.ok) {
+        setJobs(jobs.map(j => j.id === job.id ? { ...j, scheduledTime: undefined } : j));
+      } else {
+        alert('Failed to remove schedule.');
+      }
+    } catch (err) {
+      console.error('Remove schedule error:', err);
     }
   };
 
@@ -1998,9 +2097,15 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                               <Edit className="w-4 h-4" />
                             </button>
                             <button
-                              onClick={() => handleDelete(job.id)}
+                              onClick={() => {
+                                if (activeTab === 'scheduled') {
+                                  handleRemoveSchedule(job);
+                                } else {
+                                  handleDelete(job.id);
+                                }
+                              }}
                               className="p-2 border border-slate-200 hover:border-red-300 hover:bg-red-50 text-slate-500 hover:text-red-600 rounded-lg cursor-pointer transition-colors"
-                              title="Remove Posting"
+                              title={activeTab === 'scheduled' ? 'Delete from Scheduled Posts (Keep Vacancy)' : 'Remove Posting'}
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -2112,9 +2217,15 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDelete(job.id)}
+                        onClick={() => {
+                          if (activeTab === 'scheduled') {
+                            handleRemoveSchedule(job);
+                          } else {
+                            handleDelete(job.id);
+                          }
+                        }}
                         className="px-3 py-1.5 border border-slate-200 hover:border-red-300 hover:bg-red-50 text-slate-500 hover:text-red-650 rounded-lg cursor-pointer transition-colors text-xs font-bold flex items-center gap-1"
-                        title="Remove Posting"
+                        title={activeTab === 'scheduled' ? 'Delete from Scheduled Posts (Keep Vacancy)' : 'Remove Posting'}
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                         Delete
@@ -2177,7 +2288,6 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Employer Name</label>
                   <input
                     type="text"
-                    required
                     placeholder="e.g. Cipla, Apollo Hospitals"
                     value={form.company}
                     onChange={(e) => setForm({ ...form, company: e.target.value })}
@@ -2220,7 +2330,6 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                     {(!qualifications.includes(form.qualification) || form.qualification === "") && (
                       <input
                         type="text"
-                        required
                         placeholder="Type custom qualification (e.g. M.Tech, Pharm.D)..."
                         value={form.qualification}
                         onChange={(e) => setForm({ ...form, qualification: e.target.value })}
@@ -2237,7 +2346,6 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Location</label>
                   <input
                     type="text"
-                    required
                     placeholder="e.g. Hyderabad, Telangana"
                     value={form.location}
                     onChange={(e) => setForm({ ...form, location: e.target.value })}
@@ -2248,7 +2356,6 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Experience Needed</label>
                   <input
                     type="text"
-                    required
                     placeholder="e.g. Freshers, 1-3 years"
                     value={form.experience}
                     onChange={(e) => setForm({ ...form, experience: e.target.value })}
@@ -2260,62 +2367,91 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
               {/* Row 4: Description */}
               <div className="space-y-1">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Job Description Overview</label>
-                <textarea
-                  rows={4}
-                  required
+                <RichTextEditor
                   placeholder="Provide deep description of the vacancy role..."
-                  value={form.description}
-                  onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary resize-none"
+                  value={form.description || ''}
+                  onChange={(val) => setForm({ ...form, description: val })}
                 />
               </div>
 
-              {/* Arrays parsing blocks (multi-line textarea helper) */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-100 pt-4">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-primary block">Responsibilities (One per line)</label>
-                  <textarea
-                    rows={4}
-                    placeholder="Perform shop-floor checks&#10;Verify line clearances"
-                    value={form.responsibilitiesRaw}
-                    onChange={(e) => setForm({ ...form, responsibilitiesRaw: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none"
-                  />
+              {/* Job Details Sections (Responsibilities, Requirements, etc.) */}
+              <div className="border-t border-slate-100 pt-4 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-xs font-extrabold text-slate-800 tracking-tight">
+                      Job Details Sections (Responsibilities, Requirements, etc.)
+                    </h4>
+                    <p className="text-[10px] text-slate-400 font-medium">
+                      Configure custom list sections for the job description. Each line represents one bullet point.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleAddListSection}
+                    className="px-3 py-1.5 bg-primary-light text-primary hover:bg-primary/10 border border-primary/20 text-[10px] font-bold rounded-lg transition-all flex items-center gap-1 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Add Custom Section</span>
+                  </button>
                 </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-accent-sky block">Requirements (One per line)</label>
-                  <textarea
-                    rows={4}
-                    placeholder="GPAT Qualified&#10;Consistent academic marks"
-                    value={form.requirementsRaw}
-                    onChange={(e) => setForm({ ...form, requirementsRaw: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-secondary block">Benefits (One per line)</label>
-                  <textarea
-                    rows={4}
-                    placeholder="PF & ESI statutory bonus&#10;Rotational shifts incentives"
-                    value={form.benefitsRaw}
-                    onChange={(e) => setForm({ ...form, benefitsRaw: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none"
-                  />
-                </div>
+
+                {form.listSections && form.listSections.length > 0 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {form.listSections.map((section) => (
+                      <div
+                        key={section.id}
+                        className="space-y-1 p-3 bg-slate-50 border border-slate-200 rounded-xl relative flex flex-col justify-between"
+                      >
+                        {/* Remove Section button */}
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveListSection(section.id)}
+                          className="absolute top-2 right-2 text-slate-450 hover:text-red-500 cursor-pointer transition-colors"
+                          title="Delete Section"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+
+                        <div className="pr-5">
+                          {section.isDefault ? (
+                            <label className={`text-[10px] font-extrabold uppercase tracking-wider block ${
+                              section.id === 'responsibilities' ? 'text-primary' :
+                              section.id === 'requirements' ? 'text-accent-sky' : 'text-secondary'
+                            }`}>
+                              {section.title} (One per line)
+                            </label>
+                          ) : (
+                            <input
+                              type="text"
+                              required
+                              value={section.title}
+                              onChange={(e) => handleUpdateListSectionTitle(section.id, e.target.value)}
+                              placeholder="Section Title (e.g. Key Skills)"
+                              className="text-[10px] font-extrabold uppercase tracking-wider text-slate-700 bg-white border border-slate-200 rounded px-1.5 py-0.5 focus:outline-none focus:border-primary w-full"
+                            />
+                          )}
+                        </div>
+
+                        <textarea
+                          rows={4}
+                          placeholder={
+                            section.id === 'responsibilities' ? 'Perform shop-floor checks\nVerify line clearances' :
+                            section.id === 'requirements' ? 'GPAT Qualified\nConsistent academic marks' :
+                            section.id === 'benefits' ? 'PF & ESI statutory bonus\nRotational shifts incentives' :
+                            'Item 1\nItem 2'
+                          }
+                          value={section.valueRaw}
+                          onChange={(e) => handleUpdateListSectionValue(section.id, e.target.value)}
+                          className="w-full p-2 bg-white border border-slate-200 rounded-lg text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none mt-2 flex-grow"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Apply Link & Recruiter Email */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 pt-4">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-450">Apply Link / URL <span className="text-slate-350 font-normal normal-case">(optional)</span></label>
-                  <input
-                    type="text"
-                    placeholder="https://company.com/careers/apply"
-                    value={form.applyUrl}
-                    onChange={(e) => setForm({ ...form, applyUrl: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
-                  />
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-1 gap-4 border-t border-slate-100 pt-4">
                 <div className="space-y-1">
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-455">Recruiter Email <span className="text-slate-350 font-normal normal-case">(optional)</span></label>
                   <input
@@ -2565,7 +2701,6 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Employer Name</label>
                   <input
                     type="text"
-                    required
                     value={form.company}
                     onChange={(e) => setForm({ ...form, company: e.target.value })}
                     className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
@@ -2607,7 +2742,6 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                     {(!qualifications.includes(form.qualification) || form.qualification === "") && (
                       <input
                         type="text"
-                        required
                         placeholder="Type custom qualification (e.g. M.Tech, Pharm.D)..."
                         value={form.qualification}
                         onChange={(e) => setForm({ ...form, qualification: e.target.value })}
@@ -2624,7 +2758,6 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Location</label>
                   <input
                     type="text"
-                    required
                     value={form.location}
                     onChange={(e) => setForm({ ...form, location: e.target.value })}
                     className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
@@ -2634,7 +2767,6 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Experience Needed</label>
                   <input
                     type="text"
-                    required
                     value={form.experience}
                     onChange={(e) => setForm({ ...form, experience: e.target.value })}
                     className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
@@ -2645,58 +2777,91 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
               {/* Row 4: Description */}
               <div className="space-y-1">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Job Description Overview</label>
-                <textarea
-                  rows={4}
-                  required
-                  value={form.description}
-                  onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary resize-none"
+                <RichTextEditor
+                  placeholder="Provide deep description of the vacancy role..."
+                  value={form.description || ''}
+                  onChange={(val) => setForm({ ...form, description: val })}
                 />
               </div>
 
-              {/* Arrays parsing blocks (multi-line textarea helper) */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-100 pt-4">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-primary block">Responsibilities (One per line)</label>
-                  <textarea
-                    rows={4}
-                    value={form.responsibilitiesRaw}
-                    onChange={(e) => setForm({ ...form, responsibilitiesRaw: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none"
-                  />
+              {/* Job Details Sections (Responsibilities, Requirements, etc.) */}
+              <div className="border-t border-slate-100 pt-4 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-xs font-extrabold text-slate-800 tracking-tight">
+                      Job Details Sections (Responsibilities, Requirements, etc.)
+                    </h4>
+                    <p className="text-[10px] text-slate-400 font-medium">
+                      Configure custom list sections for the job description. Each line represents one bullet point.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleAddListSection}
+                    className="px-3 py-1.5 bg-primary-light text-primary hover:bg-primary/10 border border-primary/20 text-[10px] font-bold rounded-lg transition-all flex items-center gap-1 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Add Custom Section</span>
+                  </button>
                 </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-accent-sky block">Requirements (One per line)</label>
-                  <textarea
-                    rows={4}
-                    value={form.requirementsRaw}
-                    onChange={(e) => setForm({ ...form, requirementsRaw: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-secondary block">Benefits (One per line)</label>
-                  <textarea
-                    rows={4}
-                    value={form.benefitsRaw}
-                    onChange={(e) => setForm({ ...form, benefitsRaw: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none"
-                  />
-                </div>
+
+                {form.listSections && form.listSections.length > 0 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {form.listSections.map((section) => (
+                      <div
+                        key={section.id}
+                        className="space-y-1 p-3 bg-slate-50 border border-slate-200 rounded-xl relative flex flex-col justify-between"
+                      >
+                        {/* Remove Section button */}
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveListSection(section.id)}
+                          className="absolute top-2 right-2 text-slate-450 hover:text-red-500 cursor-pointer transition-colors"
+                          title="Delete Section"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+
+                        <div className="pr-5">
+                          {section.isDefault ? (
+                            <label className={`text-[10px] font-extrabold uppercase tracking-wider block ${
+                              section.id === 'responsibilities' ? 'text-primary' :
+                              section.id === 'requirements' ? 'text-accent-sky' : 'text-secondary'
+                            }`}>
+                              {section.title} (One per line)
+                            </label>
+                          ) : (
+                            <input
+                              type="text"
+                              required
+                              value={section.title}
+                              onChange={(e) => handleUpdateListSectionTitle(section.id, e.target.value)}
+                              placeholder="Section Title (e.g. Key Skills)"
+                              className="text-[10px] font-extrabold uppercase tracking-wider text-slate-700 bg-white border border-slate-200 rounded px-1.5 py-0.5 focus:outline-none focus:border-primary w-full"
+                            />
+                          )}
+                        </div>
+
+                        <textarea
+                          rows={4}
+                          placeholder={
+                            section.id === 'responsibilities' ? 'Perform shop-floor checks\nVerify line clearances' :
+                            section.id === 'requirements' ? 'GPAT Qualified\nConsistent academic marks' :
+                            section.id === 'benefits' ? 'PF & ESI statutory bonus\nRotational shifts incentives' :
+                            'Item 1\nItem 2'
+                          }
+                          value={section.valueRaw}
+                          onChange={(e) => handleUpdateListSectionValue(section.id, e.target.value)}
+                          className="w-full p-2 bg-white border border-slate-200 rounded-lg text-[10.5px] text-slate-700 focus:outline-none focus:border-primary resize-none mt-2 flex-grow"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Apply Link & Recruiter Email */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 pt-4">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-450">Apply Link / URL <span className="text-slate-350 font-normal normal-case">(optional)</span></label>
-                  <input
-                    type="text"
-                    placeholder="https://company.com/careers/apply"
-                    value={form.applyUrl}
-                    onChange={(e) => setForm({ ...form, applyUrl: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
-                  />
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-1 gap-4 border-t border-slate-100 pt-4">
                 <div className="space-y-1">
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-455">Recruiter Email <span className="text-slate-350 font-normal normal-case">(optional)</span></label>
                   <input

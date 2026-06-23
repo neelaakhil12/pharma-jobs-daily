@@ -3,7 +3,101 @@
     "username": "admin@pharmagmail.com",
     "password": "pharma@2026"
   },
-  "jobs": [],
+  "jobs": [
+    {
+      "id": "job-1782224791664",
+      "title": "Drug inspector ",
+      "company": "Test",
+      "category": "Government Jobs",
+      "type": "Full-time",
+      "qualification": "B.Pharm",
+      "location": "Hyderabad ",
+      "salary": "N/A",
+      "experience": "Fresher ",
+      "postedDate": "2026-06-23",
+      "description": "<h3><span style=\"font-size: 18px;\"><b><span style=\"font-size: 14px;\"><span style=\"font-size: 24px;\">HARISH  </span><span style=\"font-size: 24px;\">:</span></span></b></span></h3><span style=\"font-size: 18px;\"><b><span style=\"font-size: 14px;\">\n</span></b></span><div class=\"qMYqUG_convSearchResultHighlightRoot\"><div class=\"\" data-turn-id-container=\"request-WEB:70519356-ca22-4001-a70c-10d085baded7-0\" data-is-intersecting=\"true\"><section class=\"text-token-text-primary w-full focus:outline-none has-data-writing-block:pointer-events-none [&amp;:has([data-writing-block])&gt;*]:pointer-events-auto R6Vx5W_threadScrollVars scroll-mb-[calc(var(--scroll-root-safe-area-inset-bottom,0px)+var(--thread-response-height))] scroll-mt-[calc(var(--header-height)+min(200px,max(70px,20svh)))]\" dir=\"auto\" data-turn-id=\"request-WEB:70519356-ca22-4001-a70c-10d085baded7-0\" data-turn-id-container=\"request-WEB:70519356-ca22-4001-a70c-10d085baded7-0\" data-testid=\"conversation-turn-2\" data-turn=\"assistant\"><div class=\"text-base my-auto mx-auto pb-10 [--thread-content-margin:var(--thread-content-margin-xs,calc(var(--spacing)*4))] @w-sm/main:[--thread-content-margin:var(--thread-content-margin-sm,calc(var(--spacing)*6))] @w-lg/main:[--thread-content-margin:var(--thread-content-margin-lg,calc(var(--spacing)*16))] px-(--thread-content-margin)\"><div data-conversation-screenshot-content=\"\" class=\"[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn\"><div class=\"flex max-w-full flex-col gap-4 grow\"><div data-message-author-role=\"assistant\" data-message-id=\"8605d755-b4be-4ac2-b29e-e4354a88ae3f\" dir=\"auto\" data-message-model-slug=\"gpt-5-5\" class=\"min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal outline-none keyboard-focused:focus-ring [.text-message+&amp;]:mt-1\" data-turn-start-message=\"true\" tabindex=\"0\"><div class=\"flex w-full flex-col gap-1 empty:hidden\"><div class=\"markdown prose dark:prose-invert wrap-break-word w-full dark markdown-new-styling\"><p data-start=\"141\" data-end=\"1393\" data-is-last-node=\"\" data-is-only-node=\"\">We are looking for a highly motivated, dedicated, and skilled professional to join our team and contribute to the growth and success of our organization. The ideal candidate will be responsible for managing day-to-<font color=\"#1e293b\"><b>day </b></font>tasks efficiently, coordinating with team members, handling project requirements, and ensuring that all assigned work is completed with accuracy and within deadlines. \n\nThe role requires strong communication skills, problem-solving ability, creativity, and the capacity to work in a fast-paced environment while maintaining high-quality standards. Candidates should be passionate about learning new technologies, adapting to changing business needs, and bringing innovative ideas to improve workflow and productivity. Responsibilities may include planning, execution, monitoring project progress, maintaining client relationships, preparing reports, and collaborating with different departments to achieve organizational goals. The candidate must demonstrate professionalism, commitment, teamwork, and a positive attitude while delivering exceptional results. This position offers an excellent opportunity for career growth, skill development, and hands-on experience in a dynamic and supportive work environment.</p></div></div></div></div><div class=\"z-0 flex min-h-[46px] justify-start\"></div><div class=\"mt-3 w-full empty:hidden\"><div class=\"text-center\"></div></div></div></div></section></div></div><div aria-hidden=\"true\" class=\"pointer-events-none -mt-px h-px translate-y-[calc(var(--scroll-root-safe-area-inset-bottom)-14*var(--spacing))]\"></div>",
+      "responsibilities": [],
+      "requirements": [],
+      "benefits": [],
+      "applyUrl": "mailto:pharmajobsdaily@gmail.com",
+      "imageUrl": "",
+      "imageUrls": [],
+      "applyParts": [
+        {
+          "id": "part-1782224172473",
+          "title": "",
+          "imageUrl": "https://res.cloudinary.com/dxhyw3vtx/image/upload/v1782224785/pharma-jobs-daily/bicyylmvukv64aqe8pgo.jpg",
+          "applyLinks": [
+            {
+              "label": "Apply Now",
+              "url": "SXDCVB"
+            }
+          ]
+        }
+      ],
+      "scheduledTime": null,
+      "postedBy": "SUPER ADMIN",
+      "customSections": [],
+      "listSections": [],
+      "recruiterEmail": "pharmajobsdaily@gmail.com"
+    },
+    {
+      "id": "job-1782236024415",
+      "title": "Drug inspector ",
+      "company": "Test",
+      "category": "Government Jobs",
+      "type": "Full-time",
+      "qualification": "B.Pharm",
+      "location": "Hyderabad ",
+      "salary": "N/A",
+      "experience": "Fresher ",
+      "postedDate": "2026-06-23",
+      "description": "",
+      "responsibilities": [],
+      "requirements": [],
+      "benefits": [],
+      "applyUrl": "mailto:pharmajobsdaily@gmail.com",
+      "imageUrl": "",
+      "imageUrls": [],
+      "applyParts": [
+        {
+          "id": "part-1782235973269",
+          "title": "accenture recruitment",
+          "imageUrl": "https://res.cloudinary.com/dxhyw3vtx/image/upload/v1782235985/pharma-jobs-daily/l4sh3rz4snie778a3b27.jpg",
+          "applyLinks": [
+            {
+              "url": "",
+              "label": "Apply Now"
+            }
+          ]
+        }
+      ],
+      "scheduledTime": null,
+      "postedBy": "SUPER ADMIN",
+      "customSections": [],
+      "listSections": [
+        {
+          "id": "responsibilities",
+          "title": "Responsibilities",
+          "valueRaw": "",
+          "isDefault": true
+        },
+        {
+          "id": "requirements",
+          "title": "Requirements",
+          "valueRaw": "",
+          "isDefault": true
+        },
+        {
+          "id": "benefits",
+          "title": "Benefits",
+          "valueRaw": "",
+          "isDefault": true
+        }
+      ],
+      "recruiterEmail": "pharmajobsdaily@gmail.com"
+    }
+  ],
   "categories": [
     "Government Jobs",
     "Private Jobs",
@@ -17,5 +111,9 @@
     "instagram": "https://www.instagram.com/pharma_jobs_daily?igsh=M3VjdzF3MWlycGs1",
     "linkedin": "https://www.linkedin.com/in/pharmajobs-daily-067b77416?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "youtube": "https://youtube.com/@prashanth_ponnam?si=g1Kede5EL6TMz26l"
+  },
+  "superAdmin": {
+    "username": "pharmajobsdaily@gmail.com",
+    "password": "Pharma@2026"
   }
 }

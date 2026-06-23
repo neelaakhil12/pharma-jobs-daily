@@ -36,24 +36,36 @@ export default function JobCard({ job }: JobCardProps) {
           <h3 className="text-base sm:text-lg font-bold text-slate-800 line-clamp-2 leading-snug">
             {job.title}
           </h3>
-          <p className="text-sm font-semibold text-slate-500 line-clamp-1">{job.company}</p>
+          {job.company && job.company.trim() !== '' && (
+            <p className="text-sm font-semibold text-slate-500 line-clamp-1">{job.company}</p>
+          )}
         </div>
 
         {/* Metadata Stack (Stacked layout matching the screenshot) */}
-        <div className="space-y-3 pt-1 text-xs font-semibold text-slate-600">
-          <div className="flex items-center gap-3">
-            <GraduationCap className="w-4 h-4 text-slate-400 shrink-0" />
-            <span className="truncate">{job.qualification}</span>
+        {((job.qualification && job.qualification.trim() !== '') ||
+          (job.location && job.location.trim() !== '') ||
+          (job.experience && job.experience.trim() !== '')) && (
+          <div className="space-y-3 pt-1 text-xs font-semibold text-slate-600">
+            {job.qualification && job.qualification.trim() !== '' && (
+              <div className="flex items-center gap-3">
+                <GraduationCap className="w-4 h-4 text-slate-400 shrink-0" />
+                <span className="truncate">{job.qualification}</span>
+              </div>
+            )}
+            {job.location && job.location.trim() !== '' && (
+              <div className="flex items-center gap-3">
+                <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
+                <span className="truncate">{job.location}</span>
+              </div>
+            )}
+            {job.experience && job.experience.trim() !== '' && (
+              <div className="flex items-center gap-3">
+                <Briefcase className="w-4 h-4 text-slate-400 shrink-0" />
+                <span className="truncate">{job.experience}</span>
+              </div>
+            )}
           </div>
-          <div className="flex items-center gap-3">
-            <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-            <span className="truncate">{job.location}</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Briefcase className="w-4 h-4 text-slate-400 shrink-0" />
-            <span className="truncate">{job.experience}</span>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Footer Badge Bar */}

@@ -24,6 +24,7 @@ export interface Job {
   applyParts?: JobApplyPart[];
   scheduledTime?: string;
   postedBy?: 'SUPER ADMIN' | 'ADMIN';
+  customSections?: Array<{ title: string; items: string[] }>;
 }
 
 export interface ApplyLink {
@@ -131,7 +132,37 @@ interface JobRow {
   posted_by: string | null;
 }
 
+function serializeCustomSections(descriptionText: string, customSections?: Array<{ title: string; items: string[] }>): string {
+  if (!customSections || customSections.length === 0) return descriptionText;
+  const payload = { customSections };
+  return `${descriptionText}\n\n---METADATA_START---\n${JSON.stringify(payload)}\n---METADATA_END---`;
+}
+
+function deserializeCustomSections(dbDescription: string | null): {
+  description: string;
+  customSections?: Array<{ title: string; items: string[] }>;
+} {
+  if (!dbDescription) return { description: '' };
+  const startIndex = dbDescription.indexOf('---METADATA_START---');
+  const endIndex = dbDescription.indexOf('---METADATA_END---');
+  if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+    const text = dbDescription.substring(0, startIndex).trim();
+    const metaStr = dbDescription.substring(startIndex + '---METADATA_START---'.length, endIndex).trim();
+    try {
+      const payload = JSON.parse(metaStr);
+      return {
+        description: text,
+        customSections: payload.customSections
+      };
+    } catch (e) {
+      console.error('Failed to parse description metadata:', e);
+    }
+  }
+  return { description: dbDescription };
+}
+
 function mapRowToJob(row: JobRow): Job {
+  const { description, customSections } = deserializeCustomSections(row.description);
   return {
     id: row.id,
     title: row.title,
@@ -143,7 +174,7 @@ function mapRowToJob(row: JobRow): Job {
     salary: row.salary,
     experience: row.experience,
     postedDate: row.posted_date,
-    description: row.description,
+    description: description,
     responsibilities: row.responsibilities || [],
     requirements: row.requirements || [],
     benefits: row.benefits || [],
@@ -152,7 +183,8 @@ function mapRowToJob(row: JobRow): Job {
     imageUrls: row.image_urls || undefined,
     applyParts: row.apply_parts || undefined,
     scheduledTime: row.scheduled_time || undefined,
-    postedBy: (row.posted_by as any) || undefined
+    postedBy: (row.posted_by as any) || undefined,
+    customSections: customSections || undefined
   };
 }
 
@@ -168,7 +200,12 @@ function mapJobToRow(job: Partial<Job>): Partial<JobRow> {
   if (job.salary !== undefined) row.salary = job.salary;
   if (job.experience !== undefined) row.experience = job.experience;
   if (job.postedDate !== undefined) row.posted_date = job.postedDate;
-  if (job.description !== undefined) row.description = job.description;
+  
+  if (job.description !== undefined || job.customSections !== undefined) {
+    const cleanDesc = job.description || '';
+    row.description = serializeCustomSections(cleanDesc, job.customSections);
+  }
+  
   if (job.responsibilities !== undefined) row.responsibilities = job.responsibilities;
   if (job.requirements !== undefined) row.requirements = job.requirements;
   if (job.benefits !== undefined) row.benefits = job.benefits;
@@ -741,4 +778,70 @@ export async function updateAdminsList(admins: AdminCredential[]): Promise<Admin
   await writeLocalDb(localDb);
 
   return db.admins;
+}
+
+export async function updateSuperAdminCredentials(username: string, password: string): Promise<boolean> {
+  const available = await isSupabaseAvailable();
+  const db = await readDb();
+  
+  db.superAdmin = { username, password };
+  
+  if (available) {
+    try {
+      const credentialsObj = {
+        admin: db.admin,
+        superAdmin: db.superAdmin,
+        admins: db.admins
+      };
+      
+      const { error } = await supabase
+        .from('settings')
+        .upsert({ key: 'admin_credentials', value: credentialsObj });
+      if (error) throw error;
+    } catch (err) {
+      console.warn('[db] Supabase superAdmin credentials update failed:', err);
+    }
+  }
+
+  // Always mirror in local db.json
+  const localDb = await readLocalDb();
+  localDb.superAdmin = { username, password };
+  await writeLocalDb(localDb);
+
+  return true;
+}
+
+const tokenPath = path.join(process.cwd(), 'src/data/reset_token.json');
+
+export interface ResetTokenData {
+  token: string;
+  email: string;
+  expires: number;
+}
+
+export async function saveResetToken(token: string, email: string, expires: number): Promise<void> {
+  try {
+    const dir = path.dirname(tokenPath);
+    await fs.mkdir(dir, { recursive: true });
+    await fs.writeFile(tokenPath, JSON.stringify({ token, email, expires }, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Failed to write reset token:', err);
+  }
+}
+
+export async function getResetToken(): Promise<ResetTokenData | null> {
+  try {
+    const data = await fs.readFile(tokenPath, 'utf8');
+    return JSON.parse(data) as ResetTokenData;
+  } catch {
+    return null;
+  }
+}
+
+export async function clearResetToken(): Promise<void> {
+  try {
+    await fs.unlink(tokenPath);
+  } catch {
+    // Ignore error if file doesn't exist
+  }
 }
