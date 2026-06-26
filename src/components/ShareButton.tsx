@@ -57,7 +57,7 @@ export default function ShareButton({ title, applyUrl, company, location, experi
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(getPageUrl());
+      await navigator.clipboard.writeText(getShareMessage());
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -94,7 +94,7 @@ export default function ShareButton({ title, applyUrl, company, location, experi
           <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18.717-.962 4.984-1.362 7.127-.168.905-.503 1.208-.825 1.238-.7.064-1.23-.462-1.908-.907-1.06-.695-1.66-1.127-2.69-1.803-1.192-.782-.42-1.212.26-1.921.178-.185 3.27-2.998 3.33-3.256.007-.03.014-.15-.056-.21-.07-.06-.175-.04-.25-.022-.11.025-1.8 1.144-5.087 3.362-.48.33-.918.494-1.312.485-.436-.01-1.27-.247-1.893-.45-.762-.248-1.37-.379-1.318-.802.027-.22.33-.448.91-.682 3.56-1.549 5.932-2.57 7.117-3.06 3.39-1.402 4.093-1.646 4.552-1.654.101-.002.327.023.473.142.122.1.156.24.168.341.01.08.017.26-.002.433z" />
         </svg>
       ),
-      action: () => window.open(`https://t.me/share/url?url=${encodeURIComponent(getPageUrl())}&text=${encodeURIComponent(getShareMessage())}`, '_blank'),
+      action: () => window.open(`https://t.me/share/url?url=&text=${encodeURIComponent(getShareMessage())}`, '_blank'),
     },
     {
       name: 'LinkedIn',
@@ -104,7 +104,14 @@ export default function ShareButton({ title, applyUrl, company, location, experi
           <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
         </svg>
       ),
-      action: () => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getPageUrl())}`, '_blank'),
+      action: async () => {
+        try {
+          await navigator.clipboard.writeText(getShareMessage());
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        } catch {}
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getPageUrl())}`, '_blank');
+      },
     },
     {
       name: 'Instagram',
@@ -162,7 +169,7 @@ export default function ShareButton({ title, applyUrl, company, location, experi
 
           {(copied || instacopied) && (
             <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-bold py-1.5 px-3 rounded-lg shadow-md whitespace-nowrap z-50 animate-bounce">
-              {copied ? 'Link copied!' : 'Message copied! Paste in Instagram.'}
+              {copied ? 'Vacancy copied to clipboard!' : 'Message copied! Paste in Instagram.'}
             </div>
           )}
         </div>
