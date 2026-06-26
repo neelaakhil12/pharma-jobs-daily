@@ -39,9 +39,14 @@ export default function ShareButton({ title, applyUrl, company, location, experi
   // WhatsApp/social media share template matching user's layout
   const getShareMessage = () => {
     const pageUrl = getPageUrl();
+    const cleanTitle = title.trim();
+    const cleanCompany = company?.trim() || '';
+    const displayTitle = cleanCompany !== ''
+      ? `${cleanCompany} Hiring For ${cleanTitle}`
+      : cleanTitle;
 
     return [
-      `*${title}*`,
+      `*${displayTitle}*`,
       '',
       qualification || '',
       '',

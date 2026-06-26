@@ -59,14 +59,18 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const siteUrl = `${proto}://${host}`;
 
   let targetImage = job.imageUrl;
-  let targetTitle = `${job.title} at ${job.company}`;
+  let targetTitle = job.company && job.company.trim() !== ''
+    ? `${job.company} Hiring For ${job.title}`
+    : job.title;
 
   if (partId && typeof partId === 'string' && job.applyParts) {
     const matchingPart = job.applyParts.find((p) => p.id === partId);
     if (matchingPart && matchingPart.imageUrl) {
       targetImage = matchingPart.imageUrl;
       if (matchingPart.title) {
-        targetTitle = `${matchingPart.title} - ${job.company}`;
+        targetTitle = job.company && job.company.trim() !== ''
+          ? `${job.company} Hiring For ${matchingPart.title}`
+          : matchingPart.title;
       }
     }
   }
