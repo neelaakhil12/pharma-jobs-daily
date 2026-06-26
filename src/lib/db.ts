@@ -136,15 +136,27 @@ interface JobRow {
   custom_title: string | null;
 }
 
-function serializeCustomSections(descriptionText: string, customSections?: Array<{ title: string; items: string[] }>): string {
-  if (!customSections || customSections.length === 0) return descriptionText;
-  const payload = { customSections };
+function serializeCustomSections(
+  descriptionText: string,
+  customSections?: Array<{ title: string; items: string[] }>,
+  customTitle?: string
+): string {
+  const payload: any = {};
+  if (customSections && customSections.length > 0) {
+    payload.customSections = customSections;
+  }
+  if (customTitle && customTitle.trim() !== '') {
+    payload.customTitle = customTitle.trim();
+  }
+  
+  if (Object.keys(payload).length === 0) return descriptionText;
   return `${descriptionText}\n\n---METADATA_START---\n${JSON.stringify(payload)}\n---METADATA_END---`;
 }
 
 function deserializeCustomSections(dbDescription: string | null): {
   description: string;
   customSections?: Array<{ title: string; items: string[] }>;
+  customTitle?: string;
 } {
   if (!dbDescription) return { description: '' };
   const startIndex = dbDescription.indexOf('---METADATA_START---');
@@ -156,7 +168,8 @@ function deserializeCustomSections(dbDescription: string | null): {
       const payload = JSON.parse(metaStr);
       return {
         description: text,
-        customSections: payload.customSections
+        customSections: payload.customSections,
+        customTitle: payload.customTitle
       };
     } catch (e) {
       console.error('Failed to parse description metadata:', e);
@@ -166,7 +179,7 @@ function deserializeCustomSections(dbDescription: string | null): {
 }
 
 function mapRowToJob(row: JobRow): Job {
-  const { description, customSections } = deserializeCustomSections(row.description);
+  const { description, customSections, customTitle } = deserializeCustomSections(row.description);
   return {
     id: row.id,
     title: row.title,
@@ -189,7 +202,7 @@ function mapRowToJob(row: JobRow): Job {
     scheduledTime: row.scheduled_time || undefined,
     postedBy: (row.posted_by as any) || undefined,
     customSections: customSections || undefined,
-    customTitle: row.custom_title || undefined
+    customTitle: customTitle || row.custom_title || undefined
   };
 }
 
@@ -206,9 +219,9 @@ function mapJobToRow(job: Partial<Job>): Partial<JobRow> {
   if (job.experience !== undefined) row.experience = job.experience;
   if (job.postedDate !== undefined) row.posted_date = job.postedDate;
   
-  if (job.description !== undefined || job.customSections !== undefined) {
+  if (job.description !== undefined || job.customSections !== undefined || job.customTitle !== undefined) {
     const cleanDesc = job.description || '';
-    row.description = serializeCustomSections(cleanDesc, job.customSections);
+    row.description = serializeCustomSections(cleanDesc, job.customSections, job.customTitle);
   }
   
   if (job.responsibilities !== undefined) row.responsibilities = job.responsibilities;
@@ -220,7 +233,6 @@ function mapJobToRow(job: Partial<Job>): Partial<JobRow> {
   if (job.applyParts !== undefined) row.apply_parts = job.applyParts || null;
   if (job.scheduledTime !== undefined) row.scheduled_time = job.scheduledTime || null;
   if (job.postedBy !== undefined) row.posted_by = job.postedBy || null;
-  if (job.customTitle !== undefined) row.custom_title = job.customTitle || null;
   return row;
 }
 
@@ -885,6 +897,19 @@ export interface ResetTokenData {
 }
 
 export async function saveResetToken(token: string, email: string, expires: number): Promise<void> {
+  const available = await isSupabaseAvailable();
+  if (available) {
+    try {
+      const { error } = await supabase
+        .from('settings')
+        .upsert({ key: 'reset_token', value: { token, email, expires } });
+      if (error) throw error;
+      return;
+    } catch (err) {
+      console.warn('[db] Supabase saveResetToken failed, falling back to local file:', err);
+    }
+  }
+
   try {
     const dir = path.dirname(tokenPath);
     await fs.mkdir(dir, { recursive: true });
@@ -895,6 +920,22 @@ export async function saveResetToken(token: string, email: string, expires: numb
 }
 
 export async function getResetToken(): Promise<ResetTokenData | null> {
+  const available = await isSupabaseAvailable();
+  if (available) {
+    try {
+      const { data, error } = await supabase
+        .from('settings')
+        .select('value')
+        .eq('key', 'reset_token')
+        .single();
+      if (!error && data?.value) {
+        return data.value as ResetTokenData;
+      }
+    } catch (err) {
+      console.warn('[db] Supabase getResetToken failed, falling back to local file:', err);
+    }
+  }
+
   try {
     const data = await fs.readFile(tokenPath, 'utf8');
     return JSON.parse(data) as ResetTokenData;
@@ -904,6 +945,20 @@ export async function getResetToken(): Promise<ResetTokenData | null> {
 }
 
 export async function clearResetToken(): Promise<void> {
+  const available = await isSupabaseAvailable();
+  if (available) {
+    try {
+      const { error } = await supabase
+        .from('settings')
+        .delete()
+        .eq('key', 'reset_token');
+      if (error) throw error;
+      return;
+    } catch (err) {
+      console.warn('[db] Supabase clearResetToken failed, falling back to local file:', err);
+    }
+  }
+
   try {
     await fs.unlink(tokenPath);
   } catch {
