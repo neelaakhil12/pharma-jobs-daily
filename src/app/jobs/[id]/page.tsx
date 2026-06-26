@@ -135,6 +135,31 @@ export default async function JobDetailPage({ params }: PageProps) {
     return job.postedDate;
   })();
 
+  const publishedDateString = (() => {
+    if (!job.postedDate) return '';
+    const parts = job.postedDate.split('-');
+    if (parts.length === 3) {
+      const year = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1; // 0-based
+      const day = parseInt(parts[2], 10);
+      const date = new Date(year, month, day);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+    const parsed = new Date(job.postedDate);
+    if (!isNaN(parsed.getTime())) {
+      return parsed.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+    return job.postedDate;
+  })();
+
   return (
     <div className="bg-[#F8FAFC] min-h-screen py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -156,50 +181,65 @@ export default async function JobDetailPage({ params }: PageProps) {
           {/* Main Job Details (Left) */}
           <div className="lg:col-span-8 space-y-8" data-aos="fade-right">
             
-            {/* Zydus-style Job Header Card */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-md space-y-5">
-              {/* Title and Company Row */}
-              <div className="space-y-1.5">
-                <h1 className="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight leading-snug">
-                  {job.title}
-                </h1>
-                {job.company && job.company.trim() !== '' && (
-                  <p className="text-sm sm:text-base font-semibold text-slate-500">{job.company}</p>
-                )}
-              </div>
-
-              {/* Metadata Stack */}
-              {((job.qualification && job.qualification.trim() !== '') ||
-                (job.location && job.location.trim() !== '') ||
-                (job.experience && job.experience.trim() !== '')) && (
-                <div className="space-y-3 pt-1 text-xs font-semibold text-slate-600">
-                  {job.qualification && job.qualification.trim() !== '' && (
-                    <div className="flex items-center gap-3">
-                      <GraduationCap className="w-4.5 h-4.5 text-slate-400 shrink-0" />
-                      <span>{job.qualification}</span>
-                    </div>
-                  )}
-                  {job.location && job.location.trim() !== '' && (
-                    <div className="flex items-center gap-3">
-                      <MapPin className="w-4.5 h-4.5 text-slate-400 shrink-0" />
-                      <span>{job.location}</span>
-                    </div>
-                  )}
-                  {job.experience && job.experience.trim() !== '' && (
-                    <div className="flex items-center gap-3">
-                      <Briefcase className="w-4.5 h-4.5 text-slate-400 shrink-0" />
-                      <span>{job.experience}</span>
-                    </div>
-                  )}
+            <div className="space-y-4">
+              {/* Keeping the title option above the card, matching Screenshot 2 */}
+              {((job.company && job.company.trim() !== '') || (job.title && job.title.trim() !== '')) && (
+                <div className="border-t border-slate-200/80 pt-4 pb-1">
+                  <h2 className="text-[17px] sm:text-xl font-bold text-slate-900 tracking-tight leading-snug">
+                    {job.company ? `${job.company} Hiring For ${job.title}` : `Hiring For ${job.title}`}
+                  </h2>
+                  <div className="flex justify-between items-center text-xs sm:text-sm text-slate-500 mt-2.5">
+                    <span>Published on</span>
+                    <span className="font-medium text-slate-700">{publishedDateString}</span>
+                  </div>
                 </div>
               )}
 
-              {/* Footer Badge Bar */}
-              <div className="pt-4 border-t border-slate-100 flex items-center gap-1.5 text-xs font-semibold text-slate-500">
-                <span>Job Posted Date:</span>
-                <span className={`font-extrabold ${job.postedBy === 'ADMIN' ? 'text-emerald-600' : 'text-primary'}`}>
-                  {formattedDate}
-                </span>
+              {/* Zydus-style Job Header Card */}
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-md space-y-5">
+                {/* Title and Company Row */}
+                <div className="space-y-1.5">
+                  <h1 className="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight leading-snug">
+                    {job.title}
+                  </h1>
+                  {job.company && job.company.trim() !== '' && (
+                    <p className="text-sm sm:text-base font-semibold text-slate-500">{job.company}</p>
+                  )}
+                </div>
+
+                {/* Metadata Stack */}
+                {((job.qualification && job.qualification.trim() !== '') ||
+                  (job.location && job.location.trim() !== '') ||
+                  (job.experience && job.experience.trim() !== '')) && (
+                  <div className="space-y-3 pt-1 text-xs font-semibold text-slate-600">
+                    {job.qualification && job.qualification.trim() !== '' && (
+                      <div className="flex items-center gap-3">
+                        <GraduationCap className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                        <span>{job.qualification}</span>
+                      </div>
+                    )}
+                    {job.location && job.location.trim() !== '' && (
+                      <div className="flex items-center gap-3">
+                        <MapPin className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                        <span>{job.location}</span>
+                      </div>
+                    )}
+                    {job.experience && job.experience.trim() !== '' && (
+                      <div className="flex items-center gap-3">
+                        <Briefcase className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                        <span>{job.experience}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Footer Badge Bar */}
+                <div className="pt-4 border-t border-slate-100 flex items-center gap-1.5 text-xs font-semibold text-slate-500">
+                  <span>Job Posted Date:</span>
+                  <span className={`font-extrabold ${job.postedBy === 'ADMIN' ? 'text-emerald-600' : 'text-primary'}`}>
+                    {formattedDate}
+                  </span>
+                </div>
               </div>
             </div>
 
