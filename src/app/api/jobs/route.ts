@@ -136,7 +136,8 @@ export async function POST(request: Request) {
       applyParts: body.applyParts || [],
       scheduledTime: body.scheduledTime || undefined,
       postedBy: session.role,
-      customSections: body.customSections || []
+      customSections: body.customSections || [],
+      customTitle: body.customTitle || ''
     });
 
     return NextResponse.json({ success: true, job: newJob }, { status: 201 });

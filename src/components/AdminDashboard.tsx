@@ -246,6 +246,16 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
   const [editingCategoryValue, setEditingCategoryValue] = useState('');
 
+  // Dynamic Custom Title Options States
+  const [customTitleOptions, setCustomTitleOptions] = useState<string[]>([]);
+  const [loadingTitleOptions, setLoadingTitleOptions] = useState(false);
+  const [savingTitleOptions, setSavingTitleOptions] = useState(false);
+  const [newTitleOption, setNewTitleOption] = useState('');
+  const [editingTitleOption, setEditingTitleOption] = useState<number | null>(null);
+  const [editingTitleOptionValue, setEditingTitleOptionValue] = useState('');
+  const [titleOptionsSuccessMessage, setTitleOptionsSuccessMessage] = useState('');
+  const [titleOptionsErrorMessage, setTitleOptionsErrorMessage] = useState('');
+
   const handleCreateCategorySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = newCategoryNameInput.trim();
@@ -411,6 +421,75 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     setEditingCategoryValue('');
   };
 
+  // Custom Title Options Helpers
+  const handleAddTitleOption = () => {
+    const trimmed = newTitleOption.trim();
+    if (!trimmed) return;
+    if (customTitleOptions.includes(trimmed)) {
+      setTitleOptionsErrorMessage('Option already exists.');
+      return;
+    }
+    setCustomTitleOptions([...customTitleOptions, trimmed]);
+    setNewTitleOption('');
+    setTitleOptionsErrorMessage('');
+  };
+
+  const handleRemoveTitleOption = (indexToRemove: number) => {
+    setCustomTitleOptions(customTitleOptions.filter((_, idx) => idx !== indexToRemove));
+  };
+
+  const handleStartEditTitleOption = (index: number, val: string) => {
+    setEditingTitleOption(index);
+    setEditingTitleOptionValue(val);
+  };
+
+  const handleCancelEditTitleOption = () => {
+    setEditingTitleOption(null);
+    setEditingTitleOptionValue('');
+  };
+
+  const handleSaveInlineTitleOption = (index: number) => {
+    const trimmed = editingTitleOptionValue.trim();
+    if (!trimmed) {
+      setEditingTitleOption(null);
+      return;
+    }
+    if (customTitleOptions.includes(trimmed) && customTitleOptions[index] !== trimmed) {
+      setTitleOptionsErrorMessage('Option already exists.');
+      return;
+    }
+    setCustomTitleOptions(customTitleOptions.map((opt, idx) => (idx === index ? trimmed : opt)));
+    setEditingTitleOption(null);
+    setEditingTitleOptionValue('');
+    setTitleOptionsErrorMessage('');
+  };
+
+  const handleSaveTitleOptions = async () => {
+    setSavingTitleOptions(true);
+    setTitleOptionsSuccessMessage('');
+    setTitleOptionsErrorMessage('');
+
+    try {
+      const res = await fetch('/api/custom-title-options', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ options: customTitleOptions })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setTitleOptionsSuccessMessage('Title options list successfully updated!');
+        setTimeout(() => setTitleOptionsSuccessMessage(''), 4000);
+      } else {
+        setTitleOptionsErrorMessage(data.error || 'Failed to update title options.');
+      }
+    } catch (err) {
+      console.error('Failed to save title options:', err);
+      setTitleOptionsErrorMessage('An unexpected error occurred while saving.');
+    } finally {
+      setSavingTitleOptions(false);
+    }
+  };
+
   // Assistant credentials states
   const [adminsList, setAdminsList] = useState<any[]>([]);
   const [loadingAdmins, setLoadingAdmins] = useState(false);
@@ -463,9 +542,24 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
         setLoadingAdmins(false);
       }
     }
+    async function fetchTitleOptions() {
+      setLoadingTitleOptions(true);
+      try {
+        const res = await fetch('/api/custom-title-options');
+        const data = await res.json();
+        if (res.ok && data.success && data.options) {
+          setCustomTitleOptions(data.options);
+        }
+      } catch (err) {
+        console.error('Failed to fetch custom title options:', err);
+      } finally {
+        setLoadingTitleOptions(false);
+      }
+    }
     fetchLinks();
     fetchSlides();
     fetchAdmins();
+    fetchTitleOptions();
   }, [isSuperAdmin, adminUsername, adminRole]);
 
   const handleSaveAdmins = async (e: React.FormEvent) => {
@@ -542,6 +636,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
   const [form, setForm] = useState({
     title: '',
     company: '',
+    customTitle: '',
     category: (initialCategories && initialCategories.length > 0) ? initialCategories[0] : 'Government Jobs',
     type: 'Full-time',
     qualification: 'B.Pharm',
@@ -609,6 +704,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     setForm({
       title: '',
       company: '',
+      customTitle: '',
       category: categories[0] || 'Government Jobs',
       type: 'Full-time',
       qualification: 'B.Pharm',
@@ -658,6 +754,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     setForm({
       title: job.title,
       company: job.company,
+      customTitle: job.customTitle || '',
       category: job.category,
       type: job.type,
       qualification: job.qualification,
@@ -1717,6 +1814,131 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                 </button>
               </div>
             </div>
+
+            {/* Custom Title Options Card */}
+            <div className="bg-white border border-slate-100 shadow-xl rounded-3xl p-6 sm:p-8 space-y-6 animate-fade-in">
+              <div className="space-y-1">
+                <h2 className="text-lg sm:text-xl font-extrabold text-slate-800 tracking-tight">Custom Header Title Options Manager</h2>
+                <p className="text-xs text-slate-450">Add, edit, or remove predefined custom header titles for vacancy posts.</p>
+              </div>
+
+              {titleOptionsSuccessMessage && (
+                <div className="p-4 bg-emerald-50 border border-emerald-255 text-emerald-700 rounded-2xl text-xs font-bold animate-fade-in flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping shrink-0" />
+                  {titleOptionsSuccessMessage}
+                </div>
+              )}
+
+              {titleOptionsErrorMessage && (
+                <div className="p-4 bg-red-50 border border-red-150 text-red-650 rounded-2xl text-xs font-bold animate-fade-in">
+                  {titleOptionsErrorMessage}
+                </div>
+              )}
+
+              {/* Add New Option Form */}
+              <div className="flex gap-2 items-center pb-4 border-b border-slate-100">
+                <div className="flex-grow">
+                  <input
+                    type="text"
+                    placeholder="Enter new title option e.g., Pfizer Hiring For Health care executive"
+                    value={newTitleOption}
+                    onChange={(e) => setNewTitleOption(e.target.value)}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary focus:bg-white transition-all shadow-sm font-semibold"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAddTitleOption}
+                  className="px-5 py-3.5 bg-primary text-white text-xs font-bold rounded-xl shadow-md cursor-pointer hover:bg-primary-hover hover:shadow-lg transition-all whitespace-nowrap"
+                >
+                  Add Option
+                </button>
+              </div>
+
+              {/* List of active title options */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  Predefined Title Options ({customTitleOptions.length})
+                </label>
+                {loadingTitleOptions ? (
+                  <div className="flex flex-col items-center justify-center py-6 gap-2 text-slate-400">
+                    <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                    <span className="text-[10px] font-semibold">Loading options...</span>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {customTitleOptions.map((opt, idx) => (
+                      <div 
+                        key={idx}
+                        className="flex items-center justify-between p-3.5 bg-slate-50 border border-slate-150 rounded-2xl text-xs font-semibold text-slate-700"
+                      >
+                        {editingTitleOption === idx ? (
+                          <div className="flex items-center gap-2 w-full">
+                            <input
+                              type="text"
+                              value={editingTitleOptionValue}
+                              onChange={(e) => setEditingTitleOptionValue(e.target.value)}
+                              className="flex-grow px-2 py-1 bg-white border border-slate-250 rounded-lg text-xs font-bold focus:outline-none focus:border-primary"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleSaveInlineTitleOption(idx)}
+                              className="p-1 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors cursor-pointer"
+                              title="Save"
+                            >
+                              <ShieldCheck className="w-4.5 h-4.5" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={handleCancelEditTitleOption}
+                              className="p-1 text-slate-400 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                              title="Cancel"
+                            >
+                              <X className="w-4.5 h-4.5" />
+                            </button>
+                          </div>
+                        ) : (
+                          <>
+                            <span className="truncate pr-2">{opt}</span>
+                            <div className="flex items-center gap-1 shrink-0">
+                              <button
+                                type="button"
+                                onClick={() => handleStartEditTitleOption(idx, opt)}
+                                className="p-1.5 text-slate-400 hover:text-primary hover:bg-primary-light rounded-lg transition-colors cursor-pointer"
+                                title="Edit option"
+                              >
+                                <Edit className="w-4 h-4" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveTitleOption(idx)}
+                                className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                                title="Remove option"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Save title options button */}
+              <div className="pt-4 border-t border-slate-100 flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleSaveTitleOptions}
+                  disabled={savingTitleOptions}
+                  className="px-6 py-3 bg-gradient-to-r from-primary to-accent-sky text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-2 hover:shadow-lg transition-all"
+                >
+                  {savingTitleOptions && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                  Save Title Options List
+                </button>
+              </div>
+            </div>
           </main>
         ) : activeTab === 'credentials' ? (
           <main className="flex-grow p-6 md:p-8 max-w-3xl w-full mx-auto overflow-y-auto">
@@ -2296,6 +2518,41 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                 </div>
               </div>
 
+              {/* Custom Header Title Option */}
+              <div className="space-y-3 p-3.5 bg-slate-50/50 border border-slate-150 rounded-2xl">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Predefined Header Title Preset</label>
+                  <select
+                    value={customTitleOptions.includes(form.customTitle || '') ? form.customTitle : form.customTitle ? "custom" : ""}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === "custom") {
+                        // Let the user edit the custom text
+                      } else {
+                        setForm({ ...form, customTitle: val });
+                      }
+                    }}
+                    className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-750 focus:outline-none focus:border-primary"
+                  >
+                    <option value="">-- No Preset Selected (Default: Company + Title) --</option>
+                    {customTitleOptions.map((opt) => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                    <option value="custom">-- Use Custom / Edit Selected --</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Header Title Text</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Pfizer Hiring For Health care executive"
+                    value={form.customTitle || ''}
+                    onChange={(e) => setForm({ ...form, customTitle: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-750 focus:outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+
               {/* Row 2: Category & Qualification */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
@@ -2704,6 +2961,41 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                     value={form.company}
                     onChange={(e) => setForm({ ...form, company: e.target.value })}
                     className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              {/* Custom Header Title Option */}
+              <div className="space-y-3 p-3.5 bg-slate-50/50 border border-slate-150 rounded-2xl">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Predefined Header Title Preset</label>
+                  <select
+                    value={customTitleOptions.includes(form.customTitle || '') ? form.customTitle : form.customTitle ? "custom" : ""}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === "custom") {
+                        // Let the user edit the custom text
+                      } else {
+                        setForm({ ...form, customTitle: val });
+                      }
+                    }}
+                    className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-750 focus:outline-none focus:border-primary"
+                  >
+                    <option value="">-- No Preset Selected (Default: Company + Title) --</option>
+                    {customTitleOptions.map((opt) => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                    <option value="custom">-- Use Custom / Edit Selected --</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Header Title Text</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Pfizer Hiring For Health care executive"
+                    value={form.customTitle || ''}
+                    onChange={(e) => setForm({ ...form, customTitle: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-750 focus:outline-none focus:border-primary"
                   />
                 </div>
               </div>

@@ -115,5 +115,9 @@
   "superAdmin": {
     "username": "pharmajobsdaily@gmail.com",
     "password": "Pharma@2026"
-  }
+  },
+  "customTitleOptions": [
+    "Pfizer Hiring For Health care executive",
+    "Hiring For Drug inspector"
+  ]
 }

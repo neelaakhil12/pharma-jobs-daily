@@ -59,18 +59,22 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const siteUrl = `${proto}://${host}`;
 
   let targetImage = job.imageUrl;
-  let targetTitle = job.company && job.company.trim() !== ''
-    ? `${job.company} Hiring For ${job.title}`
-    : job.title;
+  let targetTitle = job.customTitle && job.customTitle.trim() !== ''
+    ? job.customTitle.trim()
+    : (job.company && job.company.trim() !== ''
+      ? `${job.company.trim()} Hiring For ${job.title.trim()}`
+      : job.title.trim());
 
   if (partId && typeof partId === 'string' && job.applyParts) {
     const matchingPart = job.applyParts.find((p) => p.id === partId);
     if (matchingPart && matchingPart.imageUrl) {
       targetImage = matchingPart.imageUrl;
       if (matchingPart.title) {
-        targetTitle = job.company && job.company.trim() !== ''
-          ? `${job.company} Hiring For ${matchingPart.title}`
-          : matchingPart.title;
+        targetTitle = job.customTitle && job.customTitle.trim() !== ''
+          ? `${job.customTitle.trim()} - ${matchingPart.title.trim()}`
+          : (job.company && job.company.trim() !== ''
+            ? `${job.company.trim()} Hiring For ${matchingPart.title.trim()}`
+            : matchingPart.title.trim());
       }
     }
   }
@@ -187,10 +191,12 @@ export default async function JobDetailPage({ params }: PageProps) {
             
             <div className="space-y-4">
               {/* Keeping the title option above the card, matching Screenshot 2 */}
-              {((job.company && job.company.trim() !== '') || (job.title && job.title.trim() !== '')) && (
+              {((job.company && job.company.trim() !== '') || (job.title && job.title.trim() !== '') || (job.customTitle && job.customTitle.trim() !== '')) && (
                 <div className="border-t border-slate-200/80 pt-4 pb-1">
                   <h2 className="text-[17px] sm:text-xl font-bold text-slate-900 tracking-tight leading-snug">
-                    {job.company ? `${job.company} Hiring For ${job.title}` : `Hiring For ${job.title}`}
+                    {job.customTitle && job.customTitle.trim() !== ''
+                      ? job.customTitle.trim()
+                      : (job.company ? `${job.company.trim()} Hiring For ${job.title.trim()}` : `Hiring For ${job.title.trim()}`)}
                   </h2>
                   <div className="flex justify-between items-center text-xs sm:text-sm text-slate-500 mt-2.5">
                     <span>Published on</span>
@@ -420,6 +426,7 @@ export default async function JobDetailPage({ params }: PageProps) {
                               experience={job.experience}
                               qualification={job.qualification}
                               shareUrl={`${siteUrl}/jobs/${job.id}?part=${part.id}`}
+                              customTitle={job.customTitle ? `${job.customTitle}${part.title ? ` - ${part.title}` : ''}` : undefined}
                             />
                           </div>
                         </div>
@@ -486,6 +493,7 @@ export default async function JobDetailPage({ params }: PageProps) {
                                 experience={job.experience}
                                 qualification={job.qualification}
                                 shareUrl={`${siteUrl}/jobs/${job.id}?part=${part.id}`}
+                                customTitle={job.customTitle ? `${job.customTitle}${part.title ? ` - ${part.title}` : ''}` : undefined}
                               />
                             </div>
                           )}
@@ -579,6 +587,7 @@ export default async function JobDetailPage({ params }: PageProps) {
                     salary={job.salary}
                     experience={job.experience}
                     qualification={job.qualification}
+                    customTitle={job.customTitle}
                   />
                 </div>
               </div>

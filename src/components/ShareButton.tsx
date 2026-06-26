@@ -13,9 +13,10 @@ interface ShareButtonProps {
   experience?: string;
   qualification?: string;
   shareUrl?: string;
+  customTitle?: string;
 }
 
-export default function ShareButton({ title, applyUrl, company, location, experience, qualification, shareUrl }: ShareButtonProps) {
+export default function ShareButton({ title, applyUrl, company, location, experience, qualification, shareUrl, customTitle }: ShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [instacopied, setInstacopied] = useState(false);
@@ -41,9 +42,12 @@ export default function ShareButton({ title, applyUrl, company, location, experi
     const pageUrl = getPageUrl();
     const cleanTitle = title.trim();
     const cleanCompany = company?.trim() || '';
-    const displayTitle = cleanCompany !== ''
-      ? `${cleanCompany} Hiring For ${cleanTitle}`
-      : cleanTitle;
+    const cleanCustomTitle = customTitle?.trim() || '';
+    const displayTitle = cleanCustomTitle !== ''
+      ? cleanCustomTitle
+      : (cleanCompany !== ''
+        ? `${cleanCompany} Hiring For ${cleanTitle}`
+        : cleanTitle);
 
     return [
       displayTitle,

@@ -25,6 +25,7 @@ export interface Job {
   scheduledTime?: string;
   postedBy?: 'SUPER ADMIN' | 'ADMIN';
   customSections?: Array<{ title: string; items: string[] }>;
+  customTitle?: string;
 }
 
 export interface ApplyLink {
@@ -73,6 +74,7 @@ export interface DbSchema {
   qualifications: string[];
   socialLinks?: SocialLinks;
   heroSlides?: HeroSlide[];
+  customTitleOptions?: string[];
 }
 
 // ──────────────────────────────────────────────
@@ -91,7 +93,8 @@ async function readLocalDb(): Promise<DbSchema> {
       admin: { username: 'admin@pharmagmail.com', password: 'pharma@2026' },
       jobs: [],
       categories: [],
-      qualifications: []
+      qualifications: [],
+      customTitleOptions: []
     };
   }
 }
@@ -130,6 +133,7 @@ interface JobRow {
   apply_parts: any | null;
   scheduled_time: string | null;
   posted_by: string | null;
+  custom_title: string | null;
 }
 
 function serializeCustomSections(descriptionText: string, customSections?: Array<{ title: string; items: string[] }>): string {
@@ -184,7 +188,8 @@ function mapRowToJob(row: JobRow): Job {
     applyParts: row.apply_parts || undefined,
     scheduledTime: row.scheduled_time || undefined,
     postedBy: (row.posted_by as any) || undefined,
-    customSections: customSections || undefined
+    customSections: customSections || undefined,
+    customTitle: row.custom_title || undefined
   };
 }
 
@@ -215,6 +220,7 @@ function mapJobToRow(job: Partial<Job>): Partial<JobRow> {
   if (job.applyParts !== undefined) row.apply_parts = job.applyParts || null;
   if (job.scheduledTime !== undefined) row.scheduled_time = job.scheduledTime || null;
   if (job.postedBy !== undefined) row.posted_by = job.postedBy || null;
+  if (job.customTitle !== undefined) row.custom_title = job.customTitle || null;
   return row;
 }
 
@@ -610,6 +616,65 @@ export async function updateCategories(categories: string[]): Promise<string[]> 
   db.categories = categories;
   await writeLocalDb(db);
   return categories;
+}
+
+export async function getCustomTitleOptions(): Promise<string[]> {
+  const available = await isSupabaseAvailable();
+  let options: string[] = [];
+  if (available) {
+    try {
+      const { data, error } = await supabase
+        .from('custom_title_options')
+        .select('title')
+        .order('id', { ascending: true });
+      if (!error && data) {
+        options = data.map((r: any) => r.title);
+      }
+    } catch {}
+  }
+  
+  if (options.length === 0) {
+    const db = await readLocalDb();
+    if (db.customTitleOptions && db.customTitleOptions.length > 0) {
+      options = db.customTitleOptions;
+    }
+  }
+
+  // Self-migrating default title options
+  if (options.length === 0) {
+    options = ['Pfizer Hiring For Health care executive', 'Hiring For Drug inspector'];
+    await updateCustomTitleOptions(options);
+  }
+
+  return options;
+}
+
+export async function updateCustomTitleOptions(options: string[]): Promise<string[]> {
+  const available = await isSupabaseAvailable();
+  if (available) {
+    try {
+      const { error: deleteError } = await supabase
+        .from('custom_title_options')
+        .delete()
+        .neq('id', -1);
+      if (deleteError) throw deleteError;
+
+      if (options.length > 0) {
+        const rows = options.map((title) => ({ title }));
+        const { error: insertError } = await supabase
+          .from('custom_title_options')
+          .insert(rows);
+        if (insertError) throw insertError;
+      }
+    } catch (err) {
+      console.warn('[db] Supabase custom title options update failed, updating local:', err);
+    }
+  }
+  // Always mirror in local db.json
+  const db = await readLocalDb();
+  db.customTitleOptions = options;
+  await writeLocalDb(db);
+  return options;
 }
 
 export async function renameCategoriesInJobs(
