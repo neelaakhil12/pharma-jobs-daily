@@ -1,0 +1,37 @@
+name: Keep Supabase Awake
+
+on:
+  schedule:
+    # Run every day at 4:00 AM UTC (keeps Supabase database active)
+    - cron: '0 4 * * *'
+  workflow_dispatch: # Allow manually triggering from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Keep-Alive API
+        run: |
+          # Use PRODUCTION_URL variable if set, otherwise default to the pharma-jobs-daily production URL
+          TARGET_URL="${{ vars.PRODUCTION_URL || 'https://pharma-jobs-daily.vercel.app' }}"
+          TARGET_URL="${TARGET_URL%/}"
+          API_URL="${TARGET_URL}/api/cron/keep-alive"
+          
+          echo "Pinging keep-alive endpoint: $API_URL"
+          
+          if [ -n "${{ secrets.CRON_SECRET }}" ]; then
+            response=$(curl -s -w "%{http_code}" -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" "$API_URL")
+          else
+            response=$(curl -s -w "%{http_code}" "$API_URL")
+          fi
+          
+          status_code="${response: -3}"
+          body="${response:0:${#response}-3}"
+          
+          echo "Response status: $status_code"
+          echo "Response body: $body"
+          
+          if [ "$status_code" -ne 200 ]; then
+            echo "Error: Keep-alive request failed with status $status_code"
+            exit 1
+          fi
