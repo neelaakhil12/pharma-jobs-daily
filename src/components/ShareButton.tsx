@@ -46,7 +46,7 @@ export default function ShareButton({ title, applyUrl, company, location, experi
       : cleanTitle;
 
     return [
-      `*${displayTitle}*`,
+      displayTitle,
       '',
       qualification || '',
       '',
