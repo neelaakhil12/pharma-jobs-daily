@@ -94,9 +94,6 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const cleanDesc = stripHtml(job.description);
   const shortDesc = cleanDesc.length > 160 ? cleanDesc.slice(0, 157) + '...' : cleanDesc;
 
-  // Optimize and resize preview image dynamically to exactly 256px wide for WhatsApp/Telegram thumbnails
-  const optimizedOgImage = `${siteUrl}/_next/image?url=${encodeURIComponent(ogImage)}&w=256&q=75`;
-
   return {
     title: `${targetTitle} | Pharma Jobs Daily`,
     description: shortDesc,
@@ -108,19 +105,16 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
       siteName: 'Pharma Jobs Daily',
       images: [
         {
-          url: optimizedOgImage,
-          width: 256,
-          height: 256,
+          url: ogImage,
           alt: targetTitle,
-          type: ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg',
         },
       ],
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title: `${targetTitle} | Pharma Jobs Daily`,
       description: shortDesc,
-      images: [optimizedOgImage],
+      images: [ogImage],
     },
   };
 }

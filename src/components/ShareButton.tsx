@@ -86,9 +86,9 @@ export default function ShareButton({ title, applyUrl, company, location, experi
       
       setTimeout(() => {
         // If the browser hasn't lost focus or context (indicating the native app did not open),
-        // we open the fallback web link in a new tab.
+        // we load the fallback web link in the same window to prevent browser popup blockers.
         if (Date.now() - start < 1800) {
-          window.open(webUri, '_blank');
+          window.location.href = webUri;
         }
       }, 1500);
     } else {
@@ -120,7 +120,7 @@ export default function ShareButton({ title, applyUrl, company, location, experi
       await navigator.clipboard.writeText(getShareMessage());
       setInstacopied(true);
       setTimeout(() => setInstacopied(false), 3000);
-      openShareLink("https://www.instagram.com/direct/inbox/");
+      openDeepLink("instagram://direct-inbox", "https://www.instagram.com/direct/inbox/");
     } catch (err) {
       console.error('Clipboard copy failed:', err);
     }
@@ -154,7 +154,10 @@ export default function ShareButton({ title, applyUrl, company, location, experi
       action: () => {
         const textOnly = getShareTextOnly();
         const pageUrl = getPageUrl();
-        openShareLink(`https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(textOnly)}`);
+        openDeepLink(
+          `tg://msg_url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(textOnly)}`,
+          `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(textOnly)}`
+        );
       },
     },
     {
