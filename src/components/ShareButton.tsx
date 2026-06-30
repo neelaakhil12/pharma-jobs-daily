@@ -55,6 +55,7 @@ export default function ShareButton({ title, applyUrl, company, location, experi
       qualification || '',
       '',
       `Apply Here 🔗`,
+      '',
       pageUrl,
     ].join('\n');
   };
