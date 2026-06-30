@@ -34,6 +34,11 @@ export const metadata: Metadata = {
   },
   description:
     'Trusted pharmaceutical and healthcare recruitment updates since 2020. Get daily handpicked jobs for B.Pharm, M.Pharm, Staff Nurse, Paramedical, JRF, and SRF sectors.',
+  icons: {
+    icon: '/logo-thumbnail.png',
+    shortcut: '/logo-thumbnail.png',
+    apple: '/logo-thumbnail.png',
+  },
   keywords: [
     'Pharma Jobs',
     'Healthcare Careers',

@@ -14,7 +14,29 @@ export async function POST(request: Request) {
     }
 
     if (type === 'super') {
-      // ── Priority 1: env-var credentials (server-side only, never exposed to the client) ──
+      const db = await readDb();
+
+      // ── Priority 1: db superAdmin credentials (updated dynamically via Forgot Password) ──
+      if (db.superAdmin) {
+        if (username === db.superAdmin.username && password === db.superAdmin.password) {
+          await setAdminSession(username, 'SUPER ADMIN');
+          return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
+        }
+        
+        // Also check if they match the admin fallback (e.g. from the admin credentials list)
+        if (db.admin && username === db.admin.username && password === db.admin.password) {
+          await setAdminSession(username, 'SUPER ADMIN');
+          return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
+        }
+
+        // Deny immediately if db.superAdmin is set but credentials did not match database records
+        return NextResponse.json(
+          { success: false, error: 'Invalid username or password for this login area' },
+          { status: 401 }
+        );
+      }
+
+      // ── Priority 2: env-var credentials (only used if db.superAdmin is not set) ──
       const envUser = process.env.SUPER_ADMIN_USERNAME;
       const envPass = process.env.SUPER_ADMIN_PASSWORD;
 
@@ -30,13 +52,8 @@ export async function POST(request: Request) {
         );
       }
 
-      // ── Fallback: db credentials (only used if env vars are not set) ──
-      const db = await readDb();
-      const isSuper =
-        (db.superAdmin && db.superAdmin.username === username && db.superAdmin.password === password) ||
-        (db.admin.username === username && db.admin.password === password);
-
-      if (isSuper) {
+      // ── Priority 3: Fallback db.admin credentials (only if db.superAdmin and env vars are not set) ──
+      if (db.admin && username === db.admin.username && password === db.admin.password) {
         await setAdminSession(username, 'SUPER ADMIN');
         return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
       }

@@ -653,6 +653,52 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
     scheduledTime: ''
   });
 
+  const [hasDraft, setHasDraft] = useState(false);
+
+  // Autosave Add Job Form Draft
+  useEffect(() => {
+    if (showAddModal) {
+      localStorage.setItem('pharma_jobs_daily_add_draft', JSON.stringify(form));
+      setHasDraft(true);
+    }
+  }, [form, showAddModal]);
+
+  // Check for initial draft state on client mount
+  useEffect(() => {
+    const savedDraft = localStorage.getItem('pharma_jobs_daily_add_draft');
+    setHasDraft(!!savedDraft);
+  }, []);
+
+  const handleClearAddForm = () => {
+    if (window.confirm("Are you sure you want to discard this draft? This will clear all fields.")) {
+      localStorage.removeItem('pharma_jobs_daily_add_draft');
+      setHasDraft(false);
+      setForm({
+        title: '',
+        company: '',
+        customTitle: '',
+        category: (categories && categories.length > 0) ? categories[0] : 'Government Jobs',
+        type: 'Full-time',
+        qualification: 'B.Pharm',
+        location: '',
+        salary: 'N/A',
+        experience: '',
+        description: '',
+        listSections: [
+          { id: 'responsibilities', title: 'Responsibilities', valueRaw: '', isDefault: true },
+          { id: 'requirements', title: 'Requirements', valueRaw: '', isDefault: true },
+          { id: 'benefits', title: 'Benefits', valueRaw: '', isDefault: true }
+        ],
+        applyUrl: '',
+        recruiterEmail: '',
+        imageUrl: '',
+        imageUrls: [] as string[],
+        applyParts: [] as JobApplyPart[],
+        scheduledTime: ''
+      });
+    }
+  };
+
   const handleAddListSection = () => {
     setForm(prev => ({
       ...prev,
@@ -701,6 +747,19 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
 
   // Handle opening Create Form
   const handleOpenAdd = () => {
+    const savedDraft = localStorage.getItem('pharma_jobs_daily_add_draft');
+    if (savedDraft) {
+      try {
+        const parsed = JSON.parse(savedDraft);
+        setForm(parsed);
+        setShowAddModal(true);
+        setHasDraft(true);
+        return;
+      } catch (e) {
+        console.error('Failed to load form draft:', e);
+      }
+    }
+
     setForm({
       title: '',
       company: '',
@@ -725,6 +784,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
       scheduledTime: ''
     });
     setShowAddModal(true);
+    setHasDraft(false);
   };
 
   // Handle opening Edit Form
@@ -829,6 +889,8 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
       if (res.ok && data.success) {
         setJobs([data.job, ...jobs]);
         setShowAddModal(false);
+        localStorage.removeItem('pharma_jobs_daily_add_draft');
+        setHasDraft(false);
       }
     } catch (err) {
       console.error('Create job error:', err);
@@ -2482,10 +2544,17 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
           <div className="bg-white rounded-3xl max-w-3xl w-full border border-slate-100 shadow-2xl overflow-hidden animate-zoom-in max-h-[90vh] flex flex-col justify-between">
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 shrink-0">
-              <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-2">
-                <Plus className="w-5 h-5 text-primary" />
-                Publish Daily Vacancy
-              </h3>
+              <div className="flex items-center gap-3">
+                <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-2">
+                  <Plus className="w-5 h-5 text-primary" />
+                  Publish Daily Vacancy
+                </h3>
+                {hasDraft && (
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200 animate-pulse">
+                    Draft Autosaved
+                  </span>
+                )}
+              </div>
               <button onClick={() => setShowAddModal(false)} className="text-slate-450 hover:text-slate-650 cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
@@ -2903,23 +2972,36 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
             </form>
 
             {/* Modal Footer Controls */}
-            <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3 shrink-0">
-              <button
-                type="button"
-                onClick={() => setShowAddModal(false)}
-                className="px-5 py-2.5 border border-slate-200 hover:bg-slate-100 text-xs font-bold text-slate-600 rounded-xl cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                onClick={handleAddSubmit}
-                disabled={submitting}
-                className="px-5 py-2.5 bg-gradient-to-r from-primary to-accent-sky text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-1.5"
-              >
-                {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-                Publish Notice
-              </button>
+            <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center shrink-0">
+              <div>
+                {hasDraft && (
+                  <button
+                    type="button"
+                    onClick={handleClearAddForm}
+                    className="px-4 py-2.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-650 text-xs font-bold rounded-xl cursor-pointer transition-colors"
+                  >
+                    Discard Draft
+                  </button>
+                )}
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowAddModal(false)}
+                  className="px-5 py-2.5 border border-slate-200 hover:bg-slate-100 text-xs font-bold text-slate-600 rounded-xl cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  onClick={handleAddSubmit}
+                  disabled={submitting}
+                  className="px-5 py-2.5 bg-gradient-to-r from-primary to-accent-sky text-white text-xs font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-1.5"
+                >
+                  {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                  Publish Vacancy
+                </button>
+              </div>
             </div>
           </div>
         </div>

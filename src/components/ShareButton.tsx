@@ -92,7 +92,7 @@ export default function ShareButton({ title, applyUrl, company, location, experi
       await navigator.clipboard.writeText(getShareMessage());
       setInstacopied(true);
       setTimeout(() => setInstacopied(false), 3000);
-      openDeepLink("instagram://", "https://www.instagram.com/");
+      window.open("https://www.instagram.com/", "_blank");
     } catch (err) {
       console.error('Clipboard copy failed:', err);
     }
@@ -125,10 +125,7 @@ export default function ShareButton({ title, applyUrl, company, location, experi
       ),
       action: () => {
         const shareMsg = getShareMessage();
-        openDeepLink(
-          `tg://msg_url?url=&text=${encodeURIComponent(shareMsg)}`,
-          `https://t.me/share/url?url=&text=${encodeURIComponent(shareMsg)}`
-        );
+        window.open(`https://t.me/share/url?url=&text=${encodeURIComponent(shareMsg)}`, '_blank');
       },
     },
     {
@@ -145,10 +142,7 @@ export default function ShareButton({ title, applyUrl, company, location, experi
           setCopied(true);
           setTimeout(() => setCopied(false), 2000);
         } catch {}
-        openDeepLink(
-          `linkedin://`,
-          `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getPageUrl())}`
-        );
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getPageUrl())}`, '_blank');
       },
     },
     {

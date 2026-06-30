@@ -36,6 +36,13 @@ function normalizeUrl(url: string): string {
   return `https://${trimmed}`;
 }
 
+function stripHtml(html: string): string {
+  if (!html) return '';
+  let text = html.replace(/<[^>]*>/g, ' ');
+  text = text.replace(/\s+/g, ' ');
+  return text.trim();
+}
+
 interface PageProps {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -83,7 +90,9 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const ogImage = rawImage.startsWith('http://') || rawImage.startsWith('https://')
     ? rawImage
     : `${siteUrl}${rawImage.startsWith('/') ? rawImage : `/${rawImage}`}`;
-  const shortDesc = job.description.slice(0, 160);
+  
+  const cleanDesc = stripHtml(job.description);
+  const shortDesc = cleanDesc.length > 160 ? cleanDesc.slice(0, 157) + '...' : cleanDesc;
 
   // Optimize and resize preview image dynamically to exactly 256px wide for WhatsApp/Telegram thumbnails
   const optimizedOgImage = `${siteUrl}/_next/image?url=${encodeURIComponent(ogImage)}&w=256&q=75`;
