@@ -77,6 +77,15 @@ export default function ShareButton({ title, applyUrl, company, location, experi
     }
   };
 
+  const openShareLink = (webUri: string) => {
+    const isMobile = typeof navigator !== 'undefined' && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile) {
+      window.location.href = webUri;
+    } else {
+      window.open(webUri, '_blank');
+    }
+  };
+
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(getShareMessage());
@@ -92,7 +101,7 @@ export default function ShareButton({ title, applyUrl, company, location, experi
       await navigator.clipboard.writeText(getShareMessage());
       setInstacopied(true);
       setTimeout(() => setInstacopied(false), 3000);
-      window.open("https://www.instagram.com/", "_blank");
+      openShareLink("https://www.instagram.com/");
     } catch (err) {
       console.error('Clipboard copy failed:', err);
     }
@@ -125,7 +134,7 @@ export default function ShareButton({ title, applyUrl, company, location, experi
       ),
       action: () => {
         const shareMsg = getShareMessage();
-        window.open(`https://t.me/share/url?url=&text=${encodeURIComponent(shareMsg)}`, '_blank');
+        openShareLink(`https://t.me/share/url?url=&text=${encodeURIComponent(shareMsg)}`);
       },
     },
     {
@@ -142,7 +151,7 @@ export default function ShareButton({ title, applyUrl, company, location, experi
           setCopied(true);
           setTimeout(() => setCopied(false), 2000);
         } catch {}
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getPageUrl())}`, '_blank');
+        openShareLink(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getPageUrl())}`);
       },
     },
     {
