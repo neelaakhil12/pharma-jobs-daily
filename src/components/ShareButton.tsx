@@ -59,6 +59,25 @@ export default function ShareButton({ title, applyUrl, company, location, experi
     ].join('\n');
   };
 
+  const getShareTextOnly = () => {
+    const cleanTitle = title.trim();
+    const cleanCompany = company?.trim() || '';
+    const cleanCustomTitle = customTitle?.trim() || '';
+    const displayTitle = cleanCustomTitle !== ''
+      ? cleanCustomTitle
+      : (cleanCompany !== ''
+        ? `${cleanCompany} Hiring For ${cleanTitle}`
+        : cleanTitle);
+
+    return [
+      displayTitle,
+      '',
+      qualification || '',
+      '',
+      `Apply Here 🔗`,
+    ].join('\n');
+  };
+
   const openDeepLink = (appUri: string, webUri: string) => {
     const isMobile = typeof navigator !== 'undefined' && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (isMobile) {
@@ -101,7 +120,7 @@ export default function ShareButton({ title, applyUrl, company, location, experi
       await navigator.clipboard.writeText(getShareMessage());
       setInstacopied(true);
       setTimeout(() => setInstacopied(false), 3000);
-      openShareLink("https://www.instagram.com/");
+      openShareLink("https://www.instagram.com/direct/inbox/");
     } catch (err) {
       console.error('Clipboard copy failed:', err);
     }
@@ -133,8 +152,9 @@ export default function ShareButton({ title, applyUrl, company, location, experi
         </svg>
       ),
       action: () => {
-        const shareMsg = getShareMessage();
-        openShareLink(`https://t.me/share/url?url=&text=${encodeURIComponent(shareMsg)}`);
+        const textOnly = getShareTextOnly();
+        const pageUrl = getPageUrl();
+        openShareLink(`https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(textOnly)}`);
       },
     },
     {
