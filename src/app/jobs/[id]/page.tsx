@@ -86,7 +86,10 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     }
   }
 
-  const rawImage = targetImage || '/logo-thumbnail.png';
+  const cleanImage = (targetImage && typeof targetImage === 'string' && targetImage.trim() !== '' && targetImage !== 'null' && targetImage !== 'undefined')
+    ? targetImage.trim()
+    : '/logo-thumbnail.png';
+  const rawImage = cleanImage;
   const ogImage = rawImage.startsWith('http://') || rawImage.startsWith('https://')
     ? rawImage
     : `${siteUrl}${rawImage.startsWith('/') ? rawImage : `/${rawImage}`}`;
@@ -111,7 +114,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
       ],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: 'summary',
       title: `${targetTitle} | Pharma Jobs Daily`,
       description: shortDesc,
       images: [ogImage],
