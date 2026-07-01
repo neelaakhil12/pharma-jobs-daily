@@ -90,9 +90,15 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     ? targetImage.trim()
     : '/logo-thumbnail.png';
   const rawImage = cleanImage;
-  const ogImage = rawImage.startsWith('http://') || rawImage.startsWith('https://')
+  let ogImage = rawImage.startsWith('http://') || rawImage.startsWith('https://')
     ? rawImage
     : `${siteUrl}${rawImage.startsWith('/') ? rawImage : `/${rawImage}`}`;
+
+  // If there is an image (meaning it's not the logo thumbnail), we resize it to be < 300px wide (e.g. 256px)
+  // so that WhatsApp renders it as a small thumbnail on the left instead of a large top image.
+  if (cleanImage !== '/logo-thumbnail.png') {
+    ogImage = `${siteUrl}/_next/image?url=${encodeURIComponent(ogImage)}&w=256&q=75`;
+  }
   
   const cleanDesc = stripHtml(job.description);
   const shortDesc = cleanDesc.length > 160 ? cleanDesc.slice(0, 157) + '...' : cleanDesc;
@@ -109,6 +115,8 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
       images: [
         {
           url: ogImage,
+          width: 256,
+          height: 256,
           alt: targetTitle,
         },
       ],
