@@ -86,6 +86,9 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     }
   }
 
+  const userAgent = headersList.get('user-agent') || '';
+  const isWhatsApp = /whatsapp/i.test(userAgent);
+
   const cleanImage = (targetImage && typeof targetImage === 'string' && targetImage.trim() !== '' && targetImage !== 'null' && targetImage !== 'undefined')
     ? targetImage.trim()
     : '/logo-thumbnail.png';
@@ -94,9 +97,12 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     ? rawImage
     : `${siteUrl}${rawImage.startsWith('/') ? rawImage : `/${rawImage}`}`;
 
-  // If there is an image (meaning it's not the logo thumbnail), we resize it to be < 300px wide (e.g. 256px)
-  // so that WhatsApp renders it as a small thumbnail on the left instead of a large top image.
-  if (cleanImage !== '/logo-thumbnail.png') {
+  const isSmallImage = isWhatsApp || cleanImage === '/logo-thumbnail.png';
+
+  // If the request is from WhatsApp, and there is a custom image, we resize it to be < 300px wide (e.g. 256px)
+  // so that WhatsApp renders it as a small thumbnail on the left.
+  // For other platforms (like Instagram, Facebook, etc.), we keep the original large image.
+  if (isWhatsApp && cleanImage !== '/logo-thumbnail.png') {
     ogImage = `${siteUrl}/_next/image?url=${encodeURIComponent(ogImage)}&w=256&q=75`;
   }
   
@@ -115,9 +121,8 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
       images: [
         {
           url: ogImage,
-          width: 256,
-          height: 256,
           alt: targetTitle,
+          ...(isSmallImage ? { width: 256, height: 256 } : {}),
         },
       ],
     },
