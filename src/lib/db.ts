@@ -415,7 +415,7 @@ export async function addJob(jobInput: Omit<Job, 'id' | 'postedDate'>): Promise<
   const newJob: Job = {
     ...jobInput,
     id: `job-${Date.now()}`,
-    postedDate: new Date().toISOString().split('T')[0]
+    postedDate: new Date().toISOString()  // full ISO timestamp for correct newest-first ordering
   };
 
   const available = await isSupabaseAvailable();
