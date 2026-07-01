@@ -155,27 +155,16 @@ export default async function JobDetailPage({ params }: PageProps) {
 
   const formattedDate = (() => {
     if (!job.postedDate) return '';
-    const parts = job.postedDate.split('-');
-    if (parts.length === 3) {
-      return `${parts[2]}/${parts[1]}/${parts[0]}`;
-    }
-    return job.postedDate;
+    const d = new Date(job.postedDate);
+    if (isNaN(d.getTime())) return job.postedDate;
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
   })();
 
   const publishedDateString = (() => {
     if (!job.postedDate) return '';
-    const parts = job.postedDate.split('-');
-    if (parts.length === 3) {
-      const year = parseInt(parts[0], 10);
-      const month = parseInt(parts[1], 10) - 1; // 0-based
-      const day = parseInt(parts[2], 10);
-      const date = new Date(year, month, day);
-      return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-    }
     const parsed = new Date(job.postedDate);
     if (!isNaN(parsed.getTime())) {
       return parsed.toLocaleDateString('en-US', {

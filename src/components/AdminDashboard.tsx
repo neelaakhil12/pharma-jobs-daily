@@ -2361,11 +2361,12 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                               <Calendar className="w-3.5 h-3.5 shrink-0" /> 
                               {(() => {
                                 if (!job.postedDate) return '';
-                                const parts = job.postedDate.split('-');
-                                if (parts.length === 3) {
-                                  return `${parts[2]}/${parts[1]}/${parts[0]}`;
-                                }
-                                return job.postedDate;
+                                const d = new Date(job.postedDate);
+                                if (isNaN(d.getTime())) return job.postedDate;
+                                const dd = String(d.getDate()).padStart(2, '0');
+                                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                                const yyyy = d.getFullYear();
+                                return `${dd}/${mm}/${yyyy}`;
                               })()}
                             </div>
                           </td>
@@ -2478,11 +2479,12 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                             <span>
                               Posted: {(() => {
                                 if (!job.postedDate) return '';
-                                const parts = job.postedDate.split('-');
-                                if (parts.length === 3) {
-                                  return `${parts[2]}/${parts[1]}/${parts[0]}`;
-                                }
-                                return job.postedDate;
+                                const d = new Date(job.postedDate);
+                                if (isNaN(d.getTime())) return job.postedDate;
+                                const dd = String(d.getDate()).padStart(2, '0');
+                                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                                const yyyy = d.getFullYear();
+                                return `${dd}/${mm}/${yyyy}`;
                               })()}
                             </span>
                           </div>

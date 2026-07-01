@@ -73,11 +73,12 @@ export default function JobCard({ job }: JobCardProps) {
         <div className={`text-[11px] font-extrabold truncate ${job.postedBy === 'ADMIN' ? 'text-emerald-650' : 'text-primary'}`}>
           {(() => {
             if (!job.postedDate) return '';
-            const parts = job.postedDate.split('-');
-            if (parts.length === 3) {
-              return `${parts[2]}/${parts[1]}/${parts[0]}`;
-            }
-            return job.postedDate;
+            const d = new Date(job.postedDate);
+            if (isNaN(d.getTime())) return job.postedDate;
+            const dd = String(d.getDate()).padStart(2, '0');
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const yyyy = d.getFullYear();
+            return `${dd}/${mm}/${yyyy}`;
           })()}
         </div>
 
