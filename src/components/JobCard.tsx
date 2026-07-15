@@ -75,10 +75,23 @@ export default function JobCard({ job }: JobCardProps) {
             if (!job.postedDate) return '';
             const d = new Date(job.postedDate);
             if (isNaN(d.getTime())) return job.postedDate;
-            const dd = String(d.getDate()).padStart(2, '0');
-            const mm = String(d.getMonth() + 1).padStart(2, '0');
-            const yyyy = d.getFullYear();
-            return `${dd}/${mm}/${yyyy}`;
+            try {
+              const parts = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'Asia/Kolkata',
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+              }).formatToParts(d);
+              const day = parts.find(p => p.type === 'day')?.value || String(d.getDate()).padStart(2, '0');
+              const month = parts.find(p => p.type === 'month')?.value || String(d.getMonth() + 1).padStart(2, '0');
+              const year = parts.find(p => p.type === 'year')?.value || String(d.getFullYear());
+              return `${day}/${month}/${year}`;
+            } catch {
+              const dd = String(d.getDate()).padStart(2, '0');
+              const mm = String(d.getMonth() + 1).padStart(2, '0');
+              const yyyy = d.getFullYear();
+              return `${dd}/${mm}/${yyyy}`;
+            }
           })()}
         </div>
 

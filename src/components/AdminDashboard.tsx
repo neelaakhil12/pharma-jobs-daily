@@ -2312,7 +2312,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                               <span className="font-extrabold text-slate-800 leading-tight text-sm line-clamp-1">{job.title}</span>
                               {job.scheduledTime && new Date(job.scheduledTime) > new Date() && (
                                 <span className="inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 bg-blue-50 border border-blue-200 text-blue-600 rounded">
-                                  Scheduled: {new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}
+                                  Scheduled: {new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' })}
                                 </span>
                               )}
                             </div>
@@ -2336,7 +2336,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                                 </span>
                                 <div className="text-[10px] font-extrabold text-slate-505 flex items-center gap-1">
                                   <Calendar className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                                  Run: {new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}
+                                  Run: {new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' })}
                                 </div>
                               </>
                             ) : (
@@ -2346,7 +2346,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                                 </span>
                                 <div className="text-[10px] font-extrabold text-slate-505 flex items-center gap-1">
                                   <Calendar className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                                  Live: {job.scheduledTime ? new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }) : 'N/A'}
+                                  Live: {job.scheduledTime ? new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' }) : 'N/A'}
                                 </div>
                               </>
                             )}
@@ -2363,10 +2363,23 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                                 if (!job.postedDate) return '';
                                 const d = new Date(job.postedDate);
                                 if (isNaN(d.getTime())) return job.postedDate;
-                                const dd = String(d.getDate()).padStart(2, '0');
-                                const mm = String(d.getMonth() + 1).padStart(2, '0');
-                                const yyyy = d.getFullYear();
-                                return `${dd}/${mm}/${yyyy}`;
+                                try {
+                                  const parts = new Intl.DateTimeFormat('en-US', {
+                                    timeZone: 'Asia/Kolkata',
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric'
+                                  }).formatToParts(d);
+                                  const day = parts.find(p => p.type === 'day')?.value || String(d.getDate()).padStart(2, '0');
+                                  const month = parts.find(p => p.type === 'month')?.value || String(d.getMonth() + 1).padStart(2, '0');
+                                  const year = parts.find(p => p.type === 'year')?.value || String(d.getFullYear());
+                                  return `${day}/${month}/${year}`;
+                                } catch {
+                                  const dd = String(d.getDate()).padStart(2, '0');
+                                  const mm = String(d.getMonth() + 1).padStart(2, '0');
+                                  const yyyy = d.getFullYear();
+                                  return `${dd}/${mm}/${yyyy}`;
+                                }
                               })()}
                             </div>
                           </td>
@@ -2430,7 +2443,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                         <span className="font-extrabold text-slate-800 text-sm leading-snug">{job.title}</span>
                         {job.scheduledTime && new Date(job.scheduledTime) > new Date() && (
                           <span className="inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 bg-blue-50 border border-blue-200 text-blue-600 rounded">
-                            Scheduled: {new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}
+                            Scheduled: {new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' })}
                           </span>
                         )}
                       </div>
@@ -2464,7 +2477,7 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                             <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                             <span>
                               {job.scheduledTime && new Date(job.scheduledTime) > new Date() ? 'Run: ' : 'Live: '}
-                              {job.scheduledTime ? new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }) : 'N/A'}
+                              {job.scheduledTime ? new Date(job.scheduledTime).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' }) : 'N/A'}
                             </span>
                           </div>
                         </div>
@@ -2481,10 +2494,23 @@ export default function AdminDashboard({ initialJobs, adminRole = 'ADMIN', admin
                                 if (!job.postedDate) return '';
                                 const d = new Date(job.postedDate);
                                 if (isNaN(d.getTime())) return job.postedDate;
-                                const dd = String(d.getDate()).padStart(2, '0');
-                                const mm = String(d.getMonth() + 1).padStart(2, '0');
-                                const yyyy = d.getFullYear();
-                                return `${dd}/${mm}/${yyyy}`;
+                                try {
+                                  const parts = new Intl.DateTimeFormat('en-US', {
+                                    timeZone: 'Asia/Kolkata',
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric'
+                                  }).formatToParts(d);
+                                  const day = parts.find(p => p.type === 'day')?.value || String(d.getDate()).padStart(2, '0');
+                                  const month = parts.find(p => p.type === 'month')?.value || String(d.getMonth() + 1).padStart(2, '0');
+                                  const year = parts.find(p => p.type === 'year')?.value || String(d.getFullYear());
+                                  return `${day}/${month}/${year}`;
+                                } catch {
+                                  const dd = String(d.getDate()).padStart(2, '0');
+                                  const mm = String(d.getMonth() + 1).padStart(2, '0');
+                                  const yyyy = d.getFullYear();
+                                  return `${dd}/${mm}/${yyyy}`;
+                                }
                               })()}
                             </span>
                           </div>

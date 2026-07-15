@@ -178,6 +178,13 @@ function deserializeCustomSections(dbDescription: string | null): {
   return { description: dbDescription };
 }
 
+function normalizeJob(job: Job): Job {
+  return {
+    ...job,
+    postedDate: job.scheduledTime || job.postedDate
+  };
+}
+
 function mapRowToJob(row: JobRow): Job {
   const { description, customSections, customTitle } = deserializeCustomSections(row.description);
   return {
@@ -190,7 +197,7 @@ function mapRowToJob(row: JobRow): Job {
     location: row.location,
     salary: row.salary,
     experience: row.experience,
-    postedDate: row.posted_date,
+    postedDate: row.scheduled_time || row.posted_date,
     description: description,
     responsibilities: row.responsibilities || [],
     requirements: row.requirements || [],
@@ -345,9 +352,7 @@ export async function getAllJobs(): Promise<Job[]> {
   const db = await readLocalDb();
   const changed = await performScheduledCleanupLocal(db);
   if (changed) await writeLocalDb(db);
-  return db.jobs.sort(
-    (a, b) => new Date(b.postedDate).getTime() - new Date(a.postedDate).getTime()
-  );
+  return applyScheduledFilter(db.jobs.map(normalizeJob));
 }
 
 /**
@@ -374,7 +379,7 @@ export async function getAllJobsForAdmin(): Promise<Job[]> {
 
   // Fallback: local db.json (all jobs, no filter)
   const db = await readLocalDb();
-  return db.jobs.sort(
+  return db.jobs.map(normalizeJob).sort(
     (a, b) => new Date(b.postedDate).getTime() - new Date(a.postedDate).getTime()
   );
 }
@@ -408,7 +413,8 @@ export async function getJobById(id: string): Promise<Job | null> {
 
   // Fallback
   const db = await readLocalDb();
-  return db.jobs.find((j) => j.id === id) || null;
+  const job = db.jobs.find((j) => j.id === id) || null;
+  return job ? normalizeJob(job) : null;
 }
 
 export async function addJob(jobInput: Omit<Job, 'id' | 'postedDate'>): Promise<Job> {
@@ -429,7 +435,7 @@ export async function addJob(jobInput: Omit<Job, 'id' | 'postedDate'>): Promise<
       const db = await readLocalDb();
       db.jobs.push(newJob);
       await writeLocalDb(db);
-      return newJob;
+      return normalizeJob(newJob);
     } catch (err) {
       console.warn('[db] Supabase insert failed, saving to local db.json:', err);
     }
@@ -439,7 +445,7 @@ export async function addJob(jobInput: Omit<Job, 'id' | 'postedDate'>): Promise<
   const db = await readLocalDb();
   db.jobs.push(newJob);
   await writeLocalDb(db);
-  return newJob;
+  return normalizeJob(newJob);
 }
 
 export async function updateJob(
@@ -450,6 +456,25 @@ export async function updateJob(
   if (!existing) return null;
 
   const updatedJob: Job = { ...existing, ...jobInput };
+
+  if (jobInput.scheduledTime !== undefined) {
+    if (jobInput.scheduledTime) {
+      // If a scheduled time is set/updated, align postedDate to it
+      updatedJob.postedDate = jobInput.scheduledTime;
+    } else {
+      // If scheduledTime is cleared:
+      // Check if it was previously scheduled in the future (i.e., not yet live)
+      const wasFutureScheduled = existing.scheduledTime && new Date(existing.scheduledTime) > new Date();
+      if (wasFutureScheduled) {
+        // If it was in the future and we are clearing it, it becomes live now
+        updatedJob.postedDate = new Date().toISOString();
+      } else {
+        // If it was already live or had no schedule, keep the original postedDate
+        updatedJob.postedDate = existing.postedDate;
+      }
+    }
+  }
+
   const available = await isSupabaseAvailable();
 
   if (available) {
@@ -462,7 +487,7 @@ export async function updateJob(
       const idx = db.jobs.findIndex((j) => j.id === id);
       if (idx !== -1) db.jobs[idx] = updatedJob;
       await writeLocalDb(db);
-      return updatedJob;
+      return normalizeJob(updatedJob);
     } catch (err) {
       console.warn('[db] Supabase update failed, updating local db.json:', err);
     }
@@ -474,7 +499,7 @@ export async function updateJob(
   if (idx === -1) return null;
   db.jobs[idx] = updatedJob;
   await writeLocalDb(db);
-  return updatedJob;
+  return normalizeJob(updatedJob);
 }
 
 export async function deleteJob(id: string): Promise<boolean> {

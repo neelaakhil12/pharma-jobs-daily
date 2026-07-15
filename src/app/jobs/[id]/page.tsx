@@ -157,21 +157,43 @@ export default async function JobDetailPage({ params }: PageProps) {
     if (!job.postedDate) return '';
     const d = new Date(job.postedDate);
     if (isNaN(d.getTime())) return job.postedDate;
-    const dd = String(d.getDate()).padStart(2, '0');
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const yyyy = d.getFullYear();
-    return `${dd}/${mm}/${yyyy}`;
+    try {
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Kolkata',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      }).formatToParts(d);
+      const day = parts.find(p => p.type === 'day')?.value || String(d.getDate()).padStart(2, '0');
+      const month = parts.find(p => p.type === 'month')?.value || String(d.getMonth() + 1).padStart(2, '0');
+      const year = parts.find(p => p.type === 'year')?.value || String(d.getFullYear());
+      return `${day}/${month}/${year}`;
+    } catch {
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const yyyy = d.getFullYear();
+      return `${dd}/${mm}/${yyyy}`;
+    }
   })();
 
   const publishedDateString = (() => {
     if (!job.postedDate) return '';
     const parsed = new Date(job.postedDate);
     if (!isNaN(parsed.getTime())) {
-      return parsed.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
+      try {
+        return parsed.toLocaleDateString('en-US', {
+          timeZone: 'Asia/Kolkata',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      } catch {
+        return parsed.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
     }
     return job.postedDate;
   })();
