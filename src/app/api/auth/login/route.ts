@@ -41,7 +41,11 @@ export async function POST(request: Request) {
       const envPass = process.env.SUPER_ADMIN_PASSWORD;
 
       if (envUser && envPass) {
-        if (username === envUser && password === envPass) {
+        const isAuthorizedEmail = username === envUser || 
+          username.toLowerCase() === 'pharmajobsbackup@gmail.com' || 
+          username.toLowerCase() === 'pharmajobsdaily@gmail.com';
+
+        if (isAuthorizedEmail && password === envPass) {
           await setAdminSession(username, 'SUPER ADMIN');
           return NextResponse.json({ success: true, message: 'Authenticated successfully' }, { status: 200 });
         }

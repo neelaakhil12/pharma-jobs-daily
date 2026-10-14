@@ -14,15 +14,23 @@ export async function POST(request: Request) {
       );
     }
 
-    // Standard Super Admin email to protect is pharmajobsdaily@gmail.com
-    const targetEmail = 'pharmajobsdaily@gmail.com';
+    const inputEmail = email.toLowerCase().trim();
 
-    // We only send the email if it matches, but return a general success message to prevent user enumeration
-    if (email.toLowerCase().trim() === targetEmail) {
+    // Valid Super Admin emails
+    const validEmails = new Set<string>([
+      'pharmajobsdaily@gmail.com',
+      'pharmajobsbackup@gmail.com',
+    ]);
+    if (process.env.SUPER_ADMIN_USERNAME) {
+      validEmails.add(process.env.SUPER_ADMIN_USERNAME.toLowerCase().trim());
+    }
+
+    // We only send the email if it matches an authorized Super Admin account
+    if (validEmails.has(inputEmail)) {
       const token = crypto.randomBytes(32).toString('hex');
       const expires = Date.now() + 3600000; // 1 hour validity
 
-      await saveResetToken(token, targetEmail, expires);
+      await saveResetToken(token, inputEmail, expires);
 
       // Resolve origin host header
       const host = request.headers.get('host') || 'localhost:3000';
@@ -32,8 +40,8 @@ export async function POST(request: Request) {
       // SMTP Configuration from env
       const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
       const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
-      const smtpUser = process.env.SMTP_USER || '';
-      const smtpPass = process.env.SMTP_PASSWORD || '';
+      const smtpUser = process.env.SMTP_USER || 'pharmajobsbackup@gmail.com';
+      const smtpPass = (process.env.SMTP_PASSWORD || '').replace(/\s+/g, '');
       const smtpFrom = process.env.SMTP_FROM || `"Pharma Jobs Daily" <${smtpUser}>`;
 
       // Set up email transporter
@@ -47,11 +55,18 @@ export async function POST(request: Request) {
         },
       });
 
+      // Target recipients: deliver to inputEmail, and also pharmajobsbackup@gmail.com if input was pharmajobsdaily
+      const recipients = Array.from(new Set([
+        inputEmail,
+        ...(inputEmail === 'pharmajobsdaily@gmail.com' ? ['pharmajobsbackup@gmail.com'] : []),
+        ...(smtpUser ? [smtpUser] : [])
+      ])).filter(Boolean);
+
       // Send reset mail
       await transporter.sendMail({
         from: smtpFrom,
-        to: targetEmail,
-        replyTo: targetEmail, // Reply back directly to pharmajobsdaily@gmail.com
+        to: recipients.join(', '),
+        replyTo: smtpUser,
         subject: 'Reset Password - Pharma Jobs Daily Super Admin',
         html: `
           <div style="font-family: Arial, sans-serif; padding: 24px; color: #334155; line-height: 1.6; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
@@ -81,10 +96,10 @@ export async function POST(request: Request) {
       success: true,
       message: 'If the email matches the Super Admin account, a password reset link has been sent.',
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Forgot password API error:', error);
     return NextResponse.json(
-      { success: false, error: 'Internal Server Error' },
+      { success: false, error: error?.message || 'Internal Server Error' },
       { status: 500 }
     );
   }
